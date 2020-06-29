@@ -106,3 +106,9 @@
     background-image: linear-gradient(to right, #ffffff 60%, rgba(0,0,0,0) 60%);
     color: #028090; 
 }
+.olMap{
+    position:absolute;
+   top: 80px;
+   margin: auto;
+
+}

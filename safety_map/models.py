@@ -48,7 +48,6 @@ class AuthUser(models.Model):
     is_staff = models.IntegerField()
     is_active = models.IntegerField()
     date_joined = models.DateTimeField()
-    protecter = models.CharField(max_length=150, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -135,7 +134,7 @@ class DongLevel(models.Model):
     dong_level_pk = models.IntegerField(primary_key=True)
     dong_level_tot = models.IntegerField()
     dong_nm = models.CharField(max_length=30)
-    dong_loc = models.TextField(blank=True, null=True)  # This field type is a guess.
+    dong_loc = models.TextField()  # This field type is a guess.
 
     class Meta:
         managed = False
@@ -145,7 +144,7 @@ class DongLevel(models.Model):
 class Female(models.Model):
     female_pk = models.IntegerField(primary_key=True)
     female_crime_type = models.CharField(max_length=30)
-    female_crime_loc = models.TextField(blank=True, null=True)  # This field type is a guess.
+    female_crime_loc = models.TextField()  # This field type is a guess.
 
     class Meta:
         managed = False
@@ -155,7 +154,7 @@ class Female(models.Model):
 class Kid(models.Model):
     kid_pk = models.IntegerField(primary_key=True)
     kid_accident_type = models.CharField(max_length=30)
-    kid_accident_loc = models.TextField(blank=True, null=True)  # This field type is a guess.
+    kid_accident_loc = models.TextField()  # This field type is a guess.
 
     class Meta:
         managed = False
@@ -165,7 +164,7 @@ class Kid(models.Model):
 class SafetyZone(models.Model):
     safety_zone_pk = models.IntegerField(primary_key=True)
     safety_type = models.CharField(max_length=30)
-    safety_loc = models.TextField(blank=True, null=True)  # This field type is a guess.
+    safety_loc = models.TextField()  # This field type is a guess.
 
     class Meta:
         managed = False
