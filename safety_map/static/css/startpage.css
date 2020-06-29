@@ -1,0 +1,46 @@
+@font-face { font-family: 'yg-jalnan'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff'); font-weight: normal; font-style: normal; }
+
+body{
+    background-color: #028090;
+    font-family: yg-jalnan;
+    text-align: center;
+    justify-items: center;
+}
+
+h1 {
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 50px;
+}
+
+.to_home{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.startlogo{
+    width: 300px;
+}
+
+a{
+    text-decoration: none;
+    color: #ffffff;  
+}
+
+h2{
+    text-align: center;
+    font-size: 40px;
+}
+
+.start-btn{
+    border: 0;
+    font-size: 30px;
+    text-align: center;
+    color: #028090;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    font-family: yg-jalnan;
+    line-height: 2;
+    width: 40%;
+}
