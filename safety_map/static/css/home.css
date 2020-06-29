@@ -99,5 +99,10 @@
     font-size: 20px;
 }
 .menu > div { 
-    padding: 2%; 
+    padding: 15px; 
+}
+
+.menu_item:hover { 
+    background-image: linear-gradient(to right, #ffffff 60%, rgba(0,0,0,0) 60%);
+    color: #028090; 
 }
