@@ -1,0 +1,85 @@
+@font-face { font-family: 'yg-jalnan'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff'); font-weight: normal; font-style: normal; }
+
+h1 {
+    color: blue;
+    font-family: yg-jalnan;
+}
+h2{
+    font-family: 'Noto Sans KR', sans-serif;    
+}
+
+.top-box{
+    display: flex;
+    justify-content: center;
+}
+
+.menu-input-box{
+    position: absolute;
+    top: 25px;
+    display: flex;
+}
+
+.menu-open {
+    width: 39px;
+    height: 39px;
+    margin-top: 0px;
+    margin-right: 10px;
+    margin-left: 0px;
+    margin-top: 6px;
+    z-index: 99;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-img {
+    width: 30px;
+}
+
+.search-input {
+    width: 80vw;
+    height: 50px;
+    border-radius: 26px;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.16);
+    top: 43px;
+    background-color: #ffffff;
+    font-family: 'Noto Sans KR', sans-serif;    
+    border: none;
+    display: flex;
+    justify-content: center;
+}
+
+.search-input-in {
+    width: 85%;
+    height: 80%;
+    border-radius: 24px;
+    font-family: 'Noto Sans KR', sans-serif;    
+    font-size: 15px;
+    font-weight: 400;
+    border: none;
+    padding: 5px;
+}
+
+.search-btn{
+    border: none;
+    background: none;
+    padding-left: 0;
+}
+
+.search-icon {
+    width: 35px;
+}
+
+.path{
+    width: 40px;
+    position: absolute;
+    bottom: 80px;
+    right: 5%;
+}
+
+.myloc{
+    width: 40px;
+    position: absolute;
+    bottom: 30px;
+    right: 5%;
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+<head>
+    <title>거기어때?!</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="top-box">
+    <div class="menu-input-box">
+        <div class="menu-open">
+            <img class="menu-img" src="{% static 'img/menu_icon.png' %}">
+        </div>    
+        <div class="search-input" type="text">
+            <input value type="text" class="search-input-in" placeholder="목적지를 검색하세요">
+            <button class="search-btn">
+                <img class="search-icon" src="{% static 'img/search_icon.svg' %}">
+            </button>
+        </div>
+    </div>  
+</div>   
+
+<div class="path-currpos">
+    <img class="path" src="{% static 'img/path_icon.png' %}">
+    <img class="myloc" src="{% static 'img/myloc_icon.png' %}">
+
+</div>
+
+
+</body>
+</html>
