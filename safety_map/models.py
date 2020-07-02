@@ -48,6 +48,7 @@ class AuthUser(models.Model):
     is_staff = models.IntegerField()
     is_active = models.IntegerField()
     date_joined = models.DateTimeField()
+    protecter_num = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -79,7 +80,7 @@ class Danger(models.Model):
     danger_type = models.CharField(max_length=30)
     danger_img = models.TextField()
     danger_loc = models.TextField()  # This field type is a guess.
-    walker_pk_fk = models.ForeignKey('Walker', models.DO_NOTHING, db_column='walker_pk_fk')
+    auth_user_id_fk = models.ForeignKey('AuthUser', models.DO_NOTHING, db_column='auth_user_id_fk', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -142,8 +143,8 @@ class DongLevel(models.Model):
 
 
 class Female(models.Model):
-    female_pk = models.IntegerField(primary_key=True)
-    female_crime_type = models.CharField(max_length=30)
+    female_pk = models.AutoField(primary_key=True)
+    female_crime_type = models.CharField(max_length=30, blank=True, null=True)
     female_crime_loc = models.TextField()  # This field type is a guess.
 
     class Meta:
@@ -152,7 +153,7 @@ class Female(models.Model):
 
 
 class Kid(models.Model):
-    kid_pk = models.IntegerField(primary_key=True)
+    kid_pk = models.AutoField(primary_key=True)
     kid_accident_type = models.CharField(max_length=30)
     kid_accident_loc = models.TextField()  # This field type is a guess.
 
@@ -162,19 +163,10 @@ class Kid(models.Model):
 
 
 class SafetyZone(models.Model):
-    safety_zone_pk = models.IntegerField(primary_key=True)
+    safety_zone_pk = models.AutoField(primary_key=True)
     safety_type = models.CharField(max_length=30)
     safety_loc = models.TextField()  # This field type is a guess.
 
     class Meta:
         managed = False
         db_table = 'safety_zone'
-
-
-class Walker(models.Model):
-    walker_pk = models.IntegerField(primary_key=True)
-    walker_email = models.CharField(max_length=18)
-
-    class Meta:
-        managed = False
-        db_table = 'walker'
