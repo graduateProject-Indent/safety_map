@@ -9,6 +9,7 @@
     position: absolute;
     top: 25px;
     display: flex;
+    z-index: 98;
 }
 
 .menu-open {
@@ -67,6 +68,8 @@
     position: absolute;
     bottom: 80px;
     right: 5%;
+    z-index: 98;
+
 }
 
 .myloc{
@@ -74,6 +77,8 @@
     position: absolute;
     bottom: 30px;
     right: 5%;
+    z-index: 98;
+
 }
 
 
@@ -95,7 +100,7 @@
     background-image: linear-gradient(to right, rgba(02,80,90,0.9) 60%, rgba(0,0,0,0.16) 60%);
     font-family: 'Noto Sans KR', sans-serif; 
     color: #ffffff;
-    font-weight: 400;
+    font-weight: 500;
     font-size: 20px;
 }
 .menu > div { 
@@ -104,11 +109,39 @@
 
 .menu_item:hover { 
     background-image: linear-gradient(to right, #ffffff 60%, rgba(0,0,0,0) 60%);
-    color: #028090; 
+    color: #015462; 
 }
 .olMap{
     position:absolute;
    top: 80px;
    margin: auto;
+}
 
+li{
+    list-style-type: none;
+}
+
+ul{
+    padding-left: 0px;
+}
+
+.item{
+    border: 2px solid #015462;
+    border-radius: 30px 30px;
+    background-color: #EBEBEB;
+    color: #015462;
+}
+
+.item:hover{
+    border-color: #015462;
+    background-color: #015462;
+    color: #ffffff;
+}
+
+#item{
+    margin-top: 10px;
+}
+
+.map{
+    z-index: -1;
 }
