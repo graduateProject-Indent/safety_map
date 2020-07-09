@@ -22,4 +22,6 @@ urlpatterns = [
     #path('home/',safety_map.views.home,name='home'),
     path('',safety_map.views.startpage,name='startpage'),
     path('home/',safety_map.views.showMaps,name='showMaps'),
+    path('safetyzone/',safety_map.views.showSafetyZone,name='showSafetyZone'),
 ]
+#한정원 : 마지막 url 추가함 나중에 수정할것
