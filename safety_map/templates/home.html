@@ -10,8 +10,8 @@
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://maps.google.com/maps/api/js?v=3&sensor=false"></script>
     <script src="http://www.openlayers.org/api/2.13.1/OpenLayers.js"></script>
-    
-    
+
+
     <!--메뉴드롭다운-->
     <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
     <script type="text/javascript">
@@ -27,55 +27,54 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
         rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-   
+
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://maps.google.com/maps/api/js?v=3&sensor=false"></script>
     <script src="http://www.openlayers.org/api/2.13.1/OpenLayers.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOQ8miqXQSgHLxdLYXOxREHSM0T8-p1EI&callback=initMap&libraries=&v=weekly"
-      defer
-    ></script>
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOQ8miqXQSgHLxdLYXOxREHSM0T8-p1EI&callback=initMap&libraries=&v=weekly"
+        defer></script>
     <!--goole 꺼-->
     <style type="text/css">
         /* Always set the map height explicitly to define the size of the div
          * element that contains the map. */
         #map {
-          height: 100%;
+            height: 100%;
         }
-  
+
         /* Optional: Makes the sample page fill the window. */
         html,
         body {
-          height: 100%;
-          margin: 0;
-          padding: 0;
+            height: 100%;
+            margin: 0;
+            padding: 0;
         }
-      </style>
-      <script>
-        (function(exports) {
-          "use strict";
-  
-          function initMap() {
-            exports.map = new google.maps.Map(document.getElementById("map"), {
-              center: {
-                lat: 36,
-                lng: 128
-              },
-              zoom: 8
-            });
-          }
-  
-          exports.initMap = initMap;
+    </style>
+    <script>
+        (function (exports) {
+            "use strict";
+
+            function initMap() {
+                exports.map = new google.maps.Map(document.getElementById("map"), {
+                    center: {
+                        lat: 36,
+                        lng: 128
+                    },
+                    zoom: 8
+                });
+            }
+
+            exports.initMap = initMap;
         })((this.window = this.window || {}));
-      </script>
-      <!--google 끝-->
+    </script>
+    <!--google 끝-->
 
 
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
-	<script>
-		var giMenuDuration = 700;
+    <script>
+        var giMenuDuration = 700;
 
         // 전체 메뉴를 오른쪽으로 슬라이드하여서 보여준다.
         function ShowMenu() {
@@ -108,7 +107,7 @@
 
 </head>
 
-<body onload="mapInit()">
+<body>
     <div class="top-box">
         <div class="menu-input-box">
             <div class="menu-open">
@@ -123,17 +122,18 @@
 
                             <div class="menu_item">안심장소보기</div>
 
-                            <li class="menu_item">
-                                <a href="#">여성 &nbsp; | &nbsp; 아동</a>
-                            </li>
-                            <ul class="sub">
-                                <li><a href="#">강도</a></li>
-                                <li><a href="#">절도</a></li>
-                                <li><a href="#">폭력</a></li>
-                                <li><a href="#">성폭력</a></li>
-                                <li><a href="#">전체</a></li>
-                            </ul>
-                            <!--
+                            <div class="menu_item">
+                                <li>
+                                    여성 &nbsp; | &nbsp; 아동
+
+                                    <ul class="sub">
+                                        <li><a class="item">강도</a></li>
+                                        <li><a class="item">절도</a></li>
+                                        <li><a class="item">폭력</a></li>
+                                        <li><a class="item">성폭력</a></li>
+                                        <li><a class="item">전체</a></li>
+                                    </ul>
+                                    <!--
                             <ul class="sub">
                                 <li>어린이보행사고</li>
                                 <li>스쿨존사고</li>
@@ -142,6 +142,8 @@
                                 <li>하굣길사고주의구간</li>
                             </ul>
                             -->
+                                </li>
+                            </div>
 
                             <div class="menu_item">위험물장소보기</div>
                             <div class="menu_item">이용안내</div>
@@ -164,15 +166,7 @@
         <img class="path" src="{% static 'img/path_icon.png' %}">
         <img class="myloc" src="{% static 'img/myloc_icon.png' %}">
     </div>
-    <div id="2d_map">
-
-    </div>
-    <!--<div id="div_map" class="css_map" tabindex="0">
-    
-    </div>-->
-    <!--<div id="controller" class="css_control">
-    <input type="button" class="AXButton Green" value="지도 실행 " onclick="mapInit();" style="width:30%"/>
-    </div>-->
+    <div id="map"></div>
 
 </body>
 

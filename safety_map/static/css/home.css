@@ -111,3 +111,12 @@
    top: 80px;
    margin: auto;
 }
+
+li{
+    list-style-type: none;
+}
+
+.item{
+    border-style: solid;
+    margin-top: 2px;
+}
