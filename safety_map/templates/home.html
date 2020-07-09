@@ -29,48 +29,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="http://maps.google.com/maps/api/js?v=3&sensor=false"></script>
-    <script src="http://www.openlayers.org/api/2.13.1/OpenLayers.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOQ8miqXQSgHLxdLYXOxREHSM0T8-p1EI&callback=initMap&libraries=&v=weekly"
-        defer></script>
-    <!--goole 꺼-->
-    <style type="text/css">
-        /* Always set the map height explicitly to define the size of the div
-         * element that contains the map. */
-        #map {
-            height: 100%;
-        }
-
-        /* Optional: Makes the sample page fill the window. */
-        html,
-        body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-    </style>
-    <script>
-        (function (exports) {
-            "use strict";
-
-            function initMap() {
-                exports.map = new google.maps.Map(document.getElementById("map"), {
-                    center: {
-                        lat: 36,
-                        lng: 128
-                    },
-                    zoom: 8
-                });
-            }
-
-            exports.initMap = initMap;
-        })((this.window = this.window || {}));
-    </script>
-    <!--google 끝-->
-
-
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
     <script>
@@ -120,18 +79,27 @@
 
                             <div class="menu_item">마이페이지</div>
 
-                            <div class="menu_item">안심장소보기</div>
+                            <div class="menu_item">
+                                <li>
+                                    안심장소보기
+                                    <ul class="sub">
+                                        <li id="item"><a class="item">&nbsp;&nbsp;경찰서&nbsp;&nbsp;</a></li>
+                                        <li id="item"><a class="item">&nbsp;&nbsp;지구대&nbsp;&nbsp;</a></li>
+                                        <li id="item"><a class="item">&nbsp;&nbsp;파출소&nbsp;&nbsp;</a></li>
+                                        <li id="item"><a class="item">&nbsp;&nbsp;안심벨&nbsp;&nbsp;</a></li>
+                                    </ul>
+                                </li>
+                            </div>
 
                             <div class="menu_item">
                                 <li>
                                     여성 &nbsp; | &nbsp; 아동
-
                                     <ul class="sub">
-                                        <li><a class="item">강도</a></li>
-                                        <li><a class="item">절도</a></li>
-                                        <li><a class="item">폭력</a></li>
-                                        <li><a class="item">성폭력</a></li>
-                                        <li><a class="item">전체</a></li>
+                                        <li id="item"><a class="item">&nbsp;&nbsp;강도&nbsp;&nbsp;</a></li>
+                                        <li id="item"><a class="item">&nbsp;&nbsp;절도&nbsp;&nbsp;</a></li>
+                                        <li id="item"><a class="item">&nbsp;&nbsp;폭력&nbsp;&nbsp;</a></li>
+                                        <li id="item"><a class="item">&nbsp;&nbsp;성폭력&nbsp;&nbsp;</a></li>
+                                        <li id="item"><a class="item">&nbsp;&nbsp;전체&nbsp;&nbsp;</a></li>
                                     </ul>
                                     <!--
                             <ul class="sub">
@@ -160,14 +128,16 @@
                 </button>
             </div>
         </div>
-    </div>
+    </div>  
+</div>   
 
-    <div class="path-currpos">
-        <img class="path" src="{% static 'img/path_icon.png' %}">
-        <img class="myloc" src="{% static 'img/myloc_icon.png' %}">
-    </div>
-    <div id="map"></div>
-
+<div class="path-currpos">
+    <img class="path" src="{% static 'img/path_icon.png' %}">
+    <img class="myloc" src="{% static 'img/myloc_icon.png' %}">
+</div>
+<div class="map">
+    {{ map|safe }}
+</div>
 </body>
 
 </html>
