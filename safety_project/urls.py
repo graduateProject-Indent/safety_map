@@ -19,6 +19,7 @@ import safety_map.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('home/',safety_map.views.home,name='home'),
+    #path('home/',safety_map.views.home,name='home'),
     path('',safety_map.views.startpage,name='startpage'),
+    path('home/',safety_map.views.showMaps,name='showMaps'),
 ]
