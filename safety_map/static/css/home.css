@@ -119,6 +119,7 @@
 
 li{
     list-style-type: none;
+    font-family: 'Noto Sans KR', sans-serif;    
 }
 
 ul{
@@ -130,7 +131,14 @@ ul{
     border-radius: 30px 30px;
     background-color: #EBEBEB;
     color: #015462;
+    font-size: 20px;
+    font-weight: 500;
+
 }
+
+button{
+}
+
 
 .item:hover{
     border-color: #015462;
