@@ -16,3 +16,6 @@ def showMaps(request):
     map = folium.Map(location=[37.6511988,127.0161604],zoom_start=12)
     maps=map._repr_html_() 
     return render(request, 'home.html',{'map':maps})
+
+def mypage(request):
+    return render(request, 'mypage.html')
