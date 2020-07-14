@@ -22,4 +22,5 @@ urlpatterns = [
     #path('home/',safety_map.views.home,name='home'),
     path('',safety_map.views.startpage,name='startpage'),
     path('home/',safety_map.views.showMaps,name='showMaps'),
+    path('mypage/',safety_map.views.mypage,name='mypage'),
 ]
