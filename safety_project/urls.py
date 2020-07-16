@@ -23,4 +23,9 @@ urlpatterns = [
     path('',safety_map.views.startpage,name='startpage'),
     path('home/',safety_map.views.showMaps,name='showMaps'),
     path('mypage/',safety_map.views.mypage,name='mypage'),
+    path('manage_alarm/',safety_map.views.manage_alarm,name='manage_alarm'),
+    path('manage_danger_map/',safety_map.views.manage_danger_map,name='manage_danger_map'),
+    path('manage_protecter/',safety_map.views.manage_protecter,name='manage_protecter'),
+    path('danger_map/',safety_map.views.danger_map,name='danger_map'),
+    path('register_danger/',safety_map.views.register_danger,name='register_danger'),
 ]

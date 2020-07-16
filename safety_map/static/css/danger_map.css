@@ -1,0 +1,25 @@
+.gohome{
+    width: 40px;
+    position: absolute;
+    top: 30px;
+    left: 5%;
+    z-index: 98;
+}
+
+.writing{
+    width: 40px;
+    position: absolute;
+    bottom: 80px;
+    right: 5%;
+    z-index: 98;
+
+}
+
+.myloc{
+    width: 40px;
+    position: absolute;
+    bottom: 30px;
+    right: 5%;
+    z-index: 98;
+
+}
