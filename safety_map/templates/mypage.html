@@ -1,3 +1,4 @@
+<!--마이 페이지입니다.-->
 <!DOCTYPE html>
 <html>
 {% load static %}
@@ -13,15 +14,15 @@
 
 <body>
     <div class="top_box">
-        <img class="goback" src="{% static 'img/icon_goback.svg' %}">
+        <a href="/home"><img class="goback" src="{% static 'img/icon_goback.svg' %}"></a>
         <img class="user_icon" src="{% static 'img/icon_user.png' %}">
         <a class="log">로그인</a>
         <p>Unknown님, 로그인해주세요.</p>
     </div>
     <ul class="menu">
-        <div class="menu_item">알림 설정</div>
-        <div class="menu_item">위험물지도 관리</div>
-        <div class="menu_item">보호자 설정</div>
+        <div class="menu_item"><a href="/manage_alarm">알림 설정</a></div>
+        <div class="menu_item"><a href="/manage_danger_map">위험물지도 관리</a></div>
+        <div class="menu_item"><a href="/manage_protecter">보호자 설정</a></div>
     </ul>
 </body>
 

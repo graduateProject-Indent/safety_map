@@ -19,3 +19,18 @@ def showMaps(request):
 
 def mypage(request):
     return render(request, 'mypage.html')
+
+def manage_alarm(request):
+    return render(request, 'manage_alarm.html')
+
+def manage_danger_map(request):
+    return render(request, 'manage_danger_map.html')
+
+def manage_protecter(request):
+    return render(request, 'manage_protecter.html')
+
+def danger_map(request):
+    return render(request, 'danger_map.html')
+
+def register_danger(request):
+    return render(request, 'register_danger.html')
