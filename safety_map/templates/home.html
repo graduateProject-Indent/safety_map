@@ -30,8 +30,6 @@
 
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{% static 'css/home.css' %}">
     <script>
         var giMenuDuration = 700;
 
@@ -77,7 +75,7 @@
                             <div style="width: 55%; text-align: right" onclick="HideMenu()"><img
                                     src="{% static 'img/close_X.svg' %}" style="width: 30px;"></div>
 
-                            <div class="menu_item">마이페이지</div>
+                            <div class="menu_item"><a href="/mypage">마이페이지</a></div>
 
                             <div class="menu_item">
                                 <li>
