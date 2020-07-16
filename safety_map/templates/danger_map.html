@@ -1,0 +1,23 @@
+<!--위험물지도 페이지입니다.-->
+<!DOCTYPE html>
+<html>
+{% load static %}
+
+<head>
+	<title>위험물지도</title>
+	<meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="{% static 'css/danger_map.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+</head>
+<body>
+    <a href="/home"><img class="gohome" src="{% static 'img/gohome_icon.png' %}"></a>
+
+    위험물지도
+    <div class="path-currpos">
+        <a href="/register_danger"><img class="writing" src="{% static 'img/writing_icon.png' %}"></a>
+        <img class="myloc" src="{% static 'img/myloc_icon.png' %}">
+    </div>
+</body>
+</html>
