@@ -168,8 +168,8 @@ class SafetyZone(models.Model):
     safety_type = models.CharField(max_length=30)
     safety_loc = models.TextField()  # This field type is a guess.
 
-    def __str__(self):
-        return [self.safety_zone_pk,self.safety_type,self.safety_loc]
+    #def __str__(self):
+    #    return [self.safety_zone_pk,self.safety_type,self.safety_loc]
 
     class Meta:
         managed = False
