@@ -3,30 +3,34 @@
 
 <html>
 {% load static %}
+
 <head>
     <title>거기어때?!</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'css/startpage.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
 
 </head>
+
 <body>
-  
-<h1>거기어때?!</h1>
-<div class="to_home">
-    <a href="home"><img class="startlogo" src="{% static 'img/startlogo.png' %}"><br><h2>지도 바로가기</h2></a>
-</div>
 
-<button class="start-btn" type="button">
-    이용안내
-</button>
-<br>
-<br>
-<button class="start-btn" type="button">
-    로그인
-</button>    
+    <h1>거기어때?!</h1>
+    <div class="to_home">
+        <a href="home"><img class="startlogo" src="{% static 'img/startlogo.png' %}"><br>
+            <h2>지도 바로가기</h2>
+        </a>
+    </div>
 
-
+    <button class="start-btn" type="button">
+        이용안내
+    </button>
+    <br>
+    <br>
+    <button class="start-btn" type="button">
+        로그인
+    </button>
 
 </body>
+
 </html>
