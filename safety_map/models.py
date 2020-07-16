@@ -132,6 +132,7 @@ class DjangoSession(models.Model):
 
 
 class DongLevel(models.Model):
+    objects = models.Manager()
     dong_level_pk = models.IntegerField(primary_key=True)
     dong_level_tot = models.IntegerField()
     dong_nm = models.CharField(max_length=30)

@@ -23,4 +23,5 @@ urlpatterns = [
     path('',safety_map.views.startpage,name='startpage'),
     path('home/',safety_map.views.showMaps,name='showMaps'),
     path('mypage/',safety_map.views.mypage,name='mypage'),
+    path('dong/',safety_map.views.donglevel,name='donglevel'),
 ]
