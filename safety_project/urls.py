@@ -22,7 +22,12 @@ urlpatterns = [
     #path('home/',safety_map.views.home,name='home'),
     path('',safety_map.views.startpage,name='startpage'),
     path('home/',safety_map.views.showMaps,name='showMaps'),
-    path('safetyzone/',safety_map.views.showSafetyZone,name='showSafetyZone'),
-    path('showszmarker/',safety_map.views.showszMarker,name='showszMarker'),
+    path('filter_safeyzone_bell/',safety_map.views.filter_safetyzone_bell,name = 'filter_safetyzone_bell'),
+    path('mypage/',safety_map.views.mypage,name='mypage'),
+    path('manage_alarm/',safety_map.views.manage_alarm,name='manage_alarm'),
+    path('manage_danger_map/',safety_map.views.manage_danger_map,name='manage_danger_map'),
+    path('manage_protecter/',safety_map.views.manage_protecter,name='manage_protecter'),
+    path('danger_map/',safety_map.views.danger_map,name='danger_map'),
+    path('register_danger/',safety_map.views.register_danger,name='register_danger'),
 ]
-#한정원 : 마지막 url 추가함 나중에 수정할것
+#한정원 filter_safetyzone_bell 추가
