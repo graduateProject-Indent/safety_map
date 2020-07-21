@@ -33,6 +33,7 @@ def filter_safetyzone_bell(request): # 한정원
         bell_ob_geo = Geometry(bell_ob.safety_loc.hex()[8:])
         bell_ob_geo_con = convert.wkt_to_geojson(str(bell_ob_geo.shapely))
         bell_ob_dict = json.loads(bell_ob_geo_con)
+        print(bell_ob_dict) #{'type': 'Point', 'coordinates': [37.5552855557, 127.1742941]}
         folium.Marker([bell_ob_dict['coordinates'][0],bell_ob_dict['coordinates'][1]],popup='bell').add_to(map)
     maps = map._repr_html_()
     return render(request,'home.html',{'map':maps})
