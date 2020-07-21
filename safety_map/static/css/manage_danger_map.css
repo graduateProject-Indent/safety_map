@@ -28,3 +28,80 @@ body{
     margin: 0 0 0 20px;
     align-self: end;
 }
+
+div.alarm_item{
+    padding: 7px 0 7px 20px;
+    margin: 20px 0 20px 0;
+    font-size: 18px;
+}
+
+#alarm_item01{
+    border-bottom: 1px solid #E7E6E6;
+}
+
+/* The switch - the box around the slider */
+.switch {
+    text-align: center;
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 23px;
+    vertical-align:middle;
+}
+
+/* Hide default HTML checkbox */
+.switch input {display:none;}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 15px;
+    width: 15px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #02C39A;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #02C39A;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(17px);
+    -ms-transform: translateX(17px);
+    transform: translateX(17px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.switch1,
+.switch2{
+    float:right;
+    margin-right: 20px;
+}

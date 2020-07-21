@@ -4,17 +4,48 @@
 {% load static %}
 
 <head>
-	<title>알림 설정</title>
-	<meta charset="UTF-8">
+    <title>알림 설정</title>
+    <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="stylesheet" href="{% static 'css/manage_danger_map.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
         rel="stylesheet">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
 </head>
+
 <body>
-	<div class="top_box">
+    <script>
+        var check = $("input[type='checkbox']");
+        check.click(function () {
+            $("p").toggle();
+        });
+    </script>
+
+    <div class="top_box">
         <a href="/mypage"><img class="goback" src="{% static 'img/icon_goback.svg' %}"></a>
-		<p class="box_title">알림 설정</p>
+        <p class="box_title">알림 설정</p>
+    </div>
+
+    <div class="alarm">
+        <div class="alarm_item" id="alarm_item01">위험지역 입성 시</div>
+        <div class="alarm_item" id="alarm_item02">
+            나에게 알림
+            <div class="switch1">
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+        <div class="alarm_item" id="alarm_item03">
+            보호자에게 알림
+            <div class="switch2">
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
     </div>
 </body>
+
 </html>
