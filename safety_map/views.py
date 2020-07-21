@@ -12,6 +12,7 @@ import geodaisy.converters as convert
 from shapely import wkb
 from shapely.geometry import mapping, shape, Polygon, MultiPoint
 from plpygis import Geometry
+from folium.features import CustomIcon
 
 
 
@@ -57,7 +58,7 @@ def filter_safetyzone(request): # 한정원
         safety_type=filter_value
     safetyzone_ob_all = SafetyZone.objects.filter(safety_type=safety_type).all()
     map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=12)
-
+    
     for loc in safetyzone_ob_all:
         gis = Geometry(loc.safety_loc.hex()[8:])
         to_geojson=convert.wkt_to_geojson(str(gis.shapely))
