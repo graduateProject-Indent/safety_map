@@ -32,4 +32,3 @@ urlpatterns = [
     path('register_danger/',safety_map.views.register_danger,name='register_danger'),
 
 ]
-#한정원 filter_safetyzone_bell 추가
