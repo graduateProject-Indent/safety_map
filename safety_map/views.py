@@ -1,5 +1,7 @@
 from django.shortcuts import render,get_object_or_404
 from safety_map.models import *
+from django.shortcuts import render,get_object_or_404,redirect
+from .models import *
 import folium
 import binascii
 import urllib.request
@@ -7,6 +9,8 @@ import datetime
 import time
 import json
 import webbrowser
+from .forms import DangerForm
+from .models import Danger
 import geocoder
 import geodaisy.converters as convert
 from shapely import wkb
@@ -50,8 +54,7 @@ def showFemale(request):
 
     return render(request, 'home.html',{'map':maps})
 
-#한정원 : 안심장소
-def filter_safetyzone(request): # 한정원
+def filter_safetyzone(request): #안심장소보기
     safety_type = ""
     if request.method=="POST":
         filter_value=request.POST['safetyZone_filter']
@@ -81,8 +84,19 @@ def manage_protecter(request):
     return render(request, 'manage_protecter.html')
 
 def danger_map(request):
-    return render(request, 'danger_map.html')
+    dangers = Danger.objects
+    return render(request, 'danger_map.html', {'dangers':dangers})
 
 def register_danger(request):
-    return render(request, 'register_danger.html')
+    if request.method == "POST":
+        form = DangerForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('danger_map')
+    else:
+        form = DangerForm()
+    return render(request, 'register_danger.html', {'form':form})
 
+def detail_danger(request, danger_id):
+    danger_detail = get_object_or_404(Danger, pk=danger_id)
+    return render(request, 'detail_danger.html',{'danger':danger_detail})

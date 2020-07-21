@@ -37,7 +37,7 @@ body{
     margin-right: 30px;
 }
 
-p{
+.user_msg{
     margin-left: 100px;
     margin-bottom: 0;
     grid-row: 2/3;
@@ -45,3 +45,21 @@ p{
     align-self: end;
 }
 
+a{
+    text-decoration: none;
+    color: #015462;
+}
+
+a:hover{
+    color: #ffffff; 
+}
+
+div.menu_item{
+    padding: 7px 0 7px 20px;
+    margin: 20px 0 20px 0;
+    font-size: 18px;
+}
+
+div.menu_item:hover{
+    background-color: #028090;
+}
