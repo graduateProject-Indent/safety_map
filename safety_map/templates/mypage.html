@@ -1,0 +1,29 @@
+<!--마이 페이지입니다.-->
+<!DOCTYPE html>
+<html>
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>마이페이지</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="{% static 'css/mypage.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="top_box">
+        <a href="/home"><img class="goback" src="{% static 'img/icon_goback.svg' %}"></a>
+        <img class="user_icon" src="{% static 'img/icon_user.png' %}">
+        <a class="log">로그인</a>
+        <p>Unknown님, 로그인해주세요.</p>
+    </div>
+    <ul class="menu">
+        <div class="menu_item"><a href="/manage_alarm">알림 설정</a></div>
+        <div class="menu_item"><a href="/manage_danger_map">위험물지도 관리</a></div>
+        <div class="menu_item"><a href="/manage_protecter">보호자 설정</a></div>
+    </ul>
+</body>
+
+</html>

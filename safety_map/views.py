@@ -13,6 +13,7 @@ from shapely import wkb
 from plpygis import Geometry
 
 
+
 # Create your views here.
 def home(request):
     return render(request, 'home.html')
@@ -25,32 +26,6 @@ def showMaps(request):
     map = folium.Map(location=g.latlng,zoom_start=15)
     maps=map._repr_html_() 
     return render(request, 'home.html',{'map':maps})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
 
 def showFemale(request):
     female_total=Female2.objects.filter(female2_crime_type="전체_전체").all()
@@ -67,3 +42,35 @@ def showFemale(request):
     folium.GeoJson(pistes, name='json_data').add_to(map)
     maps=map._repr_html_()
     return render(request, 'female.html',{'map':maps})
+=======
+#한정원 : 안심장소 안전벨 테스트 100개 
+def filter_safetyzone_bell(request): # 한정원
+    map = folium.Map(location=[37.6511988,127.0161604],zoom_start=12)
+    #folium.Marker([37.566345, 126.977893],popup='seouloffice').add_to(map) #테스트로 추가한 서울시청 마커
+    for i in range(1,101):
+        bell_ob = SafetyZone.objects.get(safety_zone_pk=i)
+        bell_ob_geo = Geometry(bell_ob.safety_loc.hex()[8:])
+        bell_ob_geo_con = convert.wkt_to_geojson(str(bell_ob_geo.shapely))
+        bell_ob_dict = json.loads(bell_ob_geo_con)
+        folium.Marker([bell_ob_dict['coordinates'][0],bell_ob_dict['coordinates'][1]],popup='bell').add_to(map)
+    maps = map._repr_html_()
+    return render(request,'home.html',{'map':maps})
+
+def mypage(request):
+    return render(request, 'mypage.html')
+
+def manage_alarm(request):
+    return render(request, 'manage_alarm.html')
+
+def manage_danger_map(request):
+    return render(request, 'manage_danger_map.html')
+
+def manage_protecter(request):
+    return render(request, 'manage_protecter.html')
+
+def danger_map(request):
+    return render(request, 'danger_map.html')
+
+def register_danger(request):
+    return render(request, 'register_danger.html')
+
