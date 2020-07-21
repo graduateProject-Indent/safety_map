@@ -18,8 +18,6 @@ import geocoder
 import geodaisy.converters as convert
 from shapely import wkb
 
-
-
 # Create your views here.
 def home(request):
     return render(request, 'home.html')
@@ -43,7 +41,6 @@ def showFemale(request):
         crime_location={"type":"Feature","geometry":to_coordinate}
         loc_list.append(crime_location)
     pistes = {"type":"FeatureCollection","features":loc_list}
-    #print(pistes)
     map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=18)
     folium.GeoJson(pistes, name='json_data').add_to(map)
     maps=map._repr_html_()
@@ -67,18 +64,18 @@ def mypage(request):
 
 def donglevel(request):
     map = folium.Map(location=[37.6511988,127.0161604],zoom_start=12)
-    m = DongLevel.objects.all()
-    for i in m:
+    dongm = DongLevel.objects.all()
+
+    for i in dongm:
         gis= Geometry(i.dong_loc.hex()[8:])
-        folium.Choropleth(geo_data=gis,
-                      data = i.dong_level_tot,
-                      fill_color='PuBu',
-                      columns=[i.dong_level_pk,i.dong_level_tot],
-                      key_on=i.dong_level_pk,
-                      legend_name='위험등급'
-                      ).add_to(map)
+        print(type(gis))
+        dong_geo = convert.wkt_to_geojson(str(gis.shapely))
+        dong_json = json.loads(dong_geo)
+    folium.Choropleth(geo_data=gis
+                        ).add_to(map)
     maps=map._repr_html_() 
     return render(request, 'dong.html', {'map':maps})
+
 def manage_alarm(request):
     return render(request, 'manage_alarm.html')
 
