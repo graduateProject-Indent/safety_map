@@ -10,6 +10,7 @@ import webbrowser
 import geocoder
 import geodaisy.converters as convert
 from shapely import wkb
+from shapely.geometry import mapping, shape, Polygon, MultiPoint
 from plpygis import Geometry
 
 
@@ -28,7 +29,11 @@ def showMaps(request):
     return render(request, 'home.html',{'map':maps})
 
 def showFemale(request):
-    female_total=Female2.objects.filter(female2_crime_type="전체_전체").all()
+    crime_type=""
+    if request.method=="POST":
+        filter_value=request.POST['female_filter']
+        crime_type="전체_"+filter_value
+    female_total=Female2.objects.filter(female2_crime_type=crime_type).all()
     loc_list=[]
     for loc in female_total:
         gis= Geometry(loc.female2_crime_loc.hex()[8:])
@@ -41,8 +46,8 @@ def showFemale(request):
     map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=18)
     folium.GeoJson(pistes, name='json_data').add_to(map)
     maps=map._repr_html_()
-    return render(request, 'female.html',{'map':maps})
-=======
+    return render(request, 'home.html',{'map':maps})
+
 #한정원 : 안심장소 안전벨 테스트 100개 
 def filter_safetyzone_bell(request): # 한정원
     map = folium.Map(location=[37.6511988,127.0161604],zoom_start=12)
