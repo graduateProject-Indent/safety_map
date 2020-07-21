@@ -22,6 +22,8 @@ urlpatterns = [
     #path('home/',safety_map.views.home,name='home'),
     path('',safety_map.views.startpage,name='startpage'),
     path('home/',safety_map.views.showMaps,name='showMaps'),
+    path('female/',safety_map.views.showFemale,name='showFemale'),
+    path('filter_safeyzone_bell/',safety_map.views.filter_safetyzone_bell,name = 'filter_safetyzone_bell'),
     path('mypage/',safety_map.views.mypage,name='mypage'),
     path('manage_alarm/',safety_map.views.manage_alarm,name='manage_alarm'), #알람 관리
     path('manage_danger_map/',safety_map.views.manage_danger_map,name='manage_danger_map'), #위험물 관리(수정,삭제)
@@ -31,3 +33,4 @@ urlpatterns = [
     path('<int:danger_id>/',safety_map.views.detail_danger,name='detail_danger'), #위험물 상세보기
 
 ]
+#한정원 filter_safetyzone_bell 추가
