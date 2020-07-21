@@ -76,6 +76,7 @@ class AuthUserUserPermissions(models.Model):
 
 
 class Danger(models.Model):
+    objects = models.Manager()
     danger_pk = models.IntegerField(primary_key=True)
     danger_type = models.CharField(max_length=30)
     danger_img = models.TextField()
@@ -159,6 +160,7 @@ class Female(models.Model):
 
 
 class Female2(models.Model):
+    objects = models.Manager()
     female2_pk = models.AutoField(primary_key=True)
     female2_crime_type = models.CharField(max_length=30)
     female2_crime_loc = models.TextField()  # This field type is a guess.
