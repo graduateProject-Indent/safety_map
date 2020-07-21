@@ -6,19 +6,14 @@ import datetime
 import time
 import json
 import webbrowser
-<<<<<<< HEAD
 from safety_map.models import DongLevel
 import geodaisy.converters as convert
 from plpygis import Geometry
 
-=======
 import pymysql
 import numpy as np
 import pandas as pd
 import point
-import geodaisy.converters as convert
-from plpygis import Geometry
->>>>>>> 24d502e89b4f686cdfc33ceb51bcc6d4ce5c2c48
 # Create your views here.
 def home(request):
     return render(request, 'home.html')
@@ -54,12 +49,11 @@ def donglevel(request):
     for i in m:
         gis= Geometry(i.dong_loc.hex()[8:])
 
-        folium.Choropleth(geo_data=gis,
+        folium.Choropleth(geo_data=DongLevel,
                       data = i.dong_level_tot,
-                      fill_color="BuPu",
-                      columns=('동','위험등급'),
-                      key_on=i.dong_loc,
-                      legend_name="위험등급",
+                      fill_color="PuBu",
+                      columns=(i.dong_level_pk,i.dong_level_tot),
+                      key_on=i.dong_nm,
                       ).add_to(map)
     maps=map._repr_html_() 
     return render(request, 'dong.html', {'map':maps})
