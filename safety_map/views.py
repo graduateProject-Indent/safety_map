@@ -26,32 +26,6 @@ def showMaps(request):
     maps=map._repr_html_() 
     return render(request, 'home.html',{'map':maps})
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
 def showFemale(request):
     female_total=Female2.objects.filter(female2_crime_type="전체_전체").all()
     loc_list=[]
