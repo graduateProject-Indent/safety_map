@@ -132,8 +132,8 @@ class DjangoSession(models.Model):
 
 
 class DongLevel(models.Model):
-    dong_level_pk = models.IntegerField(primary_key=True)
-    dong_level_tot = models.IntegerField()
+    dong_level_pk = models.AutoField(primary_key=True)
+    dong_level_tot = models.IntegerField(blank=True, null=True)
     dong_nm = models.CharField(max_length=30)
     dong_loc = models.TextField()  # This field type is a guess.
 
@@ -150,6 +150,16 @@ class Female(models.Model):
     class Meta:
         managed = False
         db_table = 'female'
+
+
+class Female2(models.Model):
+    female2_pk = models.AutoField(primary_key=True)
+    female2_crime_type = models.CharField(max_length=30)
+    female2_crime_loc = models.TextField()  # This field type is a guess.
+
+    class Meta:
+        managed = False
+        db_table = 'female2'
 
 
 class Kid(models.Model):

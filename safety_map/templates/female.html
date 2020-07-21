@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>거기어때?!</title>
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+	<script>
+		var giMenuDuration = 700;
+
+        // 전체 메뉴를 오른쪽으로 슬라이드하여서 보여준다.
+		function ShowMenu(){
+			$('.menu_bg' ).css( { 'display' : 'block' } );
+			$('.menu' ).css( { 'left' : '-100%' } );
+			$('.menu' ).animate( { left: '0px' }, { duration: giMenuDuration } );
+		}
+
+        // 전체 메뉴를 왼쪽으로 슬라이드하여서 닫는다.
+		function HideMenu(){
+			$('.menu' ).animate( { left: '-100%' }, { duration: giMenuDuration, complete:function(){ $('.menu_bg' ).css( { 'display' : 'none' } ); } } );
+		}
+
+        // 확장 메뉴를 보여주거나 닫는다.
+		function ShowSubMenu( strId ){
+			var lySubMenu = $( strId );
+
+			if( lySubMenu.first().is( ":hidden" ) ){
+				$( strId ).slideDown( 300 );
+			}
+			else{
+				$( strId ).slideUp( 300 );
+			}
+		}
+
+		$( document ).ready( function()
+		{
+			$('.menu_2' ).hide();
+		} );
+	</script>
+
+</head>
+<body>
+<div class="top-box">
+    <div class="menu-input-box">
+        <div class="menu-open">
+            <img class="menu-img" src="{% static 'img/menu_icon.png' %}" onclick="ShowMenu()">
+            <div class="menu_bg">
+                <div class="menu">
+                    <div style="width: 55%; text-align: right"  onclick="HideMenu()"><img src="{% static 'img/close_X.svg' %}" style="width: 30px;"></div>
+                    <div class="menu_item">마이페이지</div>
+                    <div class="menu_item">안심장소보기</div>
+                    <div class="menu_item">여성   |   아동</div>
+                    <div class="menu_item">위험물장소보기</div>
+                    <div class="menu_item">이용안내</div>
+                    <div class="menu_item">길찾기</div>
+                    <div class="menu_item">지도저장</div>
+                </div>
+            </div>
+        </div>    
+        <div class="search-input" type="text">
+            <input value type="text" class="search-input-in" placeholder="목적지를 검색하세요">
+            <button class="search-btn">
+                <img class="search-icon" src="{% static 'img/search_icon.svg' %}">
+            </button>
+        </div>
+    </div>  
+</div>   
+
+<div class="path-currpos">
+    <img class="path" src="{% static 'img/path_icon.png' %}">
+    <img class="myloc" src="{% static 'img/myloc_icon.png' %}">
+</div>
+ <!--{% for value in female_total %}
+    {{value.female_crime_type}}
+    {% endfor %}-->
+   {{map|safe}}
+  
+</body>
+</html>
