@@ -71,6 +71,7 @@ def filter_safetyzone(request): #안심장소보기
     maps=map._repr_html_()
     return render(request,'home.html',{'map':maps})
 
+
 def mypage(request):
     return render(request, 'mypage.html')
 
