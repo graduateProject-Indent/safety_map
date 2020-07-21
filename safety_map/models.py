@@ -86,6 +86,12 @@ class Danger(models.Model):
         managed = False
         db_table = 'danger'
 
+    def __stf__(self):
+        return self.danger_type
+    
+    def summary(self):
+        return self.danger_loc
+
 
 class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()
