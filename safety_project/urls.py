@@ -21,8 +21,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     #path('home/',safety_map.views.home,name='home'),
     path('',safety_map.views.startpage,name='startpage'),
-    #path('home/',safety_map.views.showMaps,name='showMaps'),
-    path('home/',safety_map.views.showFemale,name='showFemale'),
+    path('home/',safety_map.views.showMaps,name='showMaps'),
+    path('female/',safety_map.views.showFemale,name='showFemale'),
     path('filter_safeyzone/',safety_map.views.filter_safetyzone,name = 'filter_safetyzone'),
     path('mypage/',safety_map.views.mypage,name='mypage'),
     path('manage_alarm/',safety_map.views.manage_alarm,name='manage_alarm'), #알람 관리
