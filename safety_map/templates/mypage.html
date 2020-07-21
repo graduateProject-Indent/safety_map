@@ -17,13 +17,13 @@
         <a href="/home"><img class="goback" src="{% static 'img/icon_goback.svg' %}"></a>
         <img class="user_icon" src="{% static 'img/icon_user.png' %}">
         <a class="log">로그인</a>
-        <p>Unknown님, 로그인해주세요.</p>
+        <p class="user_msg">Unknown님, 로그인해주세요.</p>
     </div>
-    <ul class="menu">
-        <div class="menu_item"><a href="/manage_alarm">알림 설정</a></div>
-        <div class="menu_item"><a href="/manage_danger_map">위험물지도 관리</a></div>
-        <div class="menu_item"><a href="/manage_protecter">보호자 설정</a></div>
-    </ul>
+    <div class="menu">
+        <a href="/manage_alarm"><div class="menu_item">알림 설정</div></a>
+        <a href="/manage_danger_map"><div class="menu_item">위험물지도 관리</div></a>
+        <a href="/manage_protecter"><div class="menu_item">보호자 설정</div></a>
+    </div>
 </body>
 
 </html>
