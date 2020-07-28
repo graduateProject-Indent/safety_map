@@ -19,6 +19,7 @@ from shapely.geometry import mapping, shape, Polygon, MultiPoint,MultiPolygon
 from plpygis import Geometry
 from folium.features import CustomIcon
 import branca
+from PIL import ImageGrab # pip install pillow
 
 g = geocoder.ip('me')
 mid=g.latlng
@@ -70,21 +71,37 @@ def showFemale(request):
     return render(request, 'home.html',{'map':maps})
 
 def filter_safetyzone(request): #안심장소보기
+    global mid
     safety_type = ""
     if request.method=="POST":
         filter_value=request.POST['safetyZone_filter']
         safety_type=filter_value
     safetyzone_ob_all = SafetyZone.objects.filter(safety_type=safety_type).all()
-    map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=12)
-    
+
+    if safety_type=="안심벨":
+        map = folium.Map(location=mid,zoom_start=15) #안심벨은 이정도만 출력되도록 하였으나 너무느림
+    else: 
+        map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=12)
+
     for loc in safetyzone_ob_all:
         gis = Geometry(loc.safety_loc.hex()[8:])
         to_geojson=convert.wkt_to_geojson(str(gis.shapely))
         to_coordinate=json.loads(to_geojson)
         #print(to_coordinate)
         folium.Marker([to_coordinate['coordinates'][0],to_coordinate['coordinates'][1]],popup='hello').add_to(map)
+
     maps=map._repr_html_()
     return render(request,'home.html',{'map':maps})
+
+def save_mapimg(request):
+    import time # 왜 이거 지우면 에러가 뜰까요?
+    now  = time.localtime()
+    time = "%04d-%02d-%02d-%02dh-%02dm-%02ds" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
+    img = ImageGrab.grab()
+    saveas = "{}{}".format("safety_map/static/save_mapimg/safetymap"+time,'.png')
+    img.save(saveas)
+
+    return render(request,'home.html')
 
 
 def mypage(request):
