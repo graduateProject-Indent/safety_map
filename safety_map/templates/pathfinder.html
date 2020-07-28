@@ -1,0 +1,24 @@
+<!--길찾기 페이지입니다.-->
+<!DOCTYPE html>
+<html>
+    {% load static %}
+<head>
+    <title>길찾기</title>
+    <link rel="stylesheet" href="{% static 'css/pathfinder.css' %}">
+
+</head>
+<body>
+길찾기 페이지입니다
+<div class="pathfinder_input_box">
+    <img class="path_switch" src="{% static 'img/icon_path_switch.png' %}">
+    <input value type="text" class="startpoint" placeholder="출발지 입력">
+    <input value type="text" class="endpoint" placeholder="도착지 입력">
+    <img class="path_close" src="{% static 'img/icon_gray_X.svg' %}">
+    <img class="start_pathfinder" src="{% static 'img/icon_gray_person.svg' %}">
+</div>
+
+<img class="myloc" src="{% static 'img/myloc_icon.png' %}">
+
+
+</body>
+</html>

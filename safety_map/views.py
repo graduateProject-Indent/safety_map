@@ -116,3 +116,6 @@ def register_danger(request):
 def detail_danger(request, danger_id):
     danger_detail = get_object_or_404(Danger, pk=danger_id)
     return render(request, 'detail_danger.html',{'danger':danger_detail})
+
+def pathfinder(request):
+    return render(request, 'pathfinder.html')
