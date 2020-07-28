@@ -49,10 +49,8 @@ div.alarm_item{
     vertical-align:middle;
 }
 
-/* Hide default HTML checkbox */
 .switch input {display:none;}
 
-/* The slider */
 .slider {
     position: absolute;
     cursor: pointer;
@@ -91,7 +89,6 @@ input:checked + .slider:before {
     transform: translateX(17px);
 }
 
-/* Rounded sliders */
 .slider.round {
     border-radius: 34px;
 }
@@ -104,4 +101,10 @@ input:checked + .slider:before {
 .switch2{
     float:right;
     margin-right: 20px;
+}
+
+.container{
+    display: grid;
+    grid-template-columns: repeat(2, 50px);
+    grid-template-rows: repeat(2, 1fr);
 }
