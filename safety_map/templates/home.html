@@ -76,7 +76,7 @@
                             <div style="width: 55%; text-align: right" onclick="HideMenu()"><img
                                     src="{% static 'img/close_X.svg' %}" style="width: 30px;"></div>
 
-                            <a class="filter_menu" href="/mypage"><div class="menu_item">마이페이지</div></a>
+                            <a class="filter_menu" href="{% url 'mypage' %}"><div class="menu_item">마이페이지</div></a>
 
                             <div class="menu_item">
                                 <li>
@@ -118,9 +118,9 @@
                                 </li>
                             </div>
 
-                            <a class="filter_menu" href="/danger_map"><div class="menu_item">위험물장소보기</div></a>
+                            <a class="filter_menu" href="{% url 'danger_map' %}"><div class="menu_item">위험물장소보기</div></a>
                             <a class="filter_menu"><div class="menu_item">이용안내</div></a>
-                            <a class="filter_menu"><div class="menu_item">길찾기</div></a>
+                            <a class="filter_menu" href="{% url 'pathfinder' %}"><div class="menu_item">길찾기</div></a>
                             <a class="filter_menu"><div class="menu_item">지도저장</div></a>
                         </ul>
                     </div>

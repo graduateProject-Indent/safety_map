@@ -20,9 +20,9 @@
         <p class="user_msg">Unknown님, 로그인해주세요.</p>
     </div>
     <div class="menu">
-        <a href="/manage_alarm"><div class="menu_item">알림 설정</div></a>
-        <a href="/manage_danger_map"><div class="menu_item">위험물지도 관리</div></a>
-        <a href="/manage_protecter"><div class="menu_item">보호자 설정</div></a>
+        <a href="{% url 'manage_alarm' %}"><div class="menu_item">알림 설정</div></a>
+        <a href="{% url 'manage_danger_map' %}"><div class="menu_item">위험물지도 관리</div></a>
+        <a href="{% url 'manage_protecter' %}"><div class="menu_item">보호자 설정</div></a>
     </div>
 </body>
 
