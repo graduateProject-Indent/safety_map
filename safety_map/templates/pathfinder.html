@@ -39,9 +39,13 @@
 <body>
 <div class="pathfinder_input_box">
     <img class="path_switch" src="{% static 'img/icon_path_switch.png' %}">
-    <input value type="text" class="startpoint" placeholder="출발지 입력">
-    <input value type="text" class="endpoint" placeholder="도착지 입력">
-    <img class="path_close" src="{% static 'img/icon_gray_X.svg' %}">
+    <div class="startpoint" type="text">
+        <input value type="text" class="startpoint_input" placeholder="출발지 입력">
+    </div>
+    <div class="endpoint" type="text">
+        <input value type="text" class="endpoint_input" placeholder="도착지 입력">
+    </div>
+    <a href="{% url 'showMaps' %}"><img class="path_close" src="{% static 'img/icon_gray_X.svg' %}"></a>
     <img class="start_pathfinder" src="{% static 'img/icon_gray_person.svg' %}">
 </div>
 
