@@ -111,6 +111,7 @@ def detail_danger(request, danger_id):
 def pathFinder(request):   
     female_total=Female2.objects.filter(female2_crime_type="전체_전체").all()
     loc_list=[]
+    """
     for loc in female_total:
         gis= Geometry(loc.female2_crime_loc.hex()[8:])
         to_geojson=convert.wkt_to_geojson(str(gis.shapely))
@@ -118,7 +119,8 @@ def pathFinder(request):
         contain_coordinate=shape(to_coordinate)
         crime_location={"type":"Feature","geometry":to_coordinate}
         loc_list.append(crime_location)
+    """
     pistes = str({"type":"FeatureCollection","features":loc_list})
-    return render(request,'female2.html',{'pistes':pistes})
+    return render(request,'pathfinder.html',{'pistes':pistes})
 
 

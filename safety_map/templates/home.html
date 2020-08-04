@@ -110,7 +110,7 @@
                             <div class="menu_item">
                                 <li>
                                     안심장소보기
-                                    <form action='{% url "filter_safetyzone_bell" %}' method='POST' class='safetyZone_select'>
+                                    <form action='{% url "filter_safetyzone" %}' method='POST' class='safetyZone_select'>
 
 
                                         {% csrf_token %}
@@ -152,7 +152,7 @@
 
                             <a class="filter_menu" href="{% url 'danger_map' %}"><div class="menu_item">위험물장소보기</div></a>
                             <a class="filter_menu"><div class="menu_item">이용안내</div></a>
-                            <a class="filter_menu" href="{% url 'pathfinder' %}"><div class="menu_item">길찾기</div></a>
+                            <a class="filter_menu" href="{% url 'pathFinder' %}"><div class="menu_item">길찾기</div></a>
                             <a class="filter_menu"><div class="menu_item">지도저장</div></a>
                         </ul>
                     </div>
