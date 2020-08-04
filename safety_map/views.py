@@ -1,5 +1,5 @@
-from django.shortcuts import render,get_object_or_404
-from django.http import HttpResponse,JsonResponse
+from safety_map.models import *
+from django.shortcuts import render,get_object_or_404,redirect
 from .models import *
 import folium
 import binascii
@@ -8,12 +8,15 @@ import datetime
 import time
 import json
 import webbrowser
+from .forms import DangerForm
+from .models import Danger
 import geocoder
 import geojson
 import geodaisy.converters as convert
 from shapely import wkb,wkt
 from shapely.geometry import mapping, shape, Polygon, MultiPoint,MultiPolygon
 from plpygis import Geometry
+from folium.features import CustomIcon
 import branca
 
 g = geocoder.ip('me')
@@ -34,10 +37,10 @@ def showMaps(request):
 
 def showFemale(request):
     crime_type=""
+    loc_list=[]
     if request.method=="POST":
         filter_value=request.POST['female_filter']
         crime_type="전체_"+filter_value
-    
     female_total=Female2.objects.filter(female2_crime_type=crime_type).all()
     loc_list=[]
     for loc in female_total:
@@ -55,18 +58,24 @@ def showFemale(request):
     maps=map._repr_html_()
     return render(request, 'female2.html',{'map':maps,'pistes':pistes})
 
-#한정원 : 안심장소 안전벨 테스트 100개 
-def filter_safetyzone_bell(request): # 한정원
-    map = folium.Map(location=[37.6511988,127.0161604],zoom_start=12)
-    #folium.Marker([37.566345, 126.977893],popup='seouloffice').add_to(map) #테스트로 추가한 서울시청 마커
-    for i in range(1,101):
-        bell_ob = SafetyZone.objects.get(safety_zone_pk=i)
-        bell_ob_geo = Geometry(bell_ob.safety_loc.hex()[8:])
-        bell_ob_geo_con = convert.wkt_to_geojson(str(bell_ob_geo.shapely))
-        bell_ob_dict = json.loads(bell_ob_geo_con)
-        folium.Marker([bell_ob_dict['coordinates'][0],bell_ob_dict['coordinates'][1]],popup='bell').add_to(map)
-    maps = map._repr_html_()
+
+def filter_safetyzone(request): #안심장소보기
+    safety_type = ""
+    if request.method=="POST":
+        filter_value=request.POST['safetyZone_filter']
+        safety_type=filter_value
+    safetyzone_ob_all = SafetyZone.objects.filter(safety_type=safety_type).all()
+    map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=12)
+    
+    for loc in safetyzone_ob_all:
+        gis = Geometry(loc.safety_loc.hex()[8:])
+        to_geojson=convert.wkt_to_geojson(str(gis.shapely))
+        to_coordinate=json.loads(to_geojson)
+        #print(to_coordinate)
+        folium.Marker([to_coordinate['coordinates'][0],to_coordinate['coordinates'][1]],popup='hello').add_to(map)
+    maps=map._repr_html_()
     return render(request,'home.html',{'map':maps})
+
 
 def mypage(request):
     return render(request, 'mypage.html')
@@ -81,10 +90,23 @@ def manage_protecter(request):
     return render(request, 'manage_protecter.html')
 
 def danger_map(request):
-    return render(request, 'danger_map.html')
+    dangers = Danger.objects
+    return render(request, 'danger_map.html', {'dangers':dangers})
 
 def register_danger(request):
-    return render(request, 'register_danger.html')
+    if request.method == "POST":
+        form = DangerForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('danger_map')
+    else:
+        form = DangerForm()
+    return render(request, 'register_danger.html', {'form':form})
+
+def detail_danger(request, danger_id):
+    danger_detail = get_object_or_404(Danger, pk=danger_id)
+    return render(request, 'detail_danger.html',{'danger':danger_detail})
+
 
 def pathFinder(request):   
     female_total=Female2.objects.filter(female2_crime_type="전체_전체").all()
@@ -99,4 +121,4 @@ def pathFinder(request):
     pistes = str({"type":"FeatureCollection","features":loc_list})
     return render(request,'female2.html',{'pistes':pistes})
 
-    
+

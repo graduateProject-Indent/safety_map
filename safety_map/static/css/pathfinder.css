@@ -1,0 +1,15 @@
+.myloc{
+    width: 40px;
+    position: absolute;
+    bottom: 30px;
+    right: 5%;
+    z-index: 98;
+}
+
+.pathfinder_input_box{
+    background-color: #015462;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 50px);
+}
+
