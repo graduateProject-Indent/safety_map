@@ -16,11 +16,38 @@
     <!--메뉴드롭다운-->
     <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
     <script type="text/javascript">
+      
         $(document).ready(function () {
-            $("#nav ul.sub").hide();
-            $("#nav ul.menu li").click(function () {
-                $("ul", this).slideToggle("fast");
+            $("#nav ul.sub").hide(); 
+            $("#nav ul.menu li").click(function () {$("ul", this).slideToggle("fast");});
+            
+           
+        });
+        $(function(){
+            $("button").click(function(event) {
+                console.log($(this).attr('value')); 
+                if($(this).attr('value')=='아동'){$("ul form.female_select ul").hide();
+                $("ul form.female_select").html( '<ul class="sub">'+
+                                       '<li id="item"><input type="submit" name="female_filter" class="item" value="어린이"/></li>'+
+                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="절도"/></li>'+
+                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="폭력"/></li>'+
+                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="성폭력"/></li>'+
+                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="전체"/></li>' +
+                                        '</ul>');$("ul form.female_select").slideToggle("fast");}
+                else{$("ul form.female_select ul").hide();
+                    $("ul form.female_select").html( ' {% csrf_token %} <ul class="sub">'+
+                                       '<li id="item"><input type="submit" name="female_filter" class="item" value="강도"/></li>'+
+                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="절도"/></li>'+
+                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="폭력"/></li>'+
+                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="성폭력"/></li>'+
+                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="전체"/></li>' +
+                                        '</ul>');$("ul form.female_select").slideToggle("fast");
+                                        }
+               
+                
             });
+           
+
         });
     </script>
     <meta charset="UTF-8">
@@ -60,6 +87,8 @@
 
         $(document).ready(function () {
             $('.menu_2').hide();
+            $('div.map div div',this).removeAttr('style');
+           
         });
     </script>
 
@@ -81,21 +110,24 @@
                             <div class="menu_item">
                                 <li>
                                     안심장소보기
-                                    <form action='{% url "filter_safetyzone" %}' method='POST' class='female_select'>
+                                    <form action='{% url "filter_safetyzone" %}' method='POST' class='safetyZone_select'>
+
+
                                         {% csrf_token %}
                                     <ul class="sub">
                                         <li id="item"><input type="submit" name="safetyZone_filter" class="item" value="경찰서"/></li>
                                         <li id="item"><input type="submit" name="safetyZone_filter" class="item" value="지구대"/></li>
                                         <li id="item"><input type="submit" name="safetyZone_filter" class="item" value="파출소"/></li>
-                                        <li id="item"><input type="submit" name="safetyZone_filter" class="item" value="안심벨"/></li>
+                                        <li id="item"><input type="submit" name="safetyZone_filter" class="item" value="편의점"/></li>
                                     </ul>
                                     </form>
                                 </li>
                             </div>
 
                             <div class="menu_item">
-                                <li>
-                                    여성 &nbsp; | &nbsp; 아동
+                                <button id=female value="여성">여성</button>    | <button id="child" value="아동">아동</button>
+                                <li> 
+                                    
                                     <form action='{% url "showFemale" %}' method='POST' class='female_select'>
                                         {% csrf_token %}
                                         <ul class="sub">
@@ -120,8 +152,9 @@
 
                             <a class="filter_menu" href="{% url 'danger_map' %}"><div class="menu_item">위험물장소보기</div></a>
                             <a class="filter_menu"><div class="menu_item">이용안내</div></a>
-                            <a class="filter_menu" href="{% url 'pathfinder' %}"><div class="menu_item">길찾기</div></a>
                             <a class="filter_menu" href="/save_mapimg"><div class="menu_item">지도저장</div></a>
+                            <a class="filter_menu" href="{% url 'pathFinder' %}"><div class="menu_item">길찾기</div></a>
+
                         </ul>
                     </div>
                 </div>

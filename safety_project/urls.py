@@ -23,6 +23,7 @@ urlpatterns = [
     path('',safety_map.views.startpage,name='startpage'),
     path('home/',safety_map.views.showMaps,name='showMaps'),
     path('female/',safety_map.views.showFemale,name='showFemale'),
+    path('pathfinder/',safety_map.views.pathFinder,name='pathFinder'),
     path('filter_safeyzone/',safety_map.views.filter_safetyzone,name = 'filter_safetyzone'),
     path('save_mapimg/',safety_map.views.save_mapimg,name='savemapimg'),
     path('mypage/',safety_map.views.mypage,name='mypage'),
@@ -32,6 +33,6 @@ urlpatterns = [
     path('danger_map/',safety_map.views.danger_map,name='danger_map'), #전체 위험물 보기
     path('register_danger/',safety_map.views.register_danger,name='register_danger'), #위험물등록하기
     path('<int:danger_id>/',safety_map.views.detail_danger,name='detail_danger'), #위험물 상세보기
-    path('pathfinder/',safety_map.views.pathfinder,name='pathfinder'),
+   
 
 ]
