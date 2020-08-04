@@ -1,0 +1,52 @@
+<!--길찾기 페이지입니다.-->
+<!DOCTYPE html>
+<html>
+    {% load static %}
+<head>
+    <title>길찾기</title>
+    <link rel="stylesheet" href="{% static 'css/pathfinder.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.css"  />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        html, body, #map {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+    <script type="text/javascript"> 
+    $(document).ready(function(){
+        var p="{{pistes|safe}}";
+        var pi=p.replace(/\'/gi, "\"");
+        var D=JSON.parse(pi);
+        var map = L.map('map').setView([37.6511988,127.0161604], 15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18
+        }).addTo(map); 
+        var markers = L.geoJSON(D).addTo(map);
+        
+         });
+
+    
+    </script>
+
+</head>
+<body>
+<div class="pathfinder_input_box">
+    <img class="path_switch" src="{% static 'img/icon_path_switch.png' %}">
+    <input value type="text" class="startpoint" placeholder="출발지 입력">
+    <input value type="text" class="endpoint" placeholder="도착지 입력">
+    <img class="path_close" src="{% static 'img/icon_gray_X.svg' %}">
+    <img class="start_pathfinder" src="{% static 'img/icon_gray_person.svg' %}">
+</div>
+
+<img class="myloc" src="{% static 'img/myloc_icon.png' %}">
+
+<div id="map"></div>
+</body>
+</html>

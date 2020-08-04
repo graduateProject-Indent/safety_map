@@ -1,0 +1,16 @@
+<!--위험물상세 페이지입니다.-->
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+위험물 등록 페이지입니다
+<div class="container">
+    <a href="{% url 'danger_map' %}">뒤로</a>
+    <h1>위험물 유형: {{danger.danger_type}}</h1>
+    <p>이미지: {{danger.danger_img}}</p>
+    <p>위치: {{danger.danger_loc}}</p>
+</div>
+</body>
+</html>

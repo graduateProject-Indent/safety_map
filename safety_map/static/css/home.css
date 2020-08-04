@@ -78,7 +78,6 @@
     bottom: 30px;
     right: 5%;
     z-index: 98;
-
 }
 
 
@@ -103,7 +102,7 @@
     font-weight: 500;
     font-size: 20px;
 }
-.menu > div { 
+.menu_item { 
     padding: 15px; 
 }
 
@@ -147,4 +146,13 @@ ul{
 
 .map{
     z-index: -1;
+}
+
+a.filter_menu{
+    text-decoration: none;
+    color: #ffffff;
+}
+
+a.filter_menu:hover{
+    color: #015462;
 }

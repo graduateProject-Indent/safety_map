@@ -15,6 +15,15 @@
     <a href="/home"><img class="gohome" src="{% static 'img/gohome_icon.png' %}"></a>
 
     위험물지도
+    {% for danger in dangers.all%}
+    <div class="container">
+        <a href="{% url 'detail_danger' danger.id %}">
+            {{danger.danger_type}}
+        </a>
+        <p>이미지: {{danger.danger_img}}</p>
+        <p>위치: {{danger.danger_loc}}</p>
+    </div>
+    {%endfor%}
     <div class="path-currpos">
         <a href="/register_danger"><img class="writing" src="{% static 'img/writing_icon.png' %}"></a>
         <img class="myloc" src="{% static 'img/myloc_icon.png' %}">
