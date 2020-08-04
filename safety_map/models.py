@@ -76,8 +76,7 @@ class AuthUserUserPermissions(models.Model):
 
 
 class Danger(models.Model):
-    objects = models.Manager()
-    danger_pk = models.IntegerField(primary_key=True)
+    danger_pk = models.AutoField(primary_key=True)
     danger_type = models.CharField(max_length=30)
     danger_img = models.TextField()
     danger_loc = models.TextField()  # This field type is a guess.
@@ -86,12 +85,6 @@ class Danger(models.Model):
     class Meta:
         managed = False
         db_table = 'danger'
-
-    def __stf__(self):
-        return self.danger_type
-    
-    def summary(self):
-        return self.danger_loc
 
 
 class DjangoAdminLog(models.Model):
@@ -160,10 +153,10 @@ class Female(models.Model):
 
 
 class Female2(models.Model):
-    objects = models.Manager()
     female2_pk = models.AutoField(primary_key=True)
     female2_crime_type = models.CharField(max_length=30)
     female2_crime_loc = models.TextField()  # This field type is a guess.
+    gu = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -174,6 +167,7 @@ class Kid(models.Model):
     kid_pk = models.AutoField(primary_key=True)
     kid_accident_type = models.CharField(max_length=30)
     kid_accident_loc = models.TextField()  # This field type is a guess.
+    gu = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -181,14 +175,10 @@ class Kid(models.Model):
 
 
 class SafetyZone(models.Model):
-    objects = models.Manager()
     safety_zone_pk = models.AutoField(primary_key=True)
     safety_type = models.CharField(max_length=30)
     safety_loc = models.TextField()  # This field type is a guess.
-
-    def __str__(self):
-        return [self.safety_zone_pk,self.safety_type,self.safety_loc]
-
+    gu = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         managed = False
