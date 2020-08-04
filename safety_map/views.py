@@ -37,12 +37,13 @@ def showMaps(request):
     return render(request, 'home.html',{'map':maps})
 
 def showFemale(request):
+    global g
     crime_type=""
     loc_list=[]
     if request.method=="POST":
         filter_value=request.POST['female_filter']
         crime_type="전체_"+filter_value
-    female_total=Female2.objects.filter(female2_crime_type=crime_type).all()
+    female_total=Female2.objects.filter(gu='도봉구',female2_crime_type=crime_type).all()
     loc_list=[]
     for loc in female_total:
         gis= Geometry(loc.female2_crime_loc.hex()[8:])
@@ -54,10 +55,10 @@ def showFemale(request):
     pistes = {"type":"FeatureCollection","features":loc_list}
     #print(pistes)
     #style = {'fillColor': '#DC143C', 'lineColor': '#00FFFFFF'}
-    map = folium.Map(location=mid,zoom_start=15)
+    map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=15)
     folium.GeoJson(pistes).add_to(map)
     maps=map._repr_html_()
-    return render(request, 'female2.html',{'map':maps,'pistes':pistes})
+    return render(request, 'home.html',{'map':maps,'pistes':pistes})
 
 
 def filter_safetyzone(request): #안심장소보기
