@@ -64,14 +64,20 @@ def mypage(request):
 
 def donglevel(request):
     map = folium.Map(location=[37.6511988,127.0161604],zoom_start=12)
-    dongm = DongLevel.objects.all()
+    dongm = DongLevel.objects.values('dong_level_tot','dong_nm')
+    dong_df = pd.DataFrame(dongm)
+    dongloc = DongLevel.objects.all()
 
-    for i in dongm:
-        gis= Geometry(i.dong_loc.hex()[8:])
-        print(type(gis))
-        dong_geo = convert.wkt_to_geojson(str(gis.shapely))
-        dong_json = json.loads(dong_geo)
-    folium.Choropleth(geo_data=gis
+    for i in dongloc:
+        gis= Geometry(i.dong_loc.hex()[8:])        
+        #dong_geo = convert.wkt_to_geojson(str(gis.shapely))
+
+        #dong_json = json.loads(dong_geo)
+        #print(dong_json)
+        folium.Choropleth(geo_data=gis, data = dong_df['dong_level_tot'],
+                      columns=['dong_nm','dong_level_tot'],
+                      fill_color='Pastel1',
+                      key_on='i.dong_level_pk'
                         ).add_to(map)
     maps=map._repr_html_() 
     return render(request, 'dong.html', {'map':maps})
