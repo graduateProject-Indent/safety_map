@@ -64,16 +64,22 @@ def showFemale(request):
 def filter_safetyzone(request): #안심장소보기
 
     safety_type = ""
+    gu_type = ""
+    map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=12)
+
     if request.method=="POST":
         filter_value=request.POST['safetyZone_filter']
         safety_type=filter_value
-    safetyzone_ob_all = SafetyZone.objects.filter(safety_type=safety_type).all()
 
-    map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=12)
-
+    # 편의점을 선택한 경우 선택된 구를 출력
+    if(safety_type=="편의점") : 
+        safetyzone_ob_all = SafetyZone.objects.filter(gu='종로구') # 구 입력 방식 정해지면 '종로구'자리에 gu_type 넣으면 된다.
+    # 경찰서, 지구대, 파출소를 선택한 경우 서울 전체
+    else : 
+        safetyzone_ob_all = SafetyZone.objects.filter(safety_type=safety_type).all()
     
+    # 마커 추가
     for loc in safetyzone_ob_all:
-        
         gis = Geometry(loc.safety_loc.hex()[8:])
         to_geojson=convert.wkt_to_geojson(str(gis.shapely))
         to_coordinate=json.loads(to_geojson)
@@ -84,13 +90,13 @@ def filter_safetyzone(request): #안심장소보기
     return render(request,'home.html',{'map':maps})
 
 def save_mapimg(request):
-    import time # 왜 이거 지우면 에러가 뜰까요? 맨위에 import 있는데...
+    import time # 맨 위에 import 있는데 지우면 에러가 나는 행
     now  = time.localtime()
     time = "%04d-%02d-%02d-%02dh-%02dm-%02ds" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
     img = ImageGrab.grab()
+    # 캡쳐한 지도 사진 저장 위치
     saveas = "{}{}".format("safety_map/static/save_mapimg/safetymap"+time,'.png')
     img.save(saveas)
-
     return render(request,'home.html')
 
 
