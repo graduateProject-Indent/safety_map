@@ -26,6 +26,7 @@ urlpatterns = [
     path('kid/',safety_map.views.showKid,name='showKid'),
     path('pathfinder/',safety_map.views.pathFinder,name='pathFinder'),
     path('filter_safeyzone/',safety_map.views.filter_safetyzone,name = 'filter_safetyzone'),
+    path('save_mapimg/',safety_map.views.save_mapimg,name='savemapimg'),
     path('mypage/',safety_map.views.mypage,name='mypage'),
     path('dong/',safety_map.views.donglevel,name='donglevel'),
     path('manage_alarm/',safety_map.views.manage_alarm,name='manage_alarm'), #알람 관리
@@ -34,5 +35,9 @@ urlpatterns = [
     path('danger_map/',safety_map.views.danger_map,name='danger_map'), #전체 위험물 보기
     path('register_danger/',safety_map.views.register_danger,name='register_danger'), #위험물등록하기
     path('<int:danger_id>/',safety_map.views.detail_danger,name='detail_danger'), #위험물 상세보기
+<<<<<<< HEAD
 
+=======
+   
+>>>>>>> 901dc9a6254767f71e1dd3a95dc7581a65d8fdfd
 ]

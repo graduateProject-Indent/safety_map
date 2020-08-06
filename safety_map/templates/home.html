@@ -118,7 +118,7 @@
                                         <li id="item"><input type="submit" name="safetyZone_filter" class="item" value="경찰서"/></li>
                                         <li id="item"><input type="submit" name="safetyZone_filter" class="item" value="지구대"/></li>
                                         <li id="item"><input type="submit" name="safetyZone_filter" class="item" value="파출소"/></li>
-                                        <li id="item"><input type="submit" name="safetyZone_filter" class="item" value="안심벨"/></li>
+                                        <li id="item"><input type="submit" name="safetyZone_filter" class="item" value="편의점"/></li>
                                     </ul>
                                     </form>
                                 </li>
@@ -156,8 +156,8 @@
 
                             <a class="filter_menu" href="{% url 'danger_map' %}"><div class="menu_item">위험물장소보기</div></a>
                             <a class="filter_menu"><div class="menu_item">이용안내</div></a>
+                            <a class="filter_menu" href="/save_mapimg"><div class="menu_item">지도저장</div></a>
                             <a class="filter_menu" href="{% url 'pathFinder' %}"><div class="menu_item">길찾기</div></a>
-                            <a class="filter_menu"><div class="menu_item">지도저장</div></a>
                         </ul>
                     </div>
                 </div>
@@ -170,7 +170,37 @@
             </div>
         </div>
     </div>  
-</div>   
+</div> 
+<!--구 별 버튼 캐러셀-->
+<div class="gu_box">
+    <input type="submit" name="" class="gu_item" value="강남구"/>
+    <input type="submit" name="" class="gu_item" value="강동구"/>
+    <input type="submit" name="" class="gu_item" value="강북구"/>
+    <input type="submit" name="" class="gu_item" value="강서구"/>
+    <input type="submit" name="" class="gu_item" value="관악구"/>
+    <input type="submit" name="" class="gu_item" value="광진구"/>
+    <input type="submit" name="" class="gu_item" value="구로구"/>
+    <input type="submit" name="" class="gu_item" value="금천구"/>
+    <input type="submit" name="" class="gu_item" value="노원구"/>
+    <input type="submit" name="" class="gu_item" value="도봉구"/>
+    
+    <input type="submit" name="" class="gu_item" value="동대문구"/>
+    <input type="submit" name="" class="gu_item" value="동작구"/>
+    <input type="submit" name="" class="gu_item" value="마포구"/>
+    <input type="submit" name="" class="gu_item" value="서대문구"/>
+    <input type="submit" name="" class="gu_item" value="서초구"/>
+    <input type="submit" name="" class="gu_item" value="성동구"/>
+    <input type="submit" name="" class="gu_item" value="성북구"/>
+    <input type="submit" name="" class="gu_item" value="송파구"/>
+    <input type="submit" name="" class="gu_item" value="양천구"/>
+    <input type="submit" name="" class="gu_item" value="영등포구"/>
+    
+    <input type="submit" name="" class="gu_item" value="용상구"/>
+    <input type="submit" name="" class="gu_item" value="은평구"/>
+    <input type="submit" name="" class="gu_item" value="종로구"/>
+    <input type="submit" name="" class="gu_item" value="중구"/>
+    <input type="submit" name="" class="gu_item" value="중랑구"/>
+</div>
 
 <div class="path-currpos">
     <a href="{% url 'pathFinder' %}"><img class="path" src="{% static 'img/path_icon.png' %}"></a>

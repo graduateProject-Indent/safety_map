@@ -76,6 +76,7 @@ class AuthUserUserPermissions(models.Model):
 
 
 class Danger(models.Model):
+    objects = models.Manager()
     danger_pk = models.AutoField(primary_key=True)
     danger_type = models.CharField(max_length=30)
     danger_img = models.TextField()
@@ -155,6 +156,7 @@ class Female(models.Model):
 
 
 class Female2(models.Model):
+    objects = models.Manager()
     female2_pk = models.AutoField(primary_key=True)
     female2_crime_type = models.CharField(max_length=30)
     female2_crime_loc = models.TextField()  # This field type is a guess.
@@ -178,6 +180,7 @@ class Kid(models.Model):
 
 
 class SafetyZone(models.Model):
+    objects = models.Manager()
     safety_zone_pk = models.AutoField(primary_key=True)
     safety_type = models.CharField(max_length=30)
     safety_loc = models.TextField()  # This field type is a guess.
