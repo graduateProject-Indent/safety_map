@@ -114,33 +114,43 @@ def mypage(request):
 
 def showKid(request): #아동필터
     global g
-    crime_type=""
-    loc_list=[]
-    if request.method=="POST":
-        filter_value=request.POST['kid_filter']
-        crime_type=filter_value
-        
-    if crime_type == "어린이보행사고" or "스쿨존사고":
-        kid_accident=Kid.objects.filter(gu='종로구',kid_accident_type=crime_type+"주의구간").all()
-        print(kid_accident)
-    loc_list=[]
+    
+    accident_type = ""
+    loc_list = []
+    
+    map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=15)
+    if request.method == "POST":
+        filter_value = request.POST['kid_filter']
+    
+    # 어린이 보행사고를 클릭한 경우    
+    if filter_value == "어린이보행사고" or "스쿨존사고":
+        accident_type = filter_value+"다발구역"
+        kid_accident = Kid.objects.filter(kid_accident_type = accident_type+"다발구역").all()        
+    else :
+        accident_type = filter_value
+        kid_accident = Kid.objects.filter(kid_accident_type = accident_type).all()
     
     for loc in kid_accident:
-        gis= Geometry(loc.kid_accident_loc.hex()[8:])
-        to_geojson=convert.wkt_to_geojson(str(gis.shapely))
-        to_coordinate=json.loads(to_geojson)
-        contain_coordinate=shape(to_coordinate)
-        crime_location={"type":"Feature","geometry":to_coordinate}
+        gis = Geometry(loc.kid_accident_loc.hex()[8:])
+        to_geojson = convert.wkt_to_geojson(str(gis.shapely))
+        to_coordinate = json.loads(to_geojson)
+
+        print(to_coordinate)
+        
+        crime_location = {"type":"Feature","geometry":to_coordinate}
         loc_list.append(crime_location)
+        #print(loc_list)
+        #folium.Polygon(locations = loc_list, fill = True, tooltip='Polygon').add_to(map)
     pistes = {"type":"FeatureCollection","features":loc_list}
     #print(pistes)
     #style = {'fillColor': '#DC143C', 'lineColor': '#00FFFFFF'}
     
-    map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=15)
     folium.GeoJson(pistes).add_to(map)
     
     maps=map._repr_html_()
     return render(request, 'home.html',{'map':maps,'pistes':pistes})
+    #return render(request, 'home.html',{'map':maps})
+
 
 
 def donglevel(request):

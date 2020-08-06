@@ -26,15 +26,15 @@
         $(function(){
             $("button").click(function(event) {
                 console.log($(this).attr('value')); 
-                if($(this).attr('value')=='아동'){$("ul form.kid_select ul").hide();
-                $("ul form.kid_select").html( '<ul class="sub">'+
+                if($(this).attr('value')=='아동'){$("ul form.female_select ul").hide();
+                    $("ul form.kid_select").html( ' {% csrf_token %} <ul class="sub">'+
                                        '<li id="item"><input type="submit" name="kid_filter" class="item" value="어린이보행사고"/></li>'+
                                         '<li id="item"><input type="submit" name="kid_filter" class="item" value="스쿨존사고"/></li>'+
                                         '<li id="item"><input type="submit" name="kid_filter" class="item" value="어린이대상범죄현황"/></li>'+
                                         '<li id="item"><input type="submit" name="kid_filter" class="item" value="등굣길사고주의구간"/></li>'+
                                         '<li id="item"><input type="submit" name="kid_filter" class="item" value="하굣길사고주의구간"/></li>' +
                                         '</ul>');$("ul form.kid_select").slideToggle("fast");}
-                else{$("ul form.female_select ul").hide();
+                else{$("ul form.kid_select ul").hide();
                     $("ul form.female_select").html( ' {% csrf_token %} <ul class="sub">'+
                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="강도"/></li>'+
                                         '<li id="item"><input type="submit" name="female_filter" class="item" value="절도"/></li>'+

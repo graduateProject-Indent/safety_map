@@ -35,9 +35,4 @@ urlpatterns = [
     path('danger_map/',safety_map.views.danger_map,name='danger_map'), #전체 위험물 보기
     path('register_danger/',safety_map.views.register_danger,name='register_danger'), #위험물등록하기
     path('<int:danger_id>/',safety_map.views.detail_danger,name='detail_danger'), #위험물 상세보기
-<<<<<<< HEAD
-
-=======
-   
->>>>>>> 901dc9a6254767f71e1dd3a95dc7581a65d8fdfd
 ]
