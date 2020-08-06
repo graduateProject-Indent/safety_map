@@ -23,6 +23,7 @@ urlpatterns = [
     path('',safety_map.views.startpage,name='startpage'),
     path('home/',safety_map.views.showMaps,name='showMaps'),
     path('female/',safety_map.views.showFemale,name='showFemale'),
+    path('kid/',safety_map.views.showKid,name='showKid'),
     path('pathfinder/',safety_map.views.pathFinder,name='pathFinder'),
     path('filter_safeyzone/',safety_map.views.filter_safetyzone,name = 'filter_safetyzone'),
     path('mypage/',safety_map.views.mypage,name='mypage'),

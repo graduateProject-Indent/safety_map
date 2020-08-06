@@ -26,14 +26,14 @@
         $(function(){
             $("button").click(function(event) {
                 console.log($(this).attr('value')); 
-                if($(this).attr('value')=='아동'){$("ul form.female_select ul").hide();
-                $("ul form.female_select").html( '<ul class="sub">'+
-                                       '<li id="item"><input type="submit" name="female_filter" class="item" value="어린이"/></li>'+
-                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="절도"/></li>'+
-                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="폭력"/></li>'+
-                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="성폭력"/></li>'+
-                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="전체"/></li>' +
-                                        '</ul>');$("ul form.female_select").slideToggle("fast");}
+                if($(this).attr('value')=='아동'){$("ul form.kid_select ul").hide();
+                $("ul form.kid_select").html( '<ul class="sub">'+
+                                       '<li id="item"><input type="submit" name="kid_filter" class="item" value="어린이보행사고"/></li>'+
+                                        '<li id="item"><input type="submit" name="kid_filter" class="item" value="스쿨존사고"/></li>'+
+                                        '<li id="item"><input type="submit" name="kid_filter" class="item" value="어린이대상범죄현황"/></li>'+
+                                        '<li id="item"><input type="submit" name="kid_filter" class="item" value="등굣길사고주의구간"/></li>'+
+                                        '<li id="item"><input type="submit" name="kid_filter" class="item" value="하굣길사고주의구간"/></li>' +
+                                        '</ul>');$("ul form.kid_select").slideToggle("fast");}
                 else{$("ul form.female_select ul").hide();
                     $("ul form.female_select").html( ' {% csrf_token %} <ul class="sub">'+
                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="강도"/></li>'+
@@ -125,7 +125,7 @@
                             </div>
 
                             <div class="menu_item">
-                                <button id=female value="여성">여성</button>    | <button id="child" value="아동">아동</button>
+                                <button id="female" value="여성">여성</button>    | <button id="child" value="아동">아동</button>
                                 <li> 
                                     
                                     <form action='{% url "showFemale" %}' method='POST' class='female_select'>
@@ -136,17 +136,21 @@
                                         <li id="item"><input type="submit" name="female_filter" class="item" value="폭력"/></li>
                                         <li id="item"><input type="submit" name="female_filter" class="item" value="성폭력"/></li>
                                         <li id="item"><input type="submit" name="female_filter" class="item" value="전체"/></li>
-                                    </ul>
-                                </form>
-                                    <!--
-                            <ul class="sub">
-                                <li>어린이보행사고</li>
-                                <li>스쿨존사고</li>
-                                <li>어린이대상범죄현황</li>
-                                <li>등굣길사고주의구간</li>
-                                <li>하굣길사고주의구간</li>
-                            </ul>
-                            -->
+                                        </ul>
+                                    </form>
+                                    
+                                    <form action='{% url "showKid" %}' method='POST' class='kid_select'>
+                                        {% csrf_token %}
+                                        <ul class="sub">
+                                        <li id="item"><input type="submit" name="kid_filter" class="item" value="어린이보행사고"/></li>
+                                        <li id="item"><input type="submit" name="kid_filter" class="item" value="스쿨존사고"/></li>
+                                        <li id="item"><input type="submit" name="kid_filter" class="item" value="어린이대상범죄현황"/></li>
+                                        <li id="item"><input type="submit" name="kid_filter" class="item" value="등굣길사고주의구간"/></li>
+                                        <li id="item"><input type="submit" name="kid_filter" class="item" value="하굣길사고주의구간"/></li>
+                                        </ul>
+                                    </form>
+
+                            
                                 </li>
                             </div>
 
