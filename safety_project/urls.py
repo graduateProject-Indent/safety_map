@@ -34,5 +34,4 @@ urlpatterns = [
     path('register_danger/',safety_map.views.register_danger,name='register_danger'), #위험물등록하기
     path('<int:danger_id>/',safety_map.views.detail_danger,name='detail_danger'), #위험물 상세보기
    
-
 ]
