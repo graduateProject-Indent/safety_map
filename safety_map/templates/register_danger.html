@@ -1,13 +1,14 @@
 <!--위험물등록 페이지입니다.-->
 <!DOCTYPE html>
 <html>
+{% load static %}
 <head>
 	<title></title>
 </head>
 <body>
 위험물 등록 페이지입니다
 <div class="container">
-	<form method="POST">
+	<form action = "/register_danger/"method="POST">
 		{% csrf_token %}
 		<table>
 			{{form.as_table}}
@@ -16,5 +17,6 @@
 		<input class="" type="submit" value="등록">
 	</form>
 </div>
+
 </body>
 </html>

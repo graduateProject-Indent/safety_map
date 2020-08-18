@@ -20,7 +20,7 @@ from folium.features import CustomIcon
 import branca
 from PIL import ImageGrab # pip install pillow
 
-g = geocoder.ip('me')
+g = geocoder.ip('me')  # 우
 
 
 # Create your views here.
@@ -100,13 +100,15 @@ def filter_safetyzone(request): #안심장소보기
 
 def save_mapimg(request):
     import time # 맨 위에 import 있는데 지우면 에러가 나는 행
+    map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=12)
     now  = time.localtime()
     time = "%04d-%02d-%02d-%02dh-%02dm-%02ds" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
     img = ImageGrab.grab()
     # 캡쳐한 지도 사진 저장 위치
     saveas = "{}{}".format("safety_map/static/save_mapimg/safetymap"+time,'.png')
     img.save(saveas)
-    return render(request,'home.html')
+    maps=map._repr_html_()
+    return render(request,'home.html',{'map':maps})
 
 
 def mypage(request):
@@ -121,11 +123,17 @@ def manage_danger_map(request):
 def manage_protecter(request):
     return render(request, 'manage_protecter.html')
 
-def danger_map(request):
+def danger_map(request): # 한 : 위험물 지도를 보여줌(안심장소와 결국 비슷함)
+    map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=12)
     dangers = Danger.objects
+    dangers = map._repr_html_()
     return render(request, 'danger_map.html', {'dangers':dangers})
 
-def register_danger(request):
+def register_danger(request): # 한 : 위험물 등록 폼이 보여진다.
+    map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=12)
+    dangers = Danger.objects
+    dangers = map._repr_html_()
+
     if request.method == "POST":
         form = DangerForm(request.POST)
         if form.is_valid():
@@ -133,7 +141,22 @@ def register_danger(request):
             return redirect('danger_map')
     else:
         form = DangerForm()
-    return render(request, 'register_danger.html', {'form':form})
+        
+    return render(request, 'danger_map.html', {'dangers':dangers})
+    
+def register_danger_done(request): # 한 : register_danger폼에서 제출완료하고 danger_map() 호출
+    from django.shortcuts import render, redirect
+    from .forms import FeedbackForm
+
+    #dangers = Danger.objects
+    if request.methpd=='POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/danger_map')
+        else:
+            form = FeedbackForm()
+    return danger_map()
 
 def detail_danger(request, danger_id):
     danger_detail = get_object_or_404(Danger, pk=danger_id)
