@@ -15,10 +15,7 @@
 .menu-open {
     width: 39px;
     height: 39px;
-    margin-top: 0px;
-    margin-right: 10px;
-    margin-left: 0px;
-    margin-top: 6px;
+    margin: 6px 10px 0 0;
     z-index: 99;
     display: flex;
     justify-content: center;
@@ -30,7 +27,7 @@
 }
 
 .search-input {
-    width: 80vw;
+    width: 70vw;
     height: 50px;
     border-radius: 26px;
     box-shadow: 0 3px 6px 0 rgba(0,0,0,0.16);
@@ -59,8 +56,13 @@
     padding-left: 0;
 }
 
-.search-icon {
+.search-icon{
     width: 35px;
+}
+
+.set_up_icon {
+    width: 40px;
+    margin: 3px 0 0 10px;
 }
 
 .path{
@@ -101,6 +103,8 @@
     color: #ffffff;
     font-weight: 500;
     font-size: 20px;
+    margin-top: 0;
+    z-index: 99;
 }
 .menu_item { 
     padding: 15px; 
@@ -134,14 +138,17 @@ ul{
     font-size: 20px;
     font-weight: 500;
     font-family: 'Noto Sans KR', sans-serif;    
+}
 
+.gu_item{
+    margin-bottom: 5px;
 }
 
 .gu_box{
     position: absolute;
     font-family: 'Noto Sans KR', sans-serif;    
     margin: 75px 5% 10px 5%;
-    z-index: 99;
+    z-index: 90;
 }
 
 .item:hover,
@@ -166,4 +173,19 @@ a.filter_menu{
 
 a.filter_menu:hover{
     color: #015462;
+}
+
+#female, 
+#child{
+    border: none;
+    background: none;
+    color: #ffffff;
+    font-family: 'Noto Sans KR', sans-serif;    
+    font-size: 20px;
+    padding: 0px;
+}
+
+.menu_item:hover > #female,
+.menu_item:hover > #child{ 
+    color: #015462; 
 }

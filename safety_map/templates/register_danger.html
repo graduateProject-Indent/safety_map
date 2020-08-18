@@ -20,10 +20,7 @@
 	<div class="">
 		<form method="POST">
 			{% csrf_token %}
-			<table>
-				{{form.as_table}}
-
-			</table>
+			
 			<p>
 				<label for="danger_type">
 					<span>위험물 유형:</span>
@@ -49,10 +46,7 @@
 			</p>
 			<hr>
 			<input class="" type="submit" value="등록">
-
 		</form>
-
 	</div>
 </body>
-
 </html>
