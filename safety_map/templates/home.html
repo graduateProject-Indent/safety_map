@@ -16,39 +16,39 @@
     <!--메뉴드롭다운-->
     <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
     <script type="text/javascript">
-      
+
         $(document).ready(function () {
-            $("#nav ul.sub").hide(); 
-            $("#nav ul.menu li").click(function () {$("ul", this).slideToggle("fast");});
-            
-           
-        });
-        $(function(){
-            $("button").click(function(event) {
-                console.log($(this).attr('value')); 
-                if ($(this).attr('value')=='아동'){$("ul form.female_select ul").hide();
-                    $("ul form.kid_select").html( ' {% csrf_token %} <ul class="sub">'+
-                                       '<li id="item"><input type="submit" name="kid_filter" class="item" value="어린이보행사고"/></li>'+
-                                        '<li id="item"><input type="submit" name="kid_filter" class="item" value="스쿨존사고"/></li>'+
-                                        '<li id="item"><input type="submit" name="kid_filter" class="item" value="어린이대상범죄현황"/></li>'+
-                                        '<li id="item"><input type="submit" name="kid_filter" class="item" value="등굣길사고주의구간"/></li>'+
-                                        '<li id="item"><input type="submit" name="kid_filter" class="item" value="하굣길사고주의구간"/></li>' +
-                                        '</ul>');$("ul form.kid_select").slideToggle("fast");}
-                else {$("ul form.kid_select ul").hide();
-                    $("ul form.female_select").html( ' {% csrf_token %} <ul class="sub">'+
-                                       '<li id="item"><input type="submit" name="female_filter" class="item" value="강도"/></li>'+
-                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="절도"/></li>'+
-                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="폭력"/></li>'+
-                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="성폭력"/></li>'+
-                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="전체"/></li>' +
-                                        '</ul>');$("ul form.female_select").slideToggle("fast");
-                                        }
-               
-                
-            });
-           
+            $("#nav ul.sub").hide();
+            $("#nav ul.menu li").click(function () { $("ul", this).slideToggle("fast"); });
+
 
         });
+        $(function () {
+            $("button").click(function (event) {
+                console.log($(this).attr('value'));
+                if ($(this).attr('value') == '아동') {
+                    $("ul form.female_select ul").hide();
+                    $("ul form.female_select").html('<ul class="sub">' +
+                        '<li id="item"><input type="submit" name="female_filter" class="item" value="어린이"/></li>' +
+                        '<li id="item"><input type="submit" name="female_filter" class="item" value="절도"/></li>' +
+                        '<li id="item"><input type="submit" name="female_filter" class="item" value="폭력"/></li>' +
+                        '<li id="item"><input type="submit" name="female_filter" class="item" value="성폭력"/></li>' +
+                        '<li id="item"><input type="submit" name="female_filter" class="item" value="전체"/></li>' +
+                        '</ul>'); $("ul form.female_select").slideToggle("fast");
+                }
+                else {
+                    $("ul form.female_select ul").hide();
+                    $("ul form.female_select").html(' {% csrf_token %} <ul class="sub">' +
+                        '<li id="item"><input type="submit" name="female_filter" class="item" value="강도"/></li>' +
+                        '<li id="item"><input type="submit" name="female_filter" class="item" value="절도"/></li>' +
+                        '<li id="item"><input type="submit" name="female_filter" class="item" value="폭력"/></li>' +
+                        '<li id="item"><input type="submit" name="female_filter" class="item" value="성폭력"/></li>' +
+                        '<li id="item"><input type="submit" name="female_filter" class="item" value="전체"/></li>' +
+                        '</ul>'); $("ul form.female_select").slideToggle("fast");
+                }
+            });
+        });
+
     </script>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
@@ -87,9 +87,18 @@
 
         $(document).ready(function () {
             $('.menu_2').hide();
-            $('div.map div div',this).removeAttr('style');
-           
+            $('div.map div div', this).removeAttr('style');
+
         });
+
+        function Showlocation() {
+            if (hidden_gu.style.display == "none") {
+                hidden_gu.style.display = "block";
+            }
+            else {
+                hidden_gu.style.display = "none";
+            }
+        }
     </script>
 
 </head>
@@ -102,62 +111,81 @@
                 <div class="menu_bg">
                     <div id="nav">
                         <ul class="menu">
-                            <div style="width: 55%; text-align: right" onclick="HideMenu()"><img
-                                    src="{% static 'img/close_X.svg' %}" style="width: 30px;"></div>
+                            <div style="width: 55%; text-align: right; padding-top: 20px;" onclick="HideMenu()">
+                                <img src="{% static 'img/close_X.svg' %}" style="width: 30px;">
+                            </div>
 
-                            <a class="filter_menu" href="{% url 'mypage' %}"><div class="menu_item">마이페이지</div></a>
+                            <a class="filter_menu" href="{% url 'mypage' %}">
+                                <div class="menu_item">마이페이지</div>
+                            </a>
 
                             <div class="menu_item">
                                 <li>
                                     안심장소보기
-                                    <form action='{% url "filter_safetyzone" %}' method='POST' class='safetyZone_select'>
+                                    <form action='{% url "filter_safetyzone" %}' method='POST'
+                                        class='safetyZone_select'>
 
 
                                         {% csrf_token %}
-                                    <ul class="sub">
-                                        <li id="item"><input type="submit" name="safetyZone_filter" class="item" value="경찰서"/></li>
-                                        <li id="item"><input type="submit" name="safetyZone_filter" class="item" value="지구대"/></li>
-                                        <li id="item"><input type="submit" name="safetyZone_filter" class="item" value="파출소"/></li>
-                                        <li id="item"><input type="submit" name="safetyZone_filter" class="item" value="편의점"/></li>
-                                    </ul>
+                                        <ul class="sub">
+                                            <li id="item"><input type="submit" name="safetyZone_filter" class="item"
+                                                    value="경찰서" /></li>
+                                            <li id="item"><input type="submit" name="safetyZone_filter" class="item"
+                                                    value="지구대" /></li>
+                                            <li id="item"><input type="submit" name="safetyZone_filter" class="item"
+                                                    value="파출소" /></li>
+                                            <li id="item"><input type="submit" name="safetyZone_filter" class="item"
+                                                    value="편의점" /></li>
+                                        </ul>
                                     </form>
                                 </li>
                             </div>
 
                             <div class="menu_item">
-                                <button id="female" value="여성">여성</button>    | <button id="child" value="아동">아동</button>
-                                <li> 
-                                    
+                                <button id=female value="여성">여성</button>
+                                &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                                <button id="child" value="아동"> 아동</button>
+                                <li>
+
                                     <form action='{% url "showFemale" %}' method='POST' class='female_select'>
                                         {% csrf_token %}
                                         <ul class="sub">
-                                        <li id="item"><input type="submit" name="female_filter" class="item" value="강도"/></li>
-                                        <li id="item"><input type="submit" name="female_filter" class="item" value="절도"/></li>
-                                        <li id="item"><input type="submit" name="female_filter" class="item" value="폭력"/></li>
-                                        <li id="item"><input type="submit" name="female_filter" class="item" value="성폭력"/></li>
-                                        <li id="item"><input type="submit" name="female_filter" class="item" value="전체"/></li>
+                                            <li id="item"><input type="submit" name="female_filter" class="item"
+                                                    value="강도" /></li>
+                                            <li id="item"><input type="submit" name="female_filter" class="item"
+                                                    value="절도" /></li>
+                                            <li id="item"><input type="submit" name="female_filter" class="item"
+                                                    value="폭력" /></li>
+                                            <li id="item"><input type="submit" name="female_filter" class="item"
+                                                    value="성폭력" /></li>
+                                            <li id="item"><input type="submit" name="female_filter" class="item"
+                                                    value="전체" /></li>
                                         </ul>
                                     </form>
-                                    
-                                    <form action='{% url "showKid" %}' method='POST' class='kid_select'>
-                                        {% csrf_token %}
-                                        <ul class="sub">
-                                        <li id="item"><input type="submit" name="kid_filter" class="item" value="어린이보행사고"/></li>
-                                        <li id="item"><input type="submit" name="kid_filter" class="item" value="스쿨존사고"/></li>
-                                        <li id="item"><input type="submit" name="kid_filter" class="item" value="어린이대상범죄현황"/></li>
-                                        <li id="item"><input type="submit" name="kid_filter" class="item" value="등굣길사고주의구간"/></li>
-                                        <li id="item"><input type="submit" name="kid_filter" class="item" value="하굣길사고주의구간"/></li>
-                                        </ul>
-                                    </form>
-
-                            
+                                    <!--
+                            <ul class="sub">
+                                <li>어린이보행사고</li>
+                                <li>스쿨존사고</li>
+                                <li>어린이대상범죄현황</li>
+                                <li>등굣길사고주의구간</li>
+                                <li>하굣길사고주의구간</li>
+                            </ul>
+                            -->
                                 </li>
                             </div>
 
-                            <a class="filter_menu" href="{% url 'danger_map' %}"><div class="menu_item">위험물장소보기</div></a>
-                            <a class="filter_menu"><div class="menu_item">이용안내</div></a>
-                            <a class="filter_menu" href="/save_mapimg"><div class="menu_item">지도저장</div></a>
-                            <a class="filter_menu" href="{% url 'pathFinder' %}"><div class="menu_item">길찾기</div></a>
+                            <a class="filter_menu" href="{% url 'danger_map' %}">
+                                <div class="menu_item">위험물장소보기</div>
+                            </a>
+                            <a class="filter_menu">
+                                <div class="menu_item">이용안내</div>
+                            </a>
+                            <a class="filter_menu" href="/save_mapimg">
+                                <div class="menu_item">지도저장</div>
+                            </a>
+                            <a class="filter_menu" href="{% url 'pathFinder' %}">
+                                <div class="menu_item">길찾기</div>
+                            </a>
                         </ul>
                     </div>
                 </div>
@@ -168,47 +196,51 @@
                     <img class="search-icon" src="{% static 'img/search_icon.svg' %}">
                 </button>
             </div>
+            <div class="set_up_location">
+                <img class="set_up_icon" id="Setup_icon" src="{% static 'img/icon_set_up_location.png' %}"
+                    onclick="Showlocation()">
+            </div>
         </div>
-    </div>  
-</div> 
-<!--구 별 버튼 캐러셀-->
-<div class="gu_box">
-    <input type="submit" name="" class="gu_item" value="강남구"/>
-    <input type="submit" name="" class="gu_item" value="강동구"/>
-    <input type="submit" name="" class="gu_item" value="강북구"/>
-    <input type="submit" name="" class="gu_item" value="강서구"/>
-    <input type="submit" name="" class="gu_item" value="관악구"/>
-    <input type="submit" name="" class="gu_item" value="광진구"/>
-    <input type="submit" name="" class="gu_item" value="구로구"/>
-    <input type="submit" name="" class="gu_item" value="금천구"/>
-    <input type="submit" name="" class="gu_item" value="노원구"/>
-    <input type="submit" name="" class="gu_item" value="도봉구"/>
-    
-    <input type="submit" name="" class="gu_item" value="동대문구"/>
-    <input type="submit" name="" class="gu_item" value="동작구"/>
-    <input type="submit" name="" class="gu_item" value="마포구"/>
-    <input type="submit" name="" class="gu_item" value="서대문구"/>
-    <input type="submit" name="" class="gu_item" value="서초구"/>
-    <input type="submit" name="" class="gu_item" value="성동구"/>
-    <input type="submit" name="" class="gu_item" value="성북구"/>
-    <input type="submit" name="" class="gu_item" value="송파구"/>
-    <input type="submit" name="" class="gu_item" value="양천구"/>
-    <input type="submit" name="" class="gu_item" value="영등포구"/>
-    
-    <input type="submit" name="" class="gu_item" value="용상구"/>
-    <input type="submit" name="" class="gu_item" value="은평구"/>
-    <input type="submit" name="" class="gu_item" value="종로구"/>
-    <input type="submit" name="" class="gu_item" value="중구"/>
-    <input type="submit" name="" class="gu_item" value="중랑구"/>
-</div>
+    </div>
+    </div>
+    <!--구 별 버튼 캐러셀-->
+    <div class="gu_box" id="hidden_gu" style="display: none;">
+        <input type="submit" name="" class="gu_item" value="강남구" />
+        <input type="submit" name="" class="gu_item" value="강동구" />
+        <input type="submit" name="" class="gu_item" value="강북구" />
+        <input type="submit" name="" class="gu_item" value="강서구" />
+        <input type="submit" name="" class="gu_item" value="관악구" />
+        <input type="submit" name="" class="gu_item" value="광진구" />
+        <input type="submit" name="" class="gu_item" value="구로구" />
+        <input type="submit" name="" class="gu_item" value="금천구" />
+        <input type="submit" name="" class="gu_item" value="노원구" />
+        <input type="submit" name="" class="gu_item" value="도봉구" />
 
-<div class="path-currpos">
-    <a href="{% url 'pathFinder' %}"><img class="path" src="{% static 'img/path_icon.png' %}"></a>
-    <img class="myloc" src="{% static 'img/myloc_icon.png' %}">
-</div>
-<div class="map">
-    {{ map|safe }}
-</div>
+        <input type="submit" name="" class="gu_item" value="동대문구" />
+        <input type="submit" name="" class="gu_item" value="동작구" />
+        <input type="submit" name="" class="gu_item" value="마포구" />
+        <input type="submit" name="" class="gu_item" value="서대문구" />
+        <input type="submit" name="" class="gu_item" value="서초구" />
+        <input type="submit" name="" class="gu_item" value="성동구" />
+        <input type="submit" name="" class="gu_item" value="성북구" />
+        <input type="submit" name="" class="gu_item" value="송파구" />
+        <input type="submit" name="" class="gu_item" value="양천구" />
+        <input type="submit" name="" class="gu_item" value="영등포구" />
+
+        <input type="submit" name="" class="gu_item" value="용상구" />
+        <input type="submit" name="" class="gu_item" value="은평구" />
+        <input type="submit" name="" class="gu_item" value="종로구" />
+        <input type="submit" name="" class="gu_item" value="중구" />
+        <input type="submit" name="" class="gu_item" value="중랑구" />
+    </div>
+
+    <div class="path-currpos">
+        <a href="{% url 'pathFinder' %}"><img class="path" src="{% static 'img/path_icon.png' %}"></a>
+        <img class="myloc" src="{% static 'img/myloc_icon.png' %}">
+    </div>
+    <div class="map">
+        {{ map|safe }}
+    </div>
 </body>
 
 </html>
