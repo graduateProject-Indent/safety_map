@@ -130,10 +130,6 @@ def danger_map(request): # 한 : 위험물 지도를 보여줌(안심장소와 �
     return render(request, 'danger_map.html', {'dangers':dangers})
 
 def register_danger(request): # 한 : 위험물 등록 폼이 보여진다.
-    map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=12)
-    dangers = Danger.objects
-    dangers = map._repr_html_()
-
     if request.method == "POST":
         form = DangerForm(request.POST)
         if form.is_valid():
@@ -141,22 +137,8 @@ def register_danger(request): # 한 : 위험물 등록 폼이 보여진다.
             return redirect('danger_map')
     else:
         form = DangerForm()
-        
-    return render(request, 'danger_map.html', {'dangers':dangers})
+    return render(request, 'register_danger.html', {'form':form})
     
-def register_danger_done(request): # 한 : register_danger폼에서 제출완료하고 danger_map() 호출
-    from django.shortcuts import render, redirect
-    from .forms import FeedbackForm
-
-    #dangers = Danger.objects
-    if request.methpd=='POST':
-        form = FeedbackForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('/danger_map')
-        else:
-            form = FeedbackForm()
-    return danger_map()
 
 def detail_danger(request, danger_id):
     danger_detail = get_object_or_404(Danger, pk=danger_id)
