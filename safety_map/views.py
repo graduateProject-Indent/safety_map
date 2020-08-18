@@ -19,6 +19,7 @@ from plpygis import Geometry
 from folium.features import CustomIcon
 import branca
 from PIL import ImageGrab # pip install pillow
+import pandas as pd # pip install pandas
 
 g = geocoder.ip('me')
 
@@ -117,33 +118,28 @@ def showKid(request): #아동필터
     
     accident_type = ""
     loc_list = []
-    
-    map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=15)
+
     if request.method == "POST":
         filter_value = request.POST['kid_filter']
-    
+        accident_type = filter_value
+       
     # 어린이 보행사고를 클릭한 경우    
     if filter_value == "어린이보행사고" or "스쿨존사고":
-        accident_type = filter_value+"다발구역"
-        kid_accident = Kid.objects.filter(kid_accident_type = accident_type+"다발구역").all()        
+        accident_type = filter_value+"다발지역"
     else :
         accident_type = filter_value
-        kid_accident = Kid.objects.filter(kid_accident_type = accident_type).all()
     
-    for loc in kid_accident:
-        gis = Geometry(loc.kid_accident_loc.hex()[8:])
+    kid_accident = Kid.objects.filter(kid_accident_type = accident_type).all()
+
+    for i in kid_accident:
+        gis = Geometry(i.kid_accident_loc.hex()[8:])
         to_geojson = convert.wkt_to_geojson(str(gis.shapely))
         to_coordinate = json.loads(to_geojson)
-
-        print(to_coordinate)
-        
+        contain_coordinate=shape(to_coordinate)
         crime_location = {"type":"Feature","geometry":to_coordinate}
         loc_list.append(crime_location)
-        #print(loc_list)
-        #folium.Polygon(locations = loc_list, fill = True, tooltip='Polygon').add_to(map)
     pistes = {"type":"FeatureCollection","features":loc_list}
-    #print(pistes)
-    #style = {'fillColor': '#DC143C', 'lineColor': '#00FFFFFF'}
+    map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=15)
     
     folium.GeoJson(pistes).add_to(map)
     
