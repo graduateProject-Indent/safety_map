@@ -23,15 +23,16 @@ urlpatterns = [
     path('',safety_map.views.startpage,name='startpage'),
     path('home/',safety_map.views.showMaps,name='showMaps'),
     path('female/',safety_map.views.showFemale,name='showFemale'),
+    path('kid/',safety_map.views.showKid,name='showKid'),
     path('pathfinder/',safety_map.views.pathFinder,name='pathFinder'),
     path('filter_safeyzone/',safety_map.views.filter_safetyzone,name = 'filter_safetyzone'),
     path('save_mapimg/',safety_map.views.save_mapimg,name='savemapimg'),
     path('mypage/',safety_map.views.mypage,name='mypage'),
+    path('dong/',safety_map.views.donglevel,name='donglevel'),
     path('manage_alarm/',safety_map.views.manage_alarm,name='manage_alarm'), #알람 관리
     path('manage_danger_map/',safety_map.views.manage_danger_map,name='manage_danger_map'), #위험물 관리(수정,삭제)
     path('manage_protecter/',safety_map.views.manage_protecter,name='manage_protecter'), #보호자 관리
     path('danger_map/',safety_map.views.danger_map,name='danger_map'), #전체 위험물 보기
     path('register_danger/',safety_map.views.register_danger,name='register_danger'), #위험물등록하기
     path('<int:danger_id>/',safety_map.views.detail_danger,name='detail_danger'), #위험물 상세보기
-   
 ]

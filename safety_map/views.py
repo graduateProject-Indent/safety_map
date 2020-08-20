@@ -19,6 +19,7 @@ from plpygis import Geometry
 from folium.features import CustomIcon
 import branca
 from PIL import ImageGrab # pip install pillow
+import pandas as pd # pip install pandas
 
 g = geocoder.ip('me')
 
@@ -111,6 +112,62 @@ def save_mapimg(request):
 
 def mypage(request):
     return render(request, 'mypage.html')
+
+def showKid(request): #아동필터
+    global g
+    
+    accident_type = ""
+    loc_list = []
+
+    if request.method == "POST":
+        filter_value = request.POST['kid_filter']
+        accident_type = filter_value
+       
+    # 어린이 보행사고를 클릭한 경우    
+    if filter_value == "어린이보행사고" or "스쿨존사고":
+        accident_type = filter_value+"다발지역"
+    else :
+        accident_type = filter_value
+    
+    kid_accident = Kid.objects.filter(kid_accident_type = accident_type).all()
+
+    for i in kid_accident:
+        gis = Geometry(i.kid_accident_loc.hex()[8:])
+        to_geojson = convert.wkt_to_geojson(str(gis.shapely))
+        to_coordinate = json.loads(to_geojson)
+        contain_coordinate=shape(to_coordinate)
+        crime_location = {"type":"Feature","geometry":to_coordinate}
+        loc_list.append(crime_location)
+    pistes = {"type":"FeatureCollection","features":loc_list}
+    map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=15)
+    
+    folium.GeoJson(pistes).add_to(map)
+    
+    maps=map._repr_html_()
+    return render(request, 'home.html',{'map':maps,'pistes':pistes})
+    #return render(request, 'home.html',{'map':maps})
+
+
+
+def donglevel(request):
+    map = folium.Map(location=[37.6511988,127.0161604],zoom_start=12)
+    dongm = DongLevel.objects.values('dong_level_tot','dong_nm')
+    dong_df = pd.DataFrame(dongm)
+    dongloc = DongLevel.objects.all()
+
+    for i in dongloc:
+        gis= Geometry(i.dong_loc.hex()[8:])        
+        #dong_geo = convert.wkt_to_geojson(str(gis.shapely))
+
+        #dong_json = json.loads(dong_geo)
+        #print(dong_json)
+        folium.Choropleth(geo_data=gis, data = dong_df['dong_level_tot'],
+                      columns=['dong_nm','dong_level_tot'],
+                      fill_color='Pastel1',
+                      key_on='i.dong_level_pk'
+                        ).add_to(map)
+    maps=map._repr_html_() 
+    return render(request, 'dong.html', {'map':maps})
 
 def manage_alarm(request):
     return render(request, 'manage_alarm.html')
