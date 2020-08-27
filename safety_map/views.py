@@ -53,7 +53,7 @@ def showFemale(request):
     if request.method=="POST":
         filter_value=request.POST['female_filter']
         crime_type="전체_"+filter_value
-    female_total=Female2.objects.filter(gu=getGu,female2_crime_type=crime_type).all()
+    female_total=Female2.objects.filter(gu='도봉구',female2_crime_type=crime_type).all()
     loc_list=[]
     for loc in female_total:
         gis= Geometry(loc.female2_crime_loc.hex()[8:])
@@ -124,7 +124,6 @@ def mypage(request):
 
 def showKid(request): #아동필터
     global g
-    
     accident_type = ""
     loc_list = []
 
