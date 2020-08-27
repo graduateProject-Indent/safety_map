@@ -26,8 +26,10 @@
         $(function(){
             $("button").click(function(event) {
                 console.log($(this).attr('value')); 
-                if($(this).attr('value')=='아동'){$("ul form.female_select ul").hide();
-                $("ul form.female_select").html( '<ul class="sub">'+
+                if($(this).attr('value')=='아동'){
+                //$("ul form.female_select ul").attr('action','{% url "showMaps" %}');
+                $("ul form.female_select ul").hide();
+                $("ul form.female_select").html( ' {% csrf_token %} <ul class="sub">'+
                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="어린이"/></li>'+
                                         '<li id="item"><input type="submit" name="female_filter" class="item" value="절도"/></li>'+
                                         '<li id="item"><input type="submit" name="female_filter" class="item" value="폭력"/></li>'+
@@ -169,7 +171,7 @@
 </div>   
 
 <div class="path-currpos">
-    <a href="{% url 'pathFinder' %}"><img class="path" src="{% static 'img/path_icon.png' %}"></a>
+    <a href="{% url 'pathSetting' %}"><img class="path" src="{% static 'img/path_icon.png' %}"></a>
     <img class="myloc" src="{% static 'img/myloc_icon.png' %}">
 </div>
 <div class="map">
