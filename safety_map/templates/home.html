@@ -23,6 +23,7 @@
 
 
         });
+<<<<<<< HEAD
         $(function () {
             $("button").click(function (event) {
                 console.log($(this).attr('value'));
@@ -46,6 +47,32 @@
                         '<li id="item"><input type="submit" name="female_filter" class="item" value="전체"/></li>' +
                         '</ul>'); $("ul form.female_select").slideToggle("fast");
                 }
+=======
+        $(function(){
+            $("button").click(function(event) {
+                console.log($(this).attr('value')); 
+                if($(this).attr('value')=='아동'){
+                //$("ul form.female_select ul").attr('action','{% url "showMaps" %}');
+                $("ul form.female_select ul").hide();
+                $("ul form.female_select").html( ' {% csrf_token %} <ul class="sub">'+
+                                       '<li id="item"><input type="submit" name="female_filter" class="item" value="어린이"/></li>'+
+                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="절도"/></li>'+
+                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="폭력"/></li>'+
+                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="성폭력"/></li>'+
+                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="전체"/></li>' +
+                                        '</ul>');$("ul form.female_select").slideToggle("fast");}
+                else{$("ul form.female_select ul").hide();
+                    $("ul form.female_select").html( ' {% csrf_token %} <ul class="sub">'+
+                                       '<li id="item"><input type="submit" name="female_filter" class="item" value="강도"/></li>'+
+                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="절도"/></li>'+
+                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="폭력"/></li>'+
+                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="성폭력"/></li>'+
+                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="전체"/></li>' +
+                                        '</ul>');$("ul form.female_select").slideToggle("fast");
+                                        }
+               
+                
+>>>>>>> f44a628027c14a69be2642be3c7b8bdb6475a78f
             });
         });
 
@@ -142,6 +169,7 @@
                             </div>
 
                             <div class="menu_item">
+<<<<<<< HEAD
 
                                 <button id="female" value="여성">여성</button>
                                 &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
@@ -180,6 +208,34 @@
                                         </ul>
                                     </form>
 
+=======
+                                <button id="female" value="여성">여성</button>    | <button id="child" value="아동">아동</button>
+                                <li> 
+                                    
+                                    <form action='{% url "showFemale" %}' method='POST' class='female_select'>
+                                        {% csrf_token %}
+                                        <ul class="sub">
+                                        <li id="item"><input type="submit" name="female_filter" class="item" value="강도"/></li>
+                                        <li id="item"><input type="submit" name="female_filter" class="item" value="절도"/></li>
+                                        <li id="item"><input type="submit" name="female_filter" class="item" value="폭력"/></li>
+                                        <li id="item"><input type="submit" name="female_filter" class="item" value="성폭력"/></li>
+                                        <li id="item"><input type="submit" name="female_filter" class="item" value="전체"/></li>
+                                        </ul>
+                                    </form>
+                                    
+                                    <form action='{% url "showKid" %}' method='POST' class='kid_select'>
+                                        {% csrf_token %}
+                                        <ul class="sub">
+                                        <li id="item"><input type="submit" name="kid_filter" class="item" value="어린이보행사고"/></li>
+                                        <li id="item"><input type="submit" name="kid_filter" class="item" value="스쿨존사고"/></li>
+                                        <li id="item"><input type="submit" name="kid_filter" class="item" value="어린이대상범죄현황"/></li>
+                                        <li id="item"><input type="submit" name="kid_filter" class="item" value="등굣길사고주의구간"/></li>
+                                        <li id="item"><input type="submit" name="kid_filter" class="item" value="하굣길사고주의구간"/></li>
+                                        </ul>
+                                    </form>
+
+                            
+>>>>>>> f44a628027c14a69be2642be3c7b8bdb6475a78f
                                 </li>
                             </div>
 
@@ -210,38 +266,41 @@
                     onclick="Showlocation()">
             </div>
         </div>
-    </div>
-    </div>
-    <!--구 별 버튼 캐러셀-->
+    </div>  
+</div>   
+<form action=' ' method='POST' class='gu_item'>
+    <!--구 별 버튼 캐러셀-->%}
+    {% csrf_token %}
     <div class="gu_box" id="hidden_gu" style="display: none;">
-        <input type="submit" name="" class="gu_item" value="강남구" />
-        <input type="submit" name="" class="gu_item" value="강동구" />
-        <input type="submit" name="" class="gu_item" value="강북구" />
-        <input type="submit" name="" class="gu_item" value="강서구" />
-        <input type="submit" name="" class="gu_item" value="관악구" />
-        <input type="submit" name="" class="gu_item" value="광진구" />
-        <input type="submit" name="" class="gu_item" value="구로구" />
-        <input type="submit" name="" class="gu_item" value="금천구" />
-        <input type="submit" name="" class="gu_item" value="노원구" />
-        <input type="submit" name="" class="gu_item" value="도봉구" />
+        <input type="submit" name="getGu" class="gu_item" value="강남구" />
+        <input type="submit" name="getGu" class="gu_item" value="강동구" />
+        <input type="submit" name="getGu" class="gu_item" value="강북구" />
+        <input type="submit" name="getGu" class="gu_item" value="강서구" />
+        <input type="submit" name="getGu" class="gu_item" value="관악구" />
+        <input type="submit" name="getGu" class="gu_item" value="광진구" />
+        <input type="submit" name="getGu" class="gu_item" value="구로구" />
+        <input type="submit" name="getGu" class="gu_item" value="금천구" />
+        <input type="submit" name="getGu" class="gu_item" value="노원구" />
+        <input type="submit" name="getGu" class="gu_item" value="도봉구" />
 
-        <input type="submit" name="" class="gu_item" value="동대문구" />
-        <input type="submit" name="" class="gu_item" value="동작구" />
-        <input type="submit" name="" class="gu_item" value="마포구" />
-        <input type="submit" name="" class="gu_item" value="서대문구" />
-        <input type="submit" name="" class="gu_item" value="서초구" />
-        <input type="submit" name="" class="gu_item" value="성동구" />
-        <input type="submit" name="" class="gu_item" value="성북구" />
-        <input type="submit" name="" class="gu_item" value="송파구" />
-        <input type="submit" name="" class="gu_item" value="양천구" />
-        <input type="submit" name="" class="gu_item" value="영등포구" />
+        <input type="submit" name="getGu" class="gu_item" value="동대문구" />
+        <input type="submit" name="getGu" class="gu_item" value="동작구" />
+        <input type="submit" name="getGu" class="gu_item" value="마포구" />
+        <input type="submit" name="getGu" class="gu_item" value="서대문구" />
+        <input type="submit" name="getGu" class="gu_item" value="서초구" />
+        <input type="submit" name="getGu" class="gu_item" value="성동구" />
+        <input type="submit" name="getGu" class="gu_item" value="성북구" />
+        <input type="submit" name="getGu" class="gu_item" value="송파구" />
+        <input type="submit" name="getGu" class="gu_item" value="양천구" />
+        <input type="submit" name="getGu" class="gu_item" value="영등포구" />
 
-        <input type="submit" name="" class="gu_item" value="용상구" />
-        <input type="submit" name="" class="gu_item" value="은평구" />
-        <input type="submit" name="" class="gu_item" value="종로구" />
-        <input type="submit" name="" class="gu_item" value="중구" />
-        <input type="submit" name="" class="gu_item" value="중랑구" />
+        <input type="submit" name="getGu" class="gu_item" value="용상구" />
+        <input type="submit" name="getGu" class="gu_item" value="은평구" />
+        <input type="submit" name="getGu" class="gu_item" value="종로구" />
+        <input type="submit" name="getGu" class="gu_item" value="중구" />
+        <input type="submit" name="getGu" class="gu_item" value="중랑구" />
     </div>
+</form>
 
     <div class="path-currpos">
         <a href="{% url 'pathFinder' %}"><img class="path" src="{% static 'img/path_icon.png' %}"></a>
