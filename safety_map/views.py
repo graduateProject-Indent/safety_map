@@ -20,7 +20,9 @@ from folium.features import CustomIcon
 import branca
 from PIL import ImageGrab # pip install pillow
 
-g = geocoder.ip('me')  # 우
+from django.http import HttpResponse
+
+g = geocoder.ip('me')  
 
 
 # Create your views here.
@@ -129,15 +131,28 @@ def danger_map(request): # 한 : 위험물 지도를 보여줌(안심장소와 �
     dangers = map._repr_html_()
     return render(request, 'danger_map.html', {'dangers':dangers})
 
-def register_danger(request): # 한 : 위험물 등록 폼이 보여진다.
+def register_danger(request): # 한 : 위험물 등록 폼
+    g = geocoder.ip('me')
+
+    # map = folium.Map(location=g.latlng,zoom_start=15)
+    print("0000000000000000000000000000000000000000000000000000000000000000000000000000")
+    print(g.latlng)
+    
     if request.method == "POST":
+        filter_value=request.POST['register_danger']
+        safety_type=filter_value
         form = DangerForm(request.POST)
+        # form=request.POST.get('non','')
+       #danger_type=request.POST.get('non','')
+        
+        print(form)
         if form.is_valid():
             form.save()
             return redirect('danger_map')
     else:
         form = DangerForm()
-    return render(request, 'register_danger.html', {'form':form})
+        
+    return render(request, 'register_danger.html', {'g':g.latlng})
     
 
 def detail_danger(request, danger_id):
