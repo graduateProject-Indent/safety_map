@@ -7,6 +7,9 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
+from django.contrib.gis.geos import Point, GEOSGeometry
+# 한정원 추가함
+
 
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
@@ -80,7 +83,8 @@ class Danger(models.Model):
     danger_pk = models.AutoField(primary_key=True)
     danger_type = models.CharField(max_length=30)
     danger_img = models.TextField()
-    danger_loc = models.TextField()  # This field type is a guess.
+    danger_loc = models.TextField()  # This field type is a guess. 네!
+    #danger_loc = models.Point()
     auth_user_id_fk = models.ForeignKey('AuthUser', models.DO_NOTHING, db_column='auth_user_id_fk', blank=True, null=True)
 
     class Meta:

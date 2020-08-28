@@ -20,25 +20,24 @@
 	</div>
 
 	<div class="">
-		<form action = "/register_danger/"method="POST">
+		<form action = "/register_danger/" method="POST">
 			{% csrf_token %}
-
 			<p>
 				<label for="danger_type">
 					<span>위험물 유형:</span>
-					<select id="danger_type" >
-						<option value="no_cctv">cctv없음</option>
-						<option value="no_lamp">가로등없음</option>
-						<option value="caution_place">주의시설</option>
-						<option value="trash">쓰레기 적치</option>
-						<option value="harmfull_place">유해시설</option>
+					<select id="danger_type" name="danger_type">
+						<option value="cctv없음">cctv없음</option>
+						<option value="가로등없음">가로등없음</option>
+						<option value="주의시설">주의시설</option>
+						<option value="쓰레기적치">쓰레기적치</option>
+						<option value="유해시설">유해시설</option>
 					</select>
 				</label>
 			</p>
 			<p>
 				<label for = "danger_img">
 					<span>이미지 첨부:</span>
-					<input type="file" name="image">
+					<input type="file" name="danger_img">
 				</label>
 			</p>
 			<p>
@@ -49,10 +48,7 @@
 			</p>
 			<hr>
 			<input class="" type="submit" value="등록">
-
 		</form>
-
 	</div>
 </body>
-
 </html>
