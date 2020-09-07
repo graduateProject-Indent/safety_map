@@ -10,7 +10,8 @@
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.js"></script>
 <script
-	src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=APIkey"></script>
+    src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey="></script>
+    
 <script type="text/javascript">
 	var map;
 	var marker_s, marker_e, marker_p1, marker_p2;
@@ -24,6 +25,17 @@
     var startPoint,endPoint;
     var when1,when2;
     var draw;
+    $(document).ready(function () {
+            
+            console.log(window.outerHeight);
+            var size=window.outerHeight-40;
+            $('html').css('height','100%');
+            $('body').css('height','100%');
+            $('#map_wrap', this).css('height','100%');
+            $('#map_div', this).css('height','100%');
+            $('#map_div div').css('height','100%');
+            
+        });
     
 	function initTmap() {
 		// 1. 지도 띄우기
@@ -154,6 +166,9 @@
                             },
                             dataType: "json",
                             success : (result) =>{ 
+                                pistes=result.pistes; 
+                                //var geo=vector_format.read(pistes,'Geometry');
+                                
                             },
                         });
                     }).then( (arg) =>{
@@ -381,7 +396,7 @@
         
 		polyline_ = new Tmapv2.Polyline({
 			path : arrPoint,
-			strokeColor : "#75B8FA",
+			strokeColor : "#DD0000",
 			strokeWeight : 6,
 			map : map
 		});
@@ -409,18 +424,18 @@
 		<button id="btn_select">적용하기</button>
     </div>
 
-    <a href="{% url 'showMaps' %}"><img class="path_close" src="{% static 'img/icon_gray_X.svg' %}"></a>
+    <a href="{% url 'donglevel' %}"><img class="path_close" src="{% static 'img/icon_gray_X.svg' %}"></a>
     <img class="start_pathfinder" src="{% static 'img/icon_gray_person.svg' %}">
 </div>
 
 <img class="myloc" src="{% static 'img/myloc_icon.png' %}">
-
-<div id="map_wrap" class="map_wrap3">
-    <div id="map_div"></div>
-</div>
 <div class="map_act_btn_wrap clear_box"></div>
 <p id="result"></p>
 <br />
+<div id="map_wrap" class="map_wrap3">
+    <div id="map_div"></div>
+</div>
+
 
 </body>
 </html>
