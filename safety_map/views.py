@@ -127,15 +127,13 @@ def showKid(request): #아동필터
     accident_type = ""
     loc_list = []
 
-    if request.method == "POST":
-        filter_value = request.POST['kid_filter']
+    if request.method == 'POST':
+        filter_value = request.POST["kid_filter"]
         accident_type = filter_value
-       
+        
     # 어린이 보행사고를 클릭한 경우    
     if filter_value == "어린이보행사고" or "스쿨존사고":
         accident_type = filter_value+"다발지역"
-    else :
-        accident_type = filter_value
     
     kid_accident = Kid.objects.filter(kid_accident_type = accident_type).all()
 
