@@ -24,8 +24,7 @@
 
         });
         $(function(){
-            $("button").click(function(event) {
-                console.log($(this).attr('value')); 
+            $("button").click(function(event) { 
                 if($(this).attr('value')=='아동'){
                 $("ul form.female_select").attr('action','{% url "showKid" %}');
                 $("ul form.female_select ul").hide();
@@ -49,7 +48,26 @@
                 
             });
         });
+    $(function(){
+        $(".gu_item").click(function(event){
+            var  gu=$(this).attr('value')
+            
+            $.ajax({
+                            method:'POST',
+                            url:"{% url 'getGu' %}",
+                            data:{
+                                'gu':gu,
+                                'csrfmiddlewaretoken': '{{ csrf_token }}'
+                            },
+                            dataType: "json",
+                            success : (result) =>{ 
+                                
+                            },
+                        });
 
+
+        });
+    });
     </script>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
@@ -190,39 +208,39 @@
         </div>
     </div>  
 </div>   
-<form action=' ' method='POST' class='gu_item'>
+
     <!--구 별 버튼 캐러셀-->%}
     {% csrf_token %}
     <div class="gu_box" id="hidden_gu" style="display: none;">
-        <input type="submit" name="getGu" class="gu_item" value="강남구" />
-        <input type="submit" name="getGu" class="gu_item" value="강동구" />
-        <input type="submit" name="getGu" class="gu_item" value="강북구" />
-        <input type="submit" name="getGu" class="gu_item" value="강서구" />
-        <input type="submit" name="getGu" class="gu_item" value="관악구" />
-        <input type="submit" name="getGu" class="gu_item" value="광진구" />
-        <input type="submit" name="getGu" class="gu_item" value="구로구" />
-        <input type="submit" name="getGu" class="gu_item" value="금천구" />
-        <input type="submit" name="getGu" class="gu_item" value="노원구" />
-        <input type="submit" name="getGu" class="gu_item" value="도봉구" />
+        <input type="button" name="getGu" class="gu_item" value="강남구" />
+        <input type="button" name="getGu" class="gu_item" value="강동구" />
+        <input type="button" name="getGu" class="gu_item" value="강북구" />
+        <input type="button" name="getGu" class="gu_item" value="강서구" />
+        <input type="button" name="getGu" class="gu_item" value="관악구" />
+        <input type="button" name="getGu" class="gu_item" value="광진구" />
+        <input type="button" name="getGu" class="gu_item" value="구로구" />
+        <input type="button" name="getGu" class="gu_item" value="금천구" />
+        <input type="button" name="getGu" class="gu_item" value="노원구" />
+        <input type="button" name="getGu" class="gu_item" value="도봉구" />
 
-        <input type="submit" name="getGu" class="gu_item" value="동대문구" />
-        <input type="submit" name="getGu" class="gu_item" value="동작구" />
-        <input type="submit" name="getGu" class="gu_item" value="마포구" />
-        <input type="submit" name="getGu" class="gu_item" value="서대문구" />
-        <input type="submit" name="getGu" class="gu_item" value="서초구" />
-        <input type="submit" name="getGu" class="gu_item" value="성동구" />
-        <input type="submit" name="getGu" class="gu_item" value="성북구" />
-        <input type="submit" name="getGu" class="gu_item" value="송파구" />
-        <input type="submit" name="getGu" class="gu_item" value="양천구" />
-        <input type="submit" name="getGu" class="gu_item" value="영등포구" />
+        <input type="button" name="getGu" class="gu_item" value="동대문구" />
+        <input type="button" name="getGu" class="gu_item" value="동작구" />
+        <input type="button" name="getGu" class="gu_item" value="마포구" />
+        <input type="button" name="getGu" class="gu_item" value="서대문구" />
+        <input type="button" name="getGu" class="gu_item" value="서초구" />
+        <input type="button" name="getGu" class="gu_item" value="성동구" />
+        <input type="button" name="getGu" class="gu_item" value="성북구" />
+        <input type="button" name="getGu" class="gu_item" value="송파구" />
+        <input type="button" name="getGu" class="gu_item" value="양천구" />
+        <input type="button" name="getGu" class="gu_item" value="영등포구" />
 
-        <input type="submit" name="getGu" class="gu_item" value="용상구" />
-        <input type="submit" name="getGu" class="gu_item" value="은평구" />
-        <input type="submit" name="getGu" class="gu_item" value="종로구" />
-        <input type="submit" name="getGu" class="gu_item" value="중구" />
-        <input type="submit" name="getGu" class="gu_item" value="중랑구" />
+        <input type="button" name="getGu" class="gu_item" value="용상구" />
+        <input type="button" name="getGu" class="gu_item" value="은평구" />
+        <input type="button" name="getGu" class="gu_item" value="종로구" />
+        <input type="button" name="getGu" class="gu_item" value="중구" />
+        <input type="button" name="getGu" class="gu_item" value="중랑구" />
     </div>
-</form>
+
 
     <div class="path-currpos">
         <a href="{% url 'pathFinder' %}"><img class="path" src="{% static 'img/path_icon.png' %}"></a>
