@@ -212,11 +212,7 @@ def register_danger(request): # 한 : 위험물 등록 폼
         print(danger_img)
         print(danger_loc)
         
-        point_danger_loc = Point(danger_loc[0] , danger_loc[1])
         
-        test =Danger(danger_type = danger_type, danger_img = 11111, point_danger_loc)
-        print(str(test))
-        test.save()
         
     else:
         print('\n'+'else 문 else else else')
