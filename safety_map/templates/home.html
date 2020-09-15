@@ -188,7 +188,7 @@
                             <a class="filter_menu" href="/save_mapimg">
                                 <div class="menu_item">지도저장</div>
                             </a>
-                            <a class="filter_menu" href="{% url 'pathFinder' %}">
+                            <a class="filter_menu" href="{% url 'pathSetting' %}">
                                 <div class="menu_item">길찾기</div>
                             </a>
                         </ul>
@@ -243,7 +243,7 @@
 
 
     <div class="path-currpos">
-        <a href="{% url 'pathFinder' %}"><img class="path" src="{% static 'img/path_icon.png' %}"></a>
+        <a href="{% url 'pathSetting' %}"><img class="path" src="{% static 'img/path_icon.png' %}"></a>
         <img class="myloc" src="{% static 'img/myloc_icon.png' %}">
     </div>
     <div class="map">
