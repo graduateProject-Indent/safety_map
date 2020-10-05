@@ -6,6 +6,8 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django_mysql.models import JSONField,Model
+
 
 
 class AuthGroup(models.Model):
@@ -79,8 +81,13 @@ class Danger(models.Model):
     objects = models.Manager()
     danger_pk = models.AutoField(primary_key=True)
     danger_type = models.CharField(max_length=30)
-    danger_img = models.TextField()
-    danger_loc = models.TextField()  # This field type is a guess.
+    #danger_img = models.FileField()# 파일필드
+    danger_img = models.FileField(blank=True,upload_to="danger/img")# 이미지필드
+    # 한 : 저장경로 : MEDIA_ROOT/danger/img/xxx.jpg 경로에 저장
+    # 한 : DB필드 : 'MEDIA_URL/dnager/img/xxx.jpg' 문자열 저장
+    danger_loc = models.TextField()  # This field type is a guess. 네!
+    #danger_loc = models.Point()
+
     auth_user_id_fk = models.ForeignKey('AuthUser', models.DO_NOTHING, db_column='auth_user_id_fk', blank=True, null=True)
 
     class Meta:
