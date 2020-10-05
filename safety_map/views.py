@@ -30,14 +30,14 @@ import pandas as pd # pip install pandas
 from django.db import models
 from django.http import HttpResponse
 from pprint import pprint
-
+from geomet import wkb
 
 
 
 g = geocoder.ip('me')
 gu_coordinate=""
 global_contain_coordinate=[]
-getGu=""
+# getGu=""
 
 # Create your views here.
 def home(request):
@@ -208,12 +208,22 @@ def register_danger(request): # 한 : [미완성] 위험물 등록 폼
 
 
     if request.method == "POST":
-        danger_type = request.POST['danger_type']
-        danger_img = request.POST['danger_img']
-        # print('\n'+danger_type) # 좆같다 이스케이프 문자가 앞에 있다고 register_danger 까지 들어오지도않음? 띠용
-        print(danger_type)  
-        print(danger_img)
-        print(danger_loc)
+        post_danger_type = request.POST['danger_type']
+        post_danger_img = request.POST['danger_img']
+        
+        print(post_danger_type)  
+        print(post_danger_img)
+        print(danger_loc) # 한 : 현재 위치
+        '''
+
+        '''
+        print("111111")
+        
+        danger_loc_point = Point(danger_loc[0],danger_loc[1])
+        d={"type":"Point","coordinates":danger_loc}
+        print(wkb.dumps(d))
+        model_test_instance = Danger(danger_type = post_danger_type, danger_img = post_danger_img,danger_loc=wkb.dumps(d))
+        model_test_instance.save()
         
         
         
