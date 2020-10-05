@@ -7,7 +7,7 @@
 
 .menu-input-box{
     position: absolute;
-    top: 25px;
+    top: 50px;
     display: flex;
     z-index: 98;
 }
