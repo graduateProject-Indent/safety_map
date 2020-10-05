@@ -31,6 +31,10 @@ from django.http import HttpResponse
 from pprint import pprint
 import branca.colormap as cmp
 import math
+from geomet import wkb
+
+from django.http import HttpResponseRedirect
+
 
 g = geocoder.ip('me')
 gu_coordinate=""
