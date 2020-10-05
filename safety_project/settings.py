@@ -135,3 +135,6 @@ STATICFILES_DIRS = [
  
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+#한정원 추가
+MEDIA_URL='/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')

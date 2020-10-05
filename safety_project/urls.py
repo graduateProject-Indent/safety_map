@@ -17,6 +17,10 @@ from django.contrib import admin
 from django.urls import path, include
 import safety_map.views
 
+# 한 : 이미지 업로드
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     #path('home/',safety_map.views.home,name='home'),
@@ -38,4 +42,4 @@ urlpatterns = [
     path('register_danger/',safety_map.views.register_danger,name='register_danger'), #위험물등록하기
     path('<int:danger_id>/',safety_map.views.detail_danger,name='detail_danger'), #위험물 상세보기
     path('getGu/',safety_map.views.getGu,name='getGu'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

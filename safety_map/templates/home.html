@@ -167,6 +167,7 @@
                                     <form action='{% url "showFemale" %}' method='POST' class='female_select'>
                                         {% csrf_token %}
                                         <ul class="sub">
+
                                             <li id="item"><input type="submit" name="female_filter" class="item"
                                                     value="강도" /></li>
                                             <li id="item"><input type="submit" name="female_filter" class="item"
@@ -177,6 +178,7 @@
                                                     value="성폭력" /></li>
                                             <li id="item"><input type="submit" name="female_filter" class="item"
                                                     value="전체" /></li>
+
                                         </ul>
                                     </form>
 
