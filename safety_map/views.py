@@ -31,6 +31,10 @@ from django.http import HttpResponse
 from pprint import pprint
 import branca.colormap as cmp
 import math
+from geomet import wkb
+
+from django.http import HttpResponseRedirect
+
 
 g = geocoder.ip('me')
 gu_coordinate=""
@@ -136,6 +140,7 @@ def mypage(request):
 
 def showKid(request): #아동필터
     global g
+    global getGu
     accident_type = ""
     loc_list = []
 
@@ -144,11 +149,18 @@ def showKid(request): #아동필터
         accident_type = filter_value
         
     # 어린이 보행사고를 클릭한 경우    
-    if filter_value == "어린이보행사고" or "스쿨존사고":
+    if filter_value == "스쿨존사고":
         accident_type = filter_value+"다발지역"
-    
-    kid_accident = Kid.objects.filter(kid_accident_type = accident_type).all()
+    elif filter_value == "어린이보행사고":
+        accident_type =filter_value
+    else:
+        accident_type = filter_value
+        
+    kid_accident = Kid.objects.filter(gu=getGu, kid_accident_type = accident_type).all()
 
+    #colormap_dept = cmp.StepColormap(colors=['#00ae53', '#86dc76', '#daf8aa','#ffe6a4', '#ff9a61', '#ee0028'], 
+    #                                vmin=10, vmax=310)
+                                    
     for i in kid_accident:
         gis = Geometry(i.kid_accident_loc.hex()[8:])
         to_geojson = convert.wkt_to_geojson(str(gis.shapely))
@@ -157,18 +169,19 @@ def showKid(request): #아동필터
         crime_location = {"type":"Feature","geometry":to_coordinate}
         loc_list.append(crime_location)
     pistes = {"type":"FeatureCollection","features":loc_list}
+
     map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=15)
-    
+
     folium.GeoJson(pistes).add_to(map)
     
     maps=map._repr_html_()
     return render(request, 'home.html',{'map':maps,'pistes':pistes})
+    #return render(request, 'home.html',{'map':maps})
    
 
 
-
 def donglevel(request):
-    map = folium.Map(location=[37.6511988,127.0161604],zoom_start=12)
+    map = folium.Map(location=[37.5518838,126.9858763],zoom_start=12)
     dongm = DongLevel.objects.values('dong_level_tot','dong_nm')
     dong_df = pd.DataFrame(dongm)
     dongloc = DongLevel.objects.all()
@@ -181,7 +194,7 @@ def donglevel(request):
     
     folium.Choropleth(geo_data=pistes, data = dong_df,
                     columns=('dong_nm','dong_level_tot'),
-                    fill_color='Pastel1',
+                    fill_color='BuPu',
                     key_on='feature.properties.dong_nm'
                     ).add_to(map)
 
