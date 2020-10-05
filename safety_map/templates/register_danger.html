@@ -20,7 +20,7 @@
 	</div>
 
 	<div class="">
-		<form action = "/register_danger/" method="POST">
+		<form action = "/register_danger/" method="POST" enctype = "multipart/form-data">
 			{% csrf_token %}
 			<p>
 				<label for="danger_type">

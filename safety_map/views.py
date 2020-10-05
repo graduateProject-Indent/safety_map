@@ -32,6 +32,8 @@ from django.http import HttpResponse
 from pprint import pprint
 from geomet import wkb
 
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 
 
 g = geocoder.ip('me')
@@ -195,6 +197,14 @@ def manage_danger_map(request):
 def manage_protecter(request):
     return render(request, 'manage_protecter.html')
 
+
+
+
+
+
+
+
+
 def danger_map(request): # 한 : 위험물 지도를 보여줌(안심장소와 결국 비슷함)
     map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=12)
     dangers = Danger.objects
@@ -209,11 +219,13 @@ def register_danger(request): # 한 : [미완성] 위험물 등록 폼
 
     if request.method == "POST":
         post_danger_type = request.POST['danger_type']
-        post_danger_img = request.POST['danger_img']
+        #post_danger_img = request.POST['danger_img']
+        post_danger_img = request.POST.get('danger_img',False)
         
         print(post_danger_type)  
         print(post_danger_img)
         print(danger_loc) # 한 : 현재 위치
+        
         '''
 
         '''

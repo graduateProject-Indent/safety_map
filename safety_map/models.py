@@ -81,7 +81,10 @@ class Danger(models.Model):
     objects = models.Manager()
     danger_pk = models.AutoField(primary_key=True)
     danger_type = models.CharField(max_length=30)
-    danger_img = models.FileField()# 파일필드
+    #danger_img = models.FileField()# 파일필드
+    danger_img = models.FileField(blank=True,upload_to="danger/img")# 이미지필드
+    # 한 : 저장경로 : MEDIA_ROOT/danger/img/xxx.jpg 경로에 저장
+    # 한 : DB필드 : 'MEDIA_URL/dnager/img/xxx.jpg' 문자열 저장
     danger_loc = models.TextField()  # This field type is a guess. 네!
     #danger_loc = models.Point()
 
