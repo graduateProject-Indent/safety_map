@@ -1,16 +1,26 @@
 <!--위험물상세 페이지입니다.-->
 <!DOCTYPE html>
 <html>
+    {% load static %}
 <head>
-	<title></title>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="{% static 'css/manage_danger_map.css' %}">
+
 </head>
 <body>
-위험물 상세 페이지입니다
-<div class="container">
-    <a href="{% url 'danger_map' %}">뒤로</a>
-    <h1>위험물 유형: {{danger.danger_type}}</h1>
-    <p>이미지: {{danger.danger_img}}</p>
-    <p>위치: {{danger.danger_loc}}</p>
+<div class="top_box">
+    <a href="{% url 'danger_map' %}"><img class="goback" src="{% static 'img/icon_goback.svg' %}"></a>
+    <p class="box_title">위험물 유형: {{danger.danger_type}}</p>
+</div>
+<p>이미지: {{danger.danger_img}}</p>
+<p>위치: {{danger.danger_loc}}</p>
+<div class="detail_box">
+    <p class="d_type">위험물 유형: {{danger.danger_type}}</p>
+    <a href="{% url 'danger_map' %}"><img class="d_goback" src="{% static 'img/icon_white_X.svg' %}"></a>
+    <p class="d_img">이미지: {{danger.danger_img}}</p>
+    <p class="d_loc">위치: {{danger.danger_loc}}</p>
 </div>
 </body>
 </html>
