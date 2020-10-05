@@ -54,6 +54,10 @@ a:hover{
     color: #ffffff; 
 }
 
+.log:hover{
+    color: #015462;
+}
+
 div.menu_item{
     padding: 7px 0 7px 20px;
     margin: 20px 0 20px 0;

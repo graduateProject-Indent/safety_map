@@ -24,16 +24,20 @@ from shapely.ops import unary_union
 from shapely.validation import explain_validity
 from plpygis import Geometry
 from folium.features import CustomIcon
-import branca
 from PIL import ImageGrab # pip install pillow
 import pandas as pd # pip install pandas
 from django.db import models
 from django.http import HttpResponse
 from pprint import pprint
+
 from geomet import wkb
 
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+
+
+import branca.colormap as cmp
+import math
 
 
 g = geocoder.ip('me')
@@ -64,20 +68,24 @@ def showFemale(request):
         crime_type="전체_"+filter_value
     female_total=Female2.objects.filter(gu=getGu,female2_crime_type=crime_type).all()
     loc_list=[]
+    linear = cmp.LinearColormap(
+    [ 'purple','green','blue'],
+    vmin=10, vmax=310)
+    map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=15)
     for loc in female_total:
         gis= Geometry(loc.female2_crime_loc.hex()[8:])
-        to_geojson=convert.wkt_to_geojson(str(gis.shapely))
-        to_coordinate=json.loads(to_geojson)
-        contain_coordinate=shape(to_coordinate)
-        crime_location={"type":"Feature","geometry":to_coordinate}
-        loc_list.append(crime_location)
+        contain_coordinate=shape(gis.geojson)
+        crime_location={"type":"Feature","properties":{'area':math.ceil(round(contain_coordinate.length,5)*100000)},"geometry":gis.geojson}
+        folium.GeoJson(crime_location,style_function=lambda feature: {
+            'fillColor': linear(feature['properties']['area']),
+            'color': linear(feature['properties']['area']),     
+            'weight': 1  
+        }).add_to(map)
+        linear.add_to(map)
     pistes = {"type":"FeatureCollection","features":loc_list}
-    #print(pistes)
-    #style = {'fillColor': '#DC143C', 'lineColor': '#00FFFFFF'}
-    map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=15)
-    folium.GeoJson(pistes).add_to(map)
+    
     maps=map._repr_html_()
-    return render(request, 'home.html',{'map':maps,'pistes':pistes})
+    return render(request, 'home.html',{'map':maps})
 
 
 def filter_safetyzone(request): #안심장소보기
@@ -253,7 +261,7 @@ def detail_danger(request, danger_id):
 def pathSetting(request):
     return render(request,'pathFinder.html')
 
-def pathFinder(request):
+def pathFinder(request): #위험지역 받는 함수
     global global_contain_coordinate
     global gu_coordinate
     gu_list=['종로구','중구','용산구','성동구','광진구',
@@ -290,7 +298,7 @@ def pathFinder(request):
    
     return HttpResponse(json.dumps({'pistes':pistes}),content_type="application/json")
 
-def containsPoint(request):
+def containsPoint(request): #위험 지역 우회
     global gu_coordinate
     pointlist=[]
     line=""
