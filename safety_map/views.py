@@ -24,10 +24,11 @@ from shapely.ops import unary_union
 from shapely.validation import explain_validity
 from plpygis import Geometry
 from folium.features import CustomIcon
-import branca
 from PIL import ImageGrab # pip install pillow
 import pandas as pd # pip install pandas
-
+from pprint import pprint
+import branca.colormap as cmp
+import math
 g = geocoder.ip('me')
 gu_coordinate=""
 global_contain_coordinate=[]
@@ -47,28 +48,32 @@ def showMaps(request):
 
 def showFemale(request):
     global g
-    count=0
+    global getGu
     crime_type=""
     loc_list=[]
     if request.method=="POST":
         filter_value=request.POST['female_filter']
         crime_type="전체_"+filter_value
-    female_total=Female2.objects.filter(gu='도봉구',female2_crime_type=crime_type).all()
+    female_total=Female2.objects.filter(gu=getGu,female2_crime_type=crime_type).all()
     loc_list=[]
+    linear = cmp.LinearColormap(
+    [ 'purple','green','blue'],
+    vmin=10, vmax=310)
+    map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=15)
     for loc in female_total:
         gis= Geometry(loc.female2_crime_loc.hex()[8:])
-        to_geojson=convert.wkt_to_geojson(str(gis.shapely))
-        to_coordinate=json.loads(to_geojson)
-        contain_coordinate=shape(to_coordinate)
-        crime_location={"type":"Feature","geometry":to_coordinate}
-        loc_list.append(crime_location)
+        contain_coordinate=shape(gis.geojson)
+        crime_location={"type":"Feature","properties":{'area':math.ceil(round(contain_coordinate.length,5)*100000)},"geometry":gis.geojson}
+        folium.GeoJson(crime_location,style_function=lambda feature: {
+            'fillColor': linear(feature['properties']['area']),
+            'color': linear(feature['properties']['area']),     
+            'weight': 1  
+        }).add_to(map)
+        linear.add_to(map)
     pistes = {"type":"FeatureCollection","features":loc_list}
-    #print(pistes)
-    #style = {'fillColor': '#DC143C', 'lineColor': '#00FFFFFF'}
-    map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=15)
-    folium.GeoJson(pistes).add_to(map)
+    
     maps=map._repr_html_()
-    return render(request, 'home.html',{'map':maps,'pistes':pistes})
+    return render(request, 'home.html',{'map':maps})
 
 
 def filter_safetyzone(request): #안심장소보기
@@ -127,15 +132,13 @@ def showKid(request): #아동필터
     accident_type = ""
     loc_list = []
 
-    if request.method == "POST":
-        filter_value = request.POST['kid_filter']
+    if request.method == 'POST':
+        filter_value = request.POST["kid_filter"]
         accident_type = filter_value
-       
+        
     # 어린이 보행사고를 클릭한 경우    
     if filter_value == "어린이보행사고" or "스쿨존사고":
         accident_type = filter_value+"다발지역"
-    else :
-        accident_type = filter_value
     
     kid_accident = Kid.objects.filter(kid_accident_type = accident_type).all()
 
@@ -153,7 +156,7 @@ def showKid(request): #아동필터
     
     maps=map._repr_html_()
     return render(request, 'home.html',{'map':maps,'pistes':pistes})
-    #return render(request, 'home.html',{'map':maps})
+   
 
 
 
@@ -162,20 +165,21 @@ def donglevel(request):
     dongm = DongLevel.objects.values('dong_level_tot','dong_nm')
     dong_df = pd.DataFrame(dongm)
     dongloc = DongLevel.objects.all()
-
+    loc_list=[]
     for i in dongloc:
-        gis= Geometry(i.dong_loc.hex()[8:])        
-        #dong_geo = convert.wkt_to_geojson(str(gis.shapely))
+        gis= Geometry(i.dong_loc.hex()[8:])  
+        crime_location = {"type":"Feature","properties":{"dong_nm":i.dong_nm},"geometry":gis.geojson}
+        loc_list.append(crime_location)
+    pistes = {"type":"FeatureCollection","features":loc_list}
+    
+    folium.Choropleth(geo_data=pistes, data = dong_df,
+                    columns=('dong_nm','dong_level_tot'),
+                    fill_color='Pastel1',
+                    key_on='feature.properties.dong_nm'
+                    ).add_to(map)
 
-        #dong_json = json.loads(dong_geo)
-        #print(dong_json)
-        folium.Choropleth(geo_data=gis, data = dong_df['dong_level_tot'],
-                      columns=['dong_nm','dong_level_tot'],
-                      fill_color='Pastel1',
-                      key_on='i.dong_level_pk'
-                        ).add_to(map)
     maps=map._repr_html_() 
-    return render(request, 'dong.html', {'map':maps})
+    return render(request, 'home.html', {'map':maps})
 
 def manage_alarm(request):
     return render(request, 'manage_alarm.html')
@@ -208,7 +212,7 @@ def detail_danger(request, danger_id):
 def pathSetting(request):
     return render(request,'pathFinder.html')
 
-def pathFinder(request):
+def pathFinder(request): #위험지역 받는 함수
     global global_contain_coordinate
     global gu_coordinate
     gu_list=['종로구','중구','용산구','성동구','광진구',
@@ -233,35 +237,27 @@ def pathFinder(request):
         female_start=Female2.objects.filter(female2_crime_type="전체_전체",gu=startGu).all()
         female_end=Female2.objects.filter(female2_crime_type="전체_전체",gu=endGu).all()
         female_total=female_start.union(female_end,all=False)
-        gu_start=Female2.objects.filter(female2_crime_type="위험구",gu=startGu).all()
-        gu_end=Female2.objects.filter(female2_crime_type="위험구",gu=endGu).all()
-        global_gu=(gu_start|gu_end)
-        if len(global_gu)!=1:
-            for g in global_gu:
-                gu_gis= Geometry(g.female2_crime_loc.hex()[8:])
-                gu_geojson=convert.wkt_to_geojson(str(gu_gis.shapely))
-                gu_coords=shape(json.loads(gu_geojson))
-                loc_list.append(gu_coords)
-            gu_coordinate=loc_list[0].union(loc_list[1])
-        else:
-            global_gu=(gu_start|gu_end).get()  
-            gu_gis= Geometry(global_gu.female2_crime_loc.hex()[8:])
-            gu_geojson=convert.wkt_to_geojson(str(gu_gis.shapely))
-            gu_coordinate=shape(json.loads(gu_geojson))
-        
         for loc in female_total:
             gis= Geometry(loc.female2_crime_loc.hex()[8:])
             to_geojson=convert.wkt_to_geojson(str(gis.shapely))
             to_coordinate=json.loads(to_geojson)
             contain_coordinate=shape(to_coordinate)
             global_contain_coordinate.append(contain_coordinate)
+            crime_location={"type":"Feature","geometry":to_coordinate}
+            loc_list.append(crime_location)
+    pistes = {"type":"FeatureCollection","features":[]}
    
-    return HttpResponse(json.dumps({'reseponse':'true'}),content_type="application/json")
+    return HttpResponse(json.dumps({'pistes':pistes}),content_type="application/json")
 
-def containsPoint(request):
+def containsPoint(request): #위험 지역 우회
     global gu_coordinate
     pointlist=[]
     line=""
+    line_point=[]
+    count=0
+    gu_bound=Female2.objects.filter(female2_crime_type="구경계",gu="양천구").get()
+    gis= Geometry(gu_bound.female2_crime_loc.hex()[8:])
+    gi=shape(gis)
     if request.method=="POST":
         pistes=request.POST.get('draw')
         pist=pistes.split(",")
@@ -271,14 +267,27 @@ def containsPoint(request):
                 y=pist[pist.index(p)+1]
                 point=Point(float(y),float(x))
                 pointlist.append(point)
-        count=0
+        
 
-        linear=LineString(pointlist).buffer(0.005)
+        linear=LineString(pointlist).buffer(0.003)
+        
         for multi in global_contain_coordinate:
-            for c in pointlist:
-                if multi.contains(c):
-                    linear=linear.difference(multi)
-        for l in list(linear):
-            line+="_"+str(l.centroid.x)+","+str(l.centroid.y)
+            if linear.contains(multi):
+                linear=linear.difference(multi.buffer(0.0))
+
+        
+        if linear.intersection(gi).geom_type=='Polygon':
+            line+="_"+str(linear.centroid.x)+","+str(linear.centroid.y)
+        else:
+            for l in list(linear.intersection(gi)):
+                line+="_"+str(l.centroid.x)+","+str(l.centroid.y)
+            
+        
     return HttpResponse(json.dumps({'p':line[1:]}),content_type="application/json")
 
+def getGu(request):
+    global getGu
+    if request.method=='POST':
+        getGu=request.POST.get('gu')
+    return HttpResponse(json.dumps({'result':'true'}),content_type="application/json")
+        

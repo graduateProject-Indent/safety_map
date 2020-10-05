@@ -218,4 +218,17 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# venv
+myvenv/
+.Python
+[Bb]in
+[Ii]nclude
+[Ll]ib
+[Ll]ib64
+[Ll]ocal
+[Ss]cripts
+pyvenv.cfg
+.venv
+pip-selfcheck.json
+
 # End of https://www.gitignore.io/api/vim,django,python,windows
