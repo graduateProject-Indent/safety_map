@@ -226,44 +226,39 @@ def manage_protecter(request):
 
 
 
-def danger_map(request): # 한 : 위험물 지도를 보여줌(안심장소와 결국 비슷함)
+def danger_map(request): # 한 : [미완성]위험물 지도를 보여줌(안심장소와 비슷하게 마커 띄우기)
     map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=12)
     dangers = Danger.objects
     dangers = map._repr_html_()
     return render(request, 'danger_map.html', {'dangers':dangers})
 
-def register_danger(request): # 한 : [미완성] 위험물 등록 폼
-    g = geocoder.ip('me')
+def register_danger(request): # han : [수정요구]
+    g = geocoder.ip('me') # han : [!]현재위치
     danger_loc = g.latlng
-    print("0000000000000000000000000000000000000000000000000000000000000000000000000000")
-
+    print("--------위험물 테스트 출력------") #
 
     if request.method == "POST":
         post_danger_type = request.POST['danger_type']
-        #post_danger_img = request.POST['danger_img']
-        #post_danger_img = request.POST.get('danger_img',False)
-        post_danger_img = request.FILES['danger_img']
+        post_danger_img = request.FILES.get('danger_img',False)
+
+        print(post_danger_type)#  
+        print(post_danger_img)#
+        print(danger_loc)
 
         
-        print(post_danger_type)  
-        print(post_danger_img)
-        print(danger_loc) # 한 : 현재 위치
-        
-        '''
-
-        '''
-        print("111111")
-        
-        danger_loc_point = Point(danger_loc[0],danger_loc[1])
+        #danger_loc_point = Point(danger_loc[0],danger_loc[1])
         d={"type":"Point","coordinates":danger_loc}
         print(wkb.dumps(d))
-        model_test_instance = Danger(danger_type = post_danger_type, danger_img = post_danger_img,danger_loc=wkb.dumps(d))
+        model_test_instance = Danger(danger_type = post_danger_type, danger_img = post_danger_img,
+                                     danger_loc=wkb.dumps(d)) # han [!] auth_user_id_fk가 필요해요
         model_test_instance.save()
         
-        
+        print("-----------출력끝--------------") #
+        return render(request,'danger_map.html') # han : 위험물 등록이 성공하면 danger_map.html
         
     else:
-        print('\n'+'else 문 else else else')
+        print('\n'+'else 문입니다  else else else')#
+        print("-----------출력끝--------------") #
         
     return render(request, 'register_danger.html', {'g':g.latlng})
     
