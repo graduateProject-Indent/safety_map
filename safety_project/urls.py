@@ -43,3 +43,6 @@ urlpatterns = [
     path('<int:danger_id>/',safety_map.views.detail_danger,name='detail_danger'), #위험물 상세보기
     path('getGu/',safety_map.views.getGu,name='getGu'),
 ]
+# 한정원
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

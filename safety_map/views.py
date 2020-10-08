@@ -241,7 +241,9 @@ def register_danger(request): # 한 : [미완성] 위험물 등록 폼
     if request.method == "POST":
         post_danger_type = request.POST['danger_type']
         #post_danger_img = request.POST['danger_img']
-        post_danger_img = request.POST.get('danger_img',False)
+        #post_danger_img = request.POST.get('danger_img',False)
+        post_danger_img = request.FILES['danger_img']
+
         
         print(post_danger_type)  
         print(post_danger_img)
