@@ -32,9 +32,11 @@ from pprint import pprint
 import branca.colormap as cmp
 import math
 from geomet import wkb
-
+import urllib
+from django.views.generic.base import TemplateView, View
 from django.http import HttpResponseRedirect
-
+from django.contrib.auth.models import User
+from django.contrib import auth
 
 g = geocoder.ip('me')
 gu_coordinate=""
@@ -345,3 +347,7 @@ def getGu(request):
         getGu=request.POST.get('gu')
     return HttpResponse(json.dumps({'result':'true'}),content_type="application/json")
         
+
+def logout(request):
+    auth.logout(request)
+    return render(request, 'startpage.html')
