@@ -42,4 +42,8 @@ urlpatterns = [
     path('register_danger/',safety_map.views.register_danger,name='register_danger'), #위험물등록하기
     path('<int:danger_id>/',safety_map.views.detail_danger,name='detail_danger'), #위험물 상세보기
     path('getGu/',safety_map.views.getGu,name='getGu'),
+    # 로그인
+    path('account/', include('allauth.urls')),
+    path('accounts/logout/', safety_map.views.logout, name='logout'),
+    path('accounts/logout/', safety_map.views.mylogout, name='mylogout'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
