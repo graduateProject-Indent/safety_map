@@ -156,8 +156,8 @@ ACCOUNT_LOGOUT_ON_GET = True # 로그아웃 버튼 클릭 시 자동 로그아�
 SOCIALACCOUNT_PROVIDERS = {
     'kakao' : {
         'APP' : {
-            'client_id' : 'bcfde4d9a100370e302939202c7dd12b',
-            'secret' : '491056',
+            'client_id' : config['KAKAO']['CLIENT_ID'],
+            'secret' : config['KAKAO']['SECRET'],
             'key': ''
         }
     }

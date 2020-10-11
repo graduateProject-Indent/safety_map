@@ -44,5 +44,6 @@ urlpatterns = [
     path('getGu/',safety_map.views.getGu,name='getGu'),
     # 로그인
     path('account/', include('allauth.urls')),
-    path('', safety_map.views.logout, name='logout'),
+    path('accounts/logout/', safety_map.views.logout, name='logout'),
+    path('accounts/logout/', safety_map.views.mylogout, name='mylogout'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

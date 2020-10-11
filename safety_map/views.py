@@ -351,3 +351,7 @@ def getGu(request):
 def logout(request):
     auth.logout(request)
     return render(request, 'startpage.html')
+
+def mylogout(request):
+    auth.logout(request)
+    return render(request, 'mypage.html')
