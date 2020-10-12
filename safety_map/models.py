@@ -42,7 +42,7 @@ class AuthUser(models.Model):
     last_login = models.DateTimeField(blank=True, null=True)
     is_superuser = models.IntegerField()
     username = models.CharField(unique=True, max_length=150)
-    first_name = models.CharField(max_length=30)
+    first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     email = models.CharField(max_length=254)
     is_staff = models.IntegerField()
@@ -76,7 +76,6 @@ class AuthUserUserPermissions(models.Model):
 
 
 class Danger(models.Model):
-    objects = models.Manager()
     danger_pk = models.AutoField(primary_key=True)
     danger_type = models.CharField(max_length=30)
     danger_img = models.TextField()
@@ -133,7 +132,6 @@ class DjangoSession(models.Model):
 
 
 class DongLevel(models.Model):
-    objects = models.Manager()
     dong_level_pk = models.AutoField(primary_key=True)
     dong_level_tot = models.IntegerField(blank=True, null=True)
     dong_nm = models.CharField(max_length=30)
@@ -145,7 +143,6 @@ class DongLevel(models.Model):
 
 
 class Female(models.Model):
-    objects = models.Manager()
     female_pk = models.AutoField(primary_key=True)
     female_crime_type = models.CharField(max_length=30, blank=True, null=True)
     female_crime_loc = models.TextField()  # This field type is a guess.
@@ -156,7 +153,6 @@ class Female(models.Model):
 
 
 class Female2(models.Model):
-    objects = models.Manager()
     female2_pk = models.AutoField(primary_key=True)
     female2_crime_type = models.CharField(max_length=30)
     female2_crime_loc = models.TextField()  # This field type is a guess.
@@ -168,7 +164,6 @@ class Female2(models.Model):
 
 
 class Kid(models.Model):
-    objects = models.Manager()
     kid_pk = models.AutoField(primary_key=True)
     kid_accident_type = models.CharField(max_length=30)
     kid_accident_loc = models.TextField()  # This field type is a guess.
@@ -179,8 +174,20 @@ class Kid(models.Model):
         db_table = 'kid'
 
 
+class Roadtohexgrid(models.Model):
+    hexgrid_pk = models.AutoField(primary_key=True)
+    hex_q = models.IntegerField()
+    hex_r = models.IntegerField()
+    hexgrid_loc = models.TextField(blank=True, null=True)  # This field type is a guess.
+    hexgrid_gu = models.CharField(max_length=30, blank=True, null=True)
+    is_danger = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'roadToHexgrid'
+
+
 class SafetyZone(models.Model):
-    objects = models.Manager()
     safety_zone_pk = models.AutoField(primary_key=True)
     safety_type = models.CharField(max_length=30)
     safety_loc = models.TextField()  # This field type is a guess.
