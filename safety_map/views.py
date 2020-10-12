@@ -358,3 +358,7 @@ def aStar(request):
     pistes = {"type":"FeatureCollection","features":[crime_location]}
     
     return HttpResponse(json.dumps({'pistes':pistes}),content_type="application/json")
+
+def logout(request):
+    auth.logout(request)
+    return render(request, 'startpage.html') 
