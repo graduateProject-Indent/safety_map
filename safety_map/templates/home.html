@@ -32,8 +32,6 @@
                                        '<li id="item"><input type="submit" name="kid_filter" class="item" value="어린이보행사고"/></li>'+
                                         '<li id="item"><input type="submit" name="kid_filter" class="item" value="스쿨존사고"/></li>'+
                                         '<li id="item"><input type="submit" name="kid_filter" class="item" value="어린이대상범죄현황"/></li>'+
-                                        '<li id="item"><input type="submit" name="kid_filter" class="item" value="등굣길사고주의구간"/></li>'+
-                                        '<li id="item"><input type="submit" name="kid_filter" class="item" value="하굣길사고주의구간"/></li>' +
                                         '</ul>');$("ul form.female_select").slideToggle("fast");}
                 else{$("ul form.female_select ul").hide();
                     $("ul form.female_select").html( ' {% csrf_token %} <ul class="sub">'+
@@ -41,7 +39,6 @@
                                         '<li id="item"><input type="submit" name="female_filter" class="item" value="절도"/></li>'+
                                         '<li id="item"><input type="submit" name="female_filter" class="item" value="폭력"/></li>'+
                                         '<li id="item"><input type="submit" name="female_filter" class="item" value="성폭력"/></li>'+
-                                        '<li id="item"><input type="submit" name="female_filter" class="item" value="전체"/></li>' +
                                         '</ul>');$("ul form.female_select").slideToggle("fast");
                                         }
                
@@ -161,21 +158,30 @@
                             </div>
 
                             <div class="menu_item">
-                                <button id="female" value="여성">여성</button>    | <button id="child" value="아동">아동</button>
-                                <li> 
-                                    
+
+                                <button id="female" value="여성">여성</button>
+                                &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+                                <button id="child" value="아동"> 아동</button>
+                                <li>
+
                                     <form action='{% url "showFemale" %}' method='POST' class='female_select'>
                                         {% csrf_token %}
                                         <ul class="sub">
-                                        <li id="item"><input type="submit" name="female_filter" class="item" value="강도"/></li>
-                                        <li id="item"><input type="submit" name="female_filter" class="item" value="절도"/></li>
-                                        <li id="item"><input type="submit" name="female_filter" class="item" value="폭력"/></li>
-                                        <li id="item"><input type="submit" name="female_filter" class="item" value="성폭력"/></li>
-                                        <li id="item"><input type="submit" name="female_filter" class="item" value="전체"/></li>
+
+                                            <li id="item"><input type="submit" name="female_filter" class="item"
+                                                    value="강도" /></li>
+                                            <li id="item"><input type="submit" name="female_filter" class="item"
+                                                    value="절도" /></li>
+                                            <li id="item"><input type="submit" name="female_filter" class="item"
+                                                    value="폭력" /></li>
+                                            <li id="item"><input type="submit" name="female_filter" class="item"
+                                                    value="성폭력" /></li>
+                                            <li id="item"><input type="submit" name="female_filter" class="item"
+                                                    value="전체" /></li>
+
                                         </ul>
                                     </form>
 
-                            
                                 </li>
                             </div>
 
@@ -185,7 +191,7 @@
                             <a class="filter_menu">
                                 <div class="menu_item">이용안내</div>
                             </a>
-                            <a class="filter_menu" href="/save_mapimg">
+                            <a class="filter_menu" href="{% url 'savemapimg' %}">
                                 <div class="menu_item">지도저장</div>
                             </a>
                             <a class="filter_menu" href="{% url 'pathSetting' %}">
@@ -209,7 +215,7 @@
     </div>  
 </div>   
 
-    <!--구 별 버튼 캐러셀-->%}
+    <!--구 별 버튼 캐러셀-->
     {% csrf_token %}
     <div class="gu_box" id="hidden_gu" style="display: none;">
         <input type="button" name="getGu" class="gu_item" value="강남구" />

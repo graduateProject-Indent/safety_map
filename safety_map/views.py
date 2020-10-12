@@ -20,19 +20,25 @@ import numpy as np
 from shapely import *
 from shapely.geometry import *
 from shapely.ops import unary_union
-#from shapely import wkb,wkt
-#from shapely.geometry import mapping, shape, Polygon, MultiPoint,MultiPolygon,Point
 from shapely.validation import explain_validity
 from plpygis import Geometry
 from folium.features import CustomIcon
 from PIL import ImageGrab # pip install pillow
 import pandas as pd # pip install pandas
+from django.db import models
+from django.http import HttpResponse
 from pprint import pprint
 import branca.colormap as cmp
 import math
 import hexgrid
 import morton
 import configparser
+from geomet import wkb
+import urllib
+from django.views.generic.base import TemplateView, View
+from django.http import HttpResponseRedirect
+from django.contrib.auth.models import User
+from django.contrib import auth
 config = configparser.ConfigParser()
 config.read('database.ini')
 g = geocoder.ip('me')
@@ -43,6 +49,7 @@ startX=""
 startY=""
 endX=""
 endY=""
+
 # Create your views here.
 def home(request):
     return render(request, 'home.html')
@@ -88,6 +95,7 @@ def showFemale(request):
 
 
 def filter_safetyzone(request): #안심장소보기
+    global getGu
     safety_type = ""
     gu_type = ""
     mkurl = ""
@@ -100,7 +108,7 @@ def filter_safetyzone(request): #안심장소보기
     # 편의점을 선택한 경우 선택된 구를 출력
     if(safety_type=="편의점") : 
         mkurl = "safety_map/static/img/mk_cvs.png" #편의점 마커 이미지
-        safetyzone_ob_all = SafetyZone.objects.filter(gu='종로구') # 구 입력 방식 정해지면 '종로구'자리에 gu_type 넣으면 된다.
+        safetyzone_ob_all = SafetyZone.objects.filter(gu=getGu) # 구 입력 방식 정해지면 '종로구'자리에 gu_type 넣으면 된다.
 
     # 경찰서, 지구대, 파출소를 선택한 경우 서울 전체
     else : 
@@ -126,13 +134,15 @@ def filter_safetyzone(request): #안심장소보기
 
 def save_mapimg(request):
     import time # 맨 위에 import 있는데 지우면 에러가 나는 행
+    map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=12)
     now  = time.localtime()
     time = "%04d-%02d-%02d-%02dh-%02dm-%02ds" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
     img = ImageGrab.grab()
     # 캡쳐한 지도 사진 저장 위치
     saveas = "{}{}".format("safety_map/static/save_mapimg/safetymap"+time,'.png')
     img.save(saveas)
-    return render(request,'home.html')
+    maps=map._repr_html_()
+    return render(request,'home.html',{'map':maps})
 
 
 def mypage(request):
@@ -140,21 +150,27 @@ def mypage(request):
 
 def showKid(request): #아동필터
     global g
+    global getGu
     accident_type = ""
     loc_list = []
 
-    if request.method == "POST":
-        filter_value = request.POST['kid_filter']
+    if request.method == 'POST':
+        filter_value = request.POST["kid_filter"]
         accident_type = filter_value
-       
+        
     # 어린이 보행사고를 클릭한 경우    
-    if filter_value == "어린이보행사고" or "스쿨존사고":
+    if filter_value == "스쿨존사고":
         accident_type = filter_value+"다발지역"
-    else :
+    elif filter_value == "어린이보행사고":
+        accident_type =filter_value
+    else:
         accident_type = filter_value
-    
-    kid_accident = Kid.objects.filter(kid_accident_type = accident_type).all()
+        
+    kid_accident = Kid.objects.filter(gu=getGu, kid_accident_type = accident_type).all()
 
+    #colormap_dept = cmp.StepColormap(colors=['#00ae53', '#86dc76', '#daf8aa','#ffe6a4', '#ff9a61', '#ee0028'], 
+    #                                vmin=10, vmax=310)
+                                    
     for i in kid_accident:
         gis = Geometry(i.kid_accident_loc.hex()[8:])
         to_geojson = convert.wkt_to_geojson(str(gis.shapely))
@@ -163,18 +179,19 @@ def showKid(request): #아동필터
         crime_location = {"type":"Feature","geometry":to_coordinate}
         loc_list.append(crime_location)
     pistes = {"type":"FeatureCollection","features":loc_list}
+
     map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=15)
-    
+
     folium.GeoJson(pistes).add_to(map)
     
     maps=map._repr_html_()
     return render(request, 'home.html',{'map':maps,'pistes':pistes})
+    #return render(request, 'home.html',{'map':maps})
    
 
 
-
 def donglevel(request):
-    map = folium.Map(location=[37.6511988,127.0161604],zoom_start=12)
+    map = folium.Map(location=[37.5518838,126.9858763],zoom_start=12)
     dongm = DongLevel.objects.values('dong_level_tot','dong_nm')
     dong_df = pd.DataFrame(dongm)
     dongloc = DongLevel.objects.all()
@@ -187,7 +204,7 @@ def donglevel(request):
     
     folium.Choropleth(geo_data=pistes, data = dong_df,
                     columns=('dong_nm','dong_level_tot'),
-                    fill_color='Pastel1',
+                    fill_color='BuPu',
                     key_on='feature.properties.dong_nm'
                     ).add_to(map)
 
@@ -203,19 +220,33 @@ def manage_danger_map(request):
 def manage_protecter(request):
     return render(request, 'manage_protecter.html')
 
-def danger_map(request):
+
+def danger_map(request): # 한 : 위험물 지도를 보여줌(안심장소와 결국 비슷함)
+    map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=12)
     dangers = Danger.objects
+    dangers = map._repr_html_()
     return render(request, 'danger_map.html', {'dangers':dangers})
 
-def register_danger(request):
+def register_danger(request): # 한 : [미완성] 위험물 등록 폼
+    g = geocoder.ip('me')
+    danger_loc = g.latlng
+
     if request.method == "POST":
-        form = DangerForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('danger_map')
+        post_danger_type = request.POST['danger_type']
+        #post_danger_img = request.POST['danger_img']
+        post_danger_img = request.POST.get('danger_img',False)
+        danger_loc_point = Point(danger_loc[0],danger_loc[1])
+        d={"type":"Point","coordinates":danger_loc}
+        model_test_instance = Danger(danger_type = post_danger_type, danger_img = post_danger_img,danger_loc=wkb.dumps(d))
+        model_test_instance.save()
+        
+        
+        
     else:
-        form = DangerForm()
-    return render(request, 'register_danger.html', {'form':form})
+        pass
+        
+    return render(request, 'register_danger.html', {'g':g.latlng})
+    
 
 def detail_danger(request, danger_id):
     danger_detail = get_object_or_404(Danger, pk=danger_id)

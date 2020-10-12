@@ -17,6 +17,10 @@ from django.contrib import admin
 from django.urls import path, include
 import safety_map.views
 
+# 한 : 이미지 업로드
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     #path('home/',safety_map.views.home,name='home'),
@@ -25,8 +29,8 @@ urlpatterns = [
     path('female/',safety_map.views.showFemale,name='showFemale'), #여성지도 반환
     path('pathfinder/',safety_map.views.pathSetting,name='pathSetting'),
     path('pathFinder/',safety_map.views.pathFinder,name='pathFinder'),#길찾기 구 반환
-    path('normalPath/',safety_map.views.normalPath,name='normalPath'),
-    path('hardPath/',safety_map.views.aStar,name='aStar'),
+    path('normalPath/',safety_map.views.normalPath,name='normalPath'),#일반 길찾기
+    path('hardPath/',safety_map.views.aStar,name='aStar'),#우회 길찾기
     path('kid/',safety_map.views.showKid,name='showKid'),
     path('filter_safeyzone/',safety_map.views.filter_safetyzone,name = 'filter_safetyzone'),
     path('save_mapimg/',safety_map.views.save_mapimg,name='savemapimg'),
@@ -39,5 +43,8 @@ urlpatterns = [
     path('register_danger/',safety_map.views.register_danger,name='register_danger'), #위험물등록하기
     path('<int:danger_id>/',safety_map.views.detail_danger,name='detail_danger'), #위험물 상세보기
     path('getGu/',safety_map.views.getGu,name='getGu'),
-    
-]
+    # 로그인
+    path('account/', include('allauth.urls')),
+    path('accounts/logout/', safety_map.views.logout, name='logout'),
+    path('accounts/logout/', safety_map.views.mylogout, name='mylogout'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
