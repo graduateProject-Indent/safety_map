@@ -39,9 +39,16 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'safety_map',
+    
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    'allauth.socialaccount.providers.kakao',
 ]
 
 MIDDLEWARE = [
@@ -138,3 +145,29 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # han added this line
 MEDIA_URL='/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
+SITE_ID = 1
+LOGIN_REDIRECT_URL='/' # 로그인 후 리디렉션 할 페이지
+ACCOUNT_LOGOUT_REDIRECT_URL = '/' # 로그아웃 후 리디렉션 할 페이지
+ACCOUNT_LOGOUT_ON_GET = True # 로그아웃 버튼 클릭 시 자동 로그아웃
+
+##kakao login
+
+SOCIALACCOUNT_PROVIDERS = {
+    'kakao' : {
+        'APP' : {
+            'client_id' : config['KAKAO']['CLIENT_ID'],
+            'secret' : config['KAKAO']['SECRET'],
+            'key': ''
+        }
+    }
+}
+
+AUTHENTICATION_BACKENDS = [
+
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]

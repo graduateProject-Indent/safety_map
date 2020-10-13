@@ -8,6 +8,7 @@
 from django.db import models
 
 class AuthGroup(models.Model):
+    objects = models.Manager()
     name = models.CharField(unique=True, max_length=150)
 
     class Meta:
@@ -16,6 +17,7 @@ class AuthGroup(models.Model):
 
 
 class AuthGroupPermissions(models.Model):
+    objects = models.Manager()
     group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
     permission = models.ForeignKey('AuthPermission', models.DO_NOTHING)
 
@@ -26,6 +28,7 @@ class AuthGroupPermissions(models.Model):
 
 
 class AuthPermission(models.Model):
+    objects = models.Manager()
     name = models.CharField(max_length=255)
     content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING)
     codename = models.CharField(max_length=100)
@@ -37,11 +40,12 @@ class AuthPermission(models.Model):
 
 
 class AuthUser(models.Model):
+    objects = models.Manager()
     password = models.CharField(max_length=128)
     last_login = models.DateTimeField(blank=True, null=True)
     is_superuser = models.IntegerField()
     username = models.CharField(unique=True, max_length=150)
-    first_name = models.CharField(max_length=30)
+    first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     email = models.CharField(max_length=254)
     is_staff = models.IntegerField()
@@ -55,6 +59,7 @@ class AuthUser(models.Model):
 
 
 class AuthUserGroups(models.Model):
+    objects = models.Manager()
     user = models.ForeignKey(AuthUser, models.DO_NOTHING)
     group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
 
@@ -65,6 +70,7 @@ class AuthUserGroups(models.Model):
 
 
 class AuthUserUserPermissions(models.Model):
+    objects = models.Manager()
     user = models.ForeignKey(AuthUser, models.DO_NOTHING)
     permission = models.ForeignKey(AuthPermission, models.DO_NOTHING)
 
@@ -91,6 +97,7 @@ class Danger(models.Model):
 
 
 class DjangoAdminLog(models.Model):
+    objects = models.Manager()
     action_time = models.DateTimeField()
     object_id = models.TextField(blank=True, null=True)
     object_repr = models.CharField(max_length=200)
@@ -105,6 +112,7 @@ class DjangoAdminLog(models.Model):
 
 
 class DjangoContentType(models.Model):
+    objects = models.Manager()
     app_label = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
 
@@ -115,6 +123,7 @@ class DjangoContentType(models.Model):
 
 
 class DjangoMigrations(models.Model):
+    objects = models.Manager()
     app = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
     applied = models.DateTimeField()
@@ -125,6 +134,7 @@ class DjangoMigrations(models.Model):
 
 
 class DjangoSession(models.Model):
+    objects = models.Manager()
     session_key = models.CharField(primary_key=True, max_length=40)
     session_data = models.TextField()
     expire_date = models.DateTimeField()
@@ -179,6 +189,20 @@ class Kid(models.Model):
     class Meta:
         managed = False
         db_table = 'kid'
+
+
+class Roadtohexgrid(models.Model):
+    objects = models.Manager()
+    hexgrid_pk = models.AutoField(primary_key=True)
+    hex_q = models.IntegerField()
+    hex_r = models.IntegerField()
+    hexgrid_loc = models.TextField(blank=True, null=True)  # This field type is a guess.
+    hexgrid_gu = models.CharField(max_length=30, blank=True, null=True)
+    is_danger = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'roadToHexgrid'
 
 
 class SafetyZone(models.Model):

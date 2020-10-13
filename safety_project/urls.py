@@ -16,8 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 import safety_map.views
-
-# 한 : 이미지 업로드
+# han : 이미지 업로드
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -29,7 +28,8 @@ urlpatterns = [
     path('female/',safety_map.views.showFemale,name='showFemale'), #여성지도 반환
     path('pathfinder/',safety_map.views.pathSetting,name='pathSetting'),
     path('pathFinder/',safety_map.views.pathFinder,name='pathFinder'),#길찾기 구 반환
-    path('containsPoint/',safety_map.views.containsPoint,name='containsPoint'),#길찾기 길 포인트 반환
+    path('normalPath/',safety_map.views.normalPath,name='normalPath'),#일반 길찾기
+    path('hardPath/',safety_map.views.aStar,name='aStar'),#우회 길찾기
     path('kid/',safety_map.views.showKid,name='showKid'),
     path('filter_safeyzone/',safety_map.views.filter_safetyzone,name = 'filter_safetyzone'),
     path('save_mapimg/',safety_map.views.save_mapimg,name='savemapimg'),
@@ -42,7 +42,10 @@ urlpatterns = [
     path('register_danger/',safety_map.views.register_danger,name='register_danger'), #위험물등록하기
     path('<int:danger_id>/',safety_map.views.detail_danger,name='detail_danger'), #위험물 상세보기
     path('getGu/',safety_map.views.getGu,name='getGu'),
-]
+    # 로그인
+    path('account/', include('allauth.urls')),
+    path('accounts/logout/', safety_map.views.logout, name='logout'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # han added this line
 if settings.DEBUG:

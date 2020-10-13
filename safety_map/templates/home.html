@@ -189,7 +189,7 @@
                             <a class="filter_menu">
                                 <div class="menu_item">이용안내</div>
                             </a>
-                            <a class="filter_menu" href="/save_mapimg">
+                            <a class="filter_menu" href="{% url 'savemapimg' %}">
                                 <div class="menu_item">지도저장</div>
                             </a>
                             <a class="filter_menu" href="{% url 'pathSetting' %}">
@@ -213,7 +213,7 @@
     </div>  
 </div>   
 
-    <!--구 별 버튼 캐러셀-->%}
+    <!--구 별 버튼 캐러셀-->
     {% csrf_token %}
     <div class="gu_box" id="hidden_gu" style="display: none;">
         <input type="button" name="getGu" class="gu_item" value="강남구" />
