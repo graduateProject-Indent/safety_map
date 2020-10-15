@@ -234,19 +234,21 @@ def danger_map(request): # 한 : [미완성]위험물 지도를 보여줌(안심
     dangers = map._repr_html_()
     return render(request, 'danger_map.html', {'dangers':dangers})
 
-def register_danger(request): # han : [수정요구]
-    g = geocoder.ip('me') # han : [!]현재위치
+def register_danger(request): 
+    g = geocoder.ip('me') 
     danger_loc = g.latlng
 
     if request.method == "POST":
         post_danger_type = request.POST['danger_type']
         post_danger_img = request.FILES.get('danger_img',False)
         point_danger_loc={"type":"Point","coordinates":danger_loc}
-
-        model_test_instance = Danger(danger_type = post_danger_type, danger_img = post_danger_img,
-                                     danger_loc=wkb.dumps(point_danger_loc)) # han [!] auth_user_id_fk가 필요해요
-        model_test_instance.save()
+        authUser_instance = AuthUser.objects.get(id = request.user.id)
         
+        
+        model_test_instance = Danger(danger_type = post_danger_type, danger_img = post_danger_img,
+                                     danger_loc=wkb.dumps(point_danger_loc),
+                                     auth_user_id_fk = authUser_instance) 
+        model_test_instance.save()
 
         return render(request,'danger_map.html') # han : 위험물 등록이 성공하면 danger_map.html
         
