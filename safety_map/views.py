@@ -1,6 +1,7 @@
 from safety_map.models import *
 from django.shortcuts import render,get_object_or_404,redirect,HttpResponse
 from .models import *
+from .Astar import * 
 import random
 import folium
 import binascii
@@ -19,8 +20,6 @@ import numpy as np
 from shapely import *
 from shapely.geometry import *
 from shapely.ops import unary_union
-#from shapely import wkb,wkt
-#from shapely.geometry import mapping, shape, Polygon, MultiPoint,MultiPolygon,Point
 from shapely.validation import explain_validity
 from plpygis import Geometry
 from folium.features import CustomIcon
@@ -31,15 +30,25 @@ from django.http import HttpResponse
 from pprint import pprint
 import branca.colormap as cmp
 import math
+import hexgrid
+import morton
+import configparser
 from geomet import wkb
-
+import urllib
+from django.views.generic.base import TemplateView, View
 from django.http import HttpResponseRedirect
-
-
+from django.contrib.auth.models import User
+from django.contrib import auth
+config = configparser.ConfigParser()
+config.read('database.ini')
 g = geocoder.ip('me')
-gu_coordinate=""
-global_contain_coordinate=[]
-# getGu=""
+startGu=""
+endGu=""
+getGu=""
+startX=""
+startY=""
+endX=""
+endY=""
 
 # Create your views here.
 def home(request):
@@ -63,10 +72,11 @@ def showFemale(request):
         filter_value=request.POST['female_filter']
         crime_type="전체_"+filter_value
     female_total=Female2.objects.filter(gu=getGu,female2_crime_type=crime_type).all()
-    loc_list=[]
+
     linear = cmp.LinearColormap(
-    [ 'purple','green','blue'],
-    vmin=10, vmax=310)
+    [ 'green','blue','red'],
+    vmin=10, vmax=300)
+
     map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=15)
     for loc in female_total:
         gis= Geometry(loc.female2_crime_loc.hex()[8:])
@@ -78,7 +88,7 @@ def showFemale(request):
             'weight': 1  
         }).add_to(map)
         linear.add_to(map)
-    pistes = {"type":"FeatureCollection","features":loc_list}
+    
     
     maps=map._repr_html_()
     return render(request, 'home.html',{'map':maps})
@@ -211,13 +221,6 @@ def manage_protecter(request):
     return render(request, 'manage_protecter.html')
 
 
-
-
-
-
-
-
-
 def danger_map(request): # 한 : 위험물 지도를 보여줌(안심장소와 결국 비슷함)
     map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=12)
     dangers = Danger.objects
@@ -227,33 +230,20 @@ def danger_map(request): # 한 : 위험물 지도를 보여줌(안심장소와 �
 def register_danger(request): # 한 : [미완성] 위험물 등록 폼
     g = geocoder.ip('me')
     danger_loc = g.latlng
-    print("0000000000000000000000000000000000000000000000000000000000000000000000000000")
-
 
     if request.method == "POST":
         post_danger_type = request.POST['danger_type']
         #post_danger_img = request.POST['danger_img']
         post_danger_img = request.POST.get('danger_img',False)
-        
-        print(post_danger_type)  
-        print(post_danger_img)
-        print(danger_loc) # 한 : 현재 위치
-        
-        '''
-
-        '''
-        print("111111")
-        
         danger_loc_point = Point(danger_loc[0],danger_loc[1])
         d={"type":"Point","coordinates":danger_loc}
-        print(wkb.dumps(d))
         model_test_instance = Danger(danger_type = post_danger_type, danger_img = post_danger_img,danger_loc=wkb.dumps(d))
         model_test_instance.save()
         
         
         
     else:
-        print('\n'+'else 문 else else else')
+        pass
         
     return render(request, 'register_danger.html', {'g':g.latlng})
     
@@ -264,11 +254,13 @@ def detail_danger(request, danger_id):
 
 
 def pathSetting(request):
-    return render(request,'pathFinder.html')
+    map = folium.Map(location=g.latlng,zoom_start=15)
+    maps=map._repr_html_() 
+    api_key=config['DATABASE']['APPKEY']
+    return render(request,'pathFinder.html',{'map':maps,'api_key':api_key})
 
 def pathFinder(request): #위험지역 받는 함수
-    global global_contain_coordinate
-    global gu_coordinate
+    global startX,startY,endX,endY,startGu,endGu
     gu_list=['종로구','중구','용산구','성동구','광진구',
     '동대문구','중랑구','성북구','강북구','도봉구',
     '노원구','은평구','서대문구','마포구','양천구',
@@ -278,7 +270,10 @@ def pathFinder(request): #위험지역 받는 함수
     if request.method=="POST":
         startPoint=request.POST.get('start')
         endPoint=request.POST.get('end')
-        print(startPoint,endPoint)
+        startX=request.POST.get('startX')
+        startY=request.POST.get('startY')
+        endX=request.POST.get('endX')
+        endY=request.POST.get('endY')
         for find_gu in gu_list:
             if find_gu in startPoint:
                 startGu=find_gu
@@ -293,25 +288,18 @@ def pathFinder(request): #위험지역 받는 함수
         female_total=female_start.union(female_end,all=False)
         for loc in female_total:
             gis= Geometry(loc.female2_crime_loc.hex()[8:])
-            to_geojson=convert.wkt_to_geojson(str(gis.shapely))
-            to_coordinate=json.loads(to_geojson)
-            contain_coordinate=shape(to_coordinate)
-            global_contain_coordinate.append(contain_coordinate)
-            crime_location={"type":"Feature","geometry":to_coordinate}
+            contain_coordinate=shape(gis.geojson)
+            crime_location={"type":"Feature","geometry":gis.geojson}
             loc_list.append(crime_location)
-    pistes = {"type":"FeatureCollection","features":[]}
-   
-    return HttpResponse(json.dumps({'pistes':pistes}),content_type="application/json")
+    pistes = {"type":"FeatureCollection","features":loc_list}
+    return HttpResponse(json.dumps({'result':pistes}),content_type="application/json")
 
-def containsPoint(request): #위험 지역 우회
-    global gu_coordinate
+def normalPath(request):
+    global gu_coordinate,startX,startY,endX,endY
     pointlist=[]
+    polyline=[]
     line=""
-    line_point=[]
     count=0
-    gu_bound=Female2.objects.filter(female2_crime_type="구경계",gu="양천구").get()
-    gis= Geometry(gu_bound.female2_crime_loc.hex()[8:])
-    gi=shape(gis)
     if request.method=="POST":
         pistes=request.POST.get('draw')
         pist=pistes.split(",")
@@ -319,25 +307,14 @@ def containsPoint(request): #위험 지역 우회
             if (pist.index(p)%2==0):
                 x=p
                 y=pist[pist.index(p)+1]
-                point=Point(float(y),float(x))
+                point=[float(y),float(x)]
                 pointlist.append(point)
-        
-
-        linear=LineString(pointlist).buffer(0.003)
-        
-        for multi in global_contain_coordinate:
-            if linear.contains(multi):
-                linear=linear.difference(multi.buffer(0.0))
 
         
-        if linear.intersection(gi).geom_type=='Polygon':
-            line+="_"+str(linear.centroid.x)+","+str(linear.centroid.y)
-        else:
-            for l in list(linear.intersection(gi)):
-                line+="_"+str(l.centroid.x)+","+str(l.centroid.y)
-            
-        
-    return HttpResponse(json.dumps({'p':line[1:]}),content_type="application/json")
+    crime_location={"type":"Feature","geometry":{"type":"LineString","coordinates":pointlist}}
+  
+    pistes = {"type":"FeatureCollection","features":[crime_location]}
+    return HttpResponse(json.dumps({'pistes':pistes}),content_type="application/json")
 
 def getGu(request):
     global getGu
@@ -345,3 +322,43 @@ def getGu(request):
         getGu=request.POST.get('gu')
     return HttpResponse(json.dumps({'result':'true'}),content_type="application/json")
         
+def aStar(request):
+    global startGu,endGu
+    center=hexgrid.Point((float(startX)+float(endX))/2,(float(startY)+float(endY))/2)
+    rate = 110.574 / (111.320 * math.cos(37.55582994870823 * math.pi / 180))
+    grid = hexgrid.Grid(hexgrid.OrientationFlat, center, Point(rate*0.00015,0.00015), morton.Morton(2, 32))
+    sPoint=grid.hex_at(Point(float(startX),float(startY)))
+    ePoint=grid.hex_at(Point(float(endX),float(endY)))
+    map_size=max(abs(sPoint.q),abs(sPoint.r))
+    road1=Roadtohexgrid.objects.filter(is_danger=1,hexgrid_gu=startGu).all()
+    road2=Roadtohexgrid.objects.filter(is_danger=1,hexgrid_gu=endGu).all()
+    total_road=road1.union(road2,all=False)
+    wall1=Roadtohexgrid.objects.filter(is_danger=0,hexgrid_gu=startGu).all()
+    wall2=Roadtohexgrid.objects.filter(is_danger=0,hexgrid_gu=endGu).all()
+    total_wall=wall1.union(wall2,all=False)
+    wh=GridWithWeights(layout_flat,Point(rate*0.00015,0.00015),center,map_size+5)
+    for r in total_road:
+        gis= Geometry(r.hexgrid_loc.hex()[8:])
+        h=grid.hex_at(shape(gis.geojson))
+        wh.weights[(h.q,h.r)]=1
+    
+    for w in total_wall:
+        gis= Geometry(w.hexgrid_loc.hex()[8:])
+        h=grid.hex_at(shape(gis.geojson))
+        wh.weights[(h.q,h.r)]=200
+    
+    start, goal = (sPoint.q,sPoint.r), (ePoint.q,ePoint.r)
+    came_from, cost_so_far = a_star_search(wh, start, goal)
+    pointList=reconstruct_path(came_from, start=start, goal=goal)
+    plist=[]
+    for p in pointList:
+        point=wh.hex_to_pixel(hexgrid.Hex(p[0],p[1]))
+        plist.append([point.x,point.y])
+    crime_location={"type":"Feature","geometry":{"type":"LineString","coordinates":plist}}
+    pistes = {"type":"FeatureCollection","features":[crime_location]}
+    
+    return HttpResponse(json.dumps({'pistes':pistes}),content_type="application/json")
+
+def logout(request):
+    auth.logout(request)
+    return render(request, 'startpage.html') 

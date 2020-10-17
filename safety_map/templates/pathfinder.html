@@ -9,11 +9,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/leaflet.js"></script>
-<script
-    src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=김수아짱짱껄먠"></script>
+<script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey={{api_key}}"></script>
     
 <script type="text/javascript">
 	var map;
+    var leaf_map;
+    var is_danger;
 	var marker_s, marker_e, marker_p1, marker_p2;
 	var startX,startY,endX,endY;
 	var passList;
@@ -23,18 +24,11 @@
 	var resultdrawArr = [];
 	var setPoint=[];
     var startPoint,endPoint;
-    var when1,when2;
     var draw;
     $(document).ready(function () {
-            
-            console.log(window.outerHeight);
-            var size=window.outerHeight-40;
-            $('html').css('height','100%');
-            $('body').css('height','100%');
-            $('#map_wrap', this).css('height','100%');
-            $('#map_div', this).css('height','100%');
-            $('#map_div div').css('height','100%');
-            
+            //$('.menu_2').hide();
+            //$('div.map div div', this).removeAttr('style');
+
         });
     
 	function initTmap() {
@@ -65,7 +59,7 @@
                                 url : "https://apis.openapi.sk.com/tmap/geo/fullAddrGeo?version=1&format=json&callback=result",
                                 async : false,
                                 data : {
-                                    "appKey" : "김수아짱짱껄먠",
+                                    "appKey" : "{{api_key}}",
                                     "coordType" : "WGS84GEO",
                                     "fullAddr" : pointArray[i]
 						     },
@@ -154,6 +148,10 @@
                          })(i);
 					
 					} 
+                    //startX=String(startX).replace(/\'/gi, "\"");
+                    //startY=String(startY).replace(/\'/gi, "\"");
+                    //endX=String(endX).replace(/\'/gi, "\"");
+                    //endY=String(endY).replace(/\'/gi, "\"");
                     }).then((arg) =>{
                         $.ajax({
                             method:'POST',
@@ -162,12 +160,16 @@
                             data:{
                                 'start':startPoint,
                                 'end':endPoint,
+                                "startX" : startX,
+                                "startY" : startY,
+                                "endX" :endX,
+                                "endY" :endY,
                                 'csrfmiddlewaretoken': '{{ csrf_token }}'
                             },
                             dataType: "json",
                             success : (result) =>{ 
-                                pistes=result.pistes; 
-                                //var geo=vector_format.read(pistes,'Geometry');
+                            leaf_map = L.map('map').setView([startY,startX], 15);
+                            draw=result.result;
                                 
                             },
                         });
@@ -176,7 +178,7 @@
                         method : "POST",
                         url : "https://apis.openapi.sk.com/tmap/routes/pedestrian?version=1&format=json&callback=result",//
                         data : {
-						"appKey" : "김수아짱짱껄먠",
+						"appKey" : "{{api_key}}",
                         "startX" : startX,
 						"startY" : startY,
 						"endX" :endX,
@@ -228,154 +230,63 @@
                             console.log("success");
                             }, fail: (error) => {
                                 //console.log(error);
+                            },complete:function(){
+                                is_danger="험";
+                                if(is_danger!="위험"){
+                            $.ajax({
+                            method:'POST',
+                            url:"{% url 'normalPath' %}",
+                            async : false,
+                        data : {
+                            'draw':String(drawInfoArr),
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+					},
+                            success: (result) => {
+                              console.log(result.pistes);
+                              
+                            
+                            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                        maxZoom: 18
+                                    }).addTo(leaf_map)
+                            var markers = L.geoJSON(result.pistes).addTo(leaf_map);
+                            
+                            }, fail: (error) => {
+                                console.log(error);
                             }
                         }); 
                 
-                    }); 
-					$.when(when1, when2).then(function(v1,v2) {
-                            setTimeout(function(){$.ajax({
+
+                        }else{
+                            $.ajax({
                             method:'POST',
-                            url:"{% url 'containsPoint' %}",
+                            url:"{% url 'aStar' %}",
                             async : false,
-                            data:{
-                                'draw':String(drawInfoArr),
-                                'csrfmiddlewaretoken': '{{ csrf_token }}'
-                            },
-                            dataType: "json",
-                            success : (result) =>{
-                                draw=result.p;
-                                console.log(draw);
-                            },
-                            complete : (v) =>{
-                                $.ajax({
-                        method : "POST",
-                        url : "https://apis.openapi.sk.com/tmap/routes/pedestrian?version=1&format=json&callback=result",//
-                        data : {
-						"appKey" : "김수아짱짱껄먠",
-                        "startX" : startX,
-						"startY" : startY,
-						"endX" :endX,
-						"endY" :endY,
-						"passList" :draw,
-						"reqCoordType" : "WGS84GEO",
-						"resCoordType" : "EPSG3857",
-						"startName" : "출발지",
-						"endName" : "도착지"},
+                        data : { 'csrfmiddlewaretoken': '{{ csrf_token }}'},
                             success: (result) => {
-                                //console.log(result);
-                            var resultData = result.features;
-                            //console.log(resultData);
-
-                            //결과 출력
-                            var tDistance = "총 거리 : "
-                                    + ((resultData[0].properties.totalDistance) / 1000)
-                                            .toFixed(1) + "km,";
-                            var tTime = " 총 시간 : "
-                                    + ((resultData[0].properties.totalTime) / 60)
-                                            .toFixed(0) + "분";
-
-                            $("#result").text(tDistance + tTime);
+                            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                        maxZoom: 18
+                                    }).addTo(leaf_map); 
+                            var markers = L.geoJSON(draw,{
+                                style: {
+                                        color: "red", 
+                                        weight: 5, 
+                                        fillColor: "red", 
+                                        fillOpacity: 0.2
+                                    }}).addTo(leaf_map);
+                                var markers = L.geoJSON(result.pistes).addTo(leaf_map);
                             
-                            //기존 그려진 라인 & 마커가 있다면 초기화
-                            if (resultdrawArr.length > 0) {
-                                for ( var i in resultdrawArr) {
-                                    resultdrawArr[i]
-                                            .setMap(null);
-                                }
-                                resultdrawArr = [];
-                            }
-                            
-                            Afterdraw = [];
-
-                            for ( var i in resultData) { //for문 [S]
-                                var geometry = resultData[i].geometry;
-                                var properties = resultData[i].properties;
-                                var polyline_;
-                                
-
-
-                                if (geometry.type == "LineString") {
-                                    for ( var j in geometry.coordinates) {
-                                        // 경로들의 결과값(구간)들을 포인트 객체로 변환 
-                                        var latlng = new Tmapv2.Point(
-                                                geometry.coordinates[j][0],
-                                                geometry.coordinates[j][1]);
-                                        // 포인트 객체를 받아 좌표값으로 변환
-                                        var convertPoint = new Tmapv2.Projection.convertEPSG3857ToWGS84GEO(
-                                                latlng);
-                                        // 포인트객체의 정보로 좌표값 변환 객체로 저장
-                                        var convertChange = new Tmapv2.LatLng(
-                                                convertPoint._lat,
-                                                convertPoint._lng);
-                                        // 배열에 담기
-                                        Afterdraw.push(convertChange);
-                                    }
-                                    
-                                } else {
-                                    var markerImg = "";
-                                    var pType = "";
-                                    var size;
-
-                                    if (properties.pointType == "S") { //출발지 마커
-                                        markerImg = "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_s.png";
-                                        pType = "S";
-                                        size = new Tmapv2.Size(24, 38);
-                                    } else if (properties.pointType == "E") { //도착지 마커
-                                        markerImg = "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_e.png";
-                                        pType = "E";
-                                        size = new Tmapv2.Size(24, 38);
-                                    } else { //각 포인트 마커
-                                        markerImg = "http://topopen.tmap.co.kr/imgs/point.png";
-                                        pType = "P";
-                                        size = new Tmapv2.Size(8, 8);
-                                    }
-
-                                    // 경로들의 결과값들을 포인트 객체로 변환 
-                                    var latlon = new Tmapv2.Point(
-                                            geometry.coordinates[0],
-                                            geometry.coordinates[1]);
-
-                                    // 포인트 객체를 받아 좌표값으로 다시 변환
-                                    var convertPoint = new Tmapv2.Projection.convertEPSG3857ToWGS84GEO(
-                                            latlon);
-
-                                    var routeInfoObj = {
-                                        markerImage : markerImg,
-                                        lng : convertPoint._lng,
-                                        lat : convertPoint._lat,
-                                        pointType : pType
-                                    };
-                                    
-                                    // Marker 추가
-                                     marker_p = new Tmapv2.Marker(
-                                            {
-                                                position : new Tmapv2.LatLng(
-                                                        routeInfoObj.lat,
-                                                        routeInfoObj.lng),
-                                                icon : routeInfoObj.markerImage,
-                                                iconSize : size,
-                                                map : map
-                                            });
-                                }
-                            }//for문 [E]
-                            //console.log(drawInfoArr);
-                            drawLine(Afterdraw);
-                           
-                            console.log("success");
                             }, fail: (error) => {
                                 //console.log(error);
                             }
                         }); 
+
+                        }
+
                             }
-                        });
-                        },1000); 
-                       
+                        }); 
                 
-                        });
-                
-                
-                   
-        
+                    }); 
+				
 				
 				});//button function
 		
@@ -386,23 +297,7 @@
 	}
    
 	
-	function addComma(num) {
-		var regexp = /\B(?=(\d{3})+(?!\d))/g;
-		return num.toString().replace(regexp, ',');
-	}
 	
-	function drawLine(arrPoint) {
-		var polyline_;
-        
-		polyline_ = new Tmapv2.Polyline({
-			path : arrPoint,
-			strokeColor : "#DD0000",
-			strokeWeight : 6,
-			map : map
-		});
-		resultdrawArr.push(polyline_);
-        
-	}
     
 	
 </script>
@@ -433,7 +328,10 @@
 <p id="result"></p>
 <br />
 <div id="map_wrap" class="map_wrap3">
-    <div id="map_div"></div>
+    <div id="map_div"  style="display:none" ></div>
+    <div class="map" id="map">
+        {{ map|safe }}
+    </div>
 </div>
 
 
