@@ -192,6 +192,7 @@ class Roadtohexgrid(models.Model):
 
 
 class SafetyZone(models.Model):
+    objects = models.Manager()
     safety_zone_pk = models.AutoField(primary_key=True)
     safety_type = models.CharField(max_length=30)
     safety_loc = models.TextField()  # This field type is a guess.

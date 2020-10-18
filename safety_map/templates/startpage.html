@@ -28,7 +28,7 @@
     <br>
     {% load socialaccount %}
     {% if request.user.is_authenticated %}
-        <button class="start-btn" type="button" onclick="location.href='{% url "logout"%}'">
+        <button class="start-btn" type="button" onclick="location.href='{% url "logout" %}'">
             로그아웃
         </button></a>
     {% else %}
