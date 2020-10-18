@@ -316,20 +316,26 @@
     <div class="endpoint" type="text">
         <input value type="text" class="endpoint_input" placeholder="도착지 입력" id="fullAddr2"
 		name="fullAddr2" value="서울시 마포구 와우산로29가길 69">
-		<button id="btn_select">적용하기</button>
+        <button id="btn_select">적용하기</button>
+        
     </div>
 
     <a href="{% url 'donglevel' %}"><img class="path_close" src="{% static 'img/icon_gray_X.svg' %}"></a>
-    <img class="start_pathfinder" src="{% static 'img/icon_gray_person.svg' %}">
-</div>
+    <div class="start_pathfinder">
+        <input type="radio" id="radio1" name="pathfinder" value="안전" checked="checked">
+        <label for ="radio1">안전</label>
+        |
+        <input type="radio" id="radio2" name="pathfinder" value="최단">
+        <label for ="radio2">최단</label>
+    </div></div>
 
 <img class="myloc" src="{% static 'img/myloc_icon.png' %}">
 <div class="map_act_btn_wrap clear_box"></div>
 <p id="result"></p>
 <br />
 <div id="map_wrap" class="map_wrap3">
-    <div id="map_div"  style="display:none" ></div>
-    <div class="map" id="map">
+    <div id="map_div"  style="display:none;" ></div>
+    <div class="map" style=" position: relative; top: -30px; height: 100%;" id="map">
         {{ map|safe }}
     </div>
 </div>
