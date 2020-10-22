@@ -232,7 +232,11 @@ def danger_map(request): # 한 : [미완성]위험물 지도를 보여줌(안심
     map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=12)
     dangers = Danger.objects
     dangers = map._repr_html_()
-    return render(request, 'danger_map.html', {'dangers':dangers})
+    
+    danger_type = ""
+    
+    dangers = map._repr_html_()
+    return render(request, 'danger_map.html', {'danger_map':dangers})
 
 def register_danger(request): 
     g = geocoder.ip('me') 
