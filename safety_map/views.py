@@ -232,28 +232,62 @@ def danger_map(request): # 한 : [미완성]위험물 지도를 보여줌(안심
     map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=12)
     dangers = Danger.objects
     dangers = map._repr_html_()
+
     
-    danger_type = ""
+    danger_object_all = Danger.objects.all()
     
+    
+    for loc in danger_object_all:
+        # han : danger 마커 이미지
+        if(loc.danger_type=="cctv없음"):
+            mkurl = "safety_map/static/img/mk_no_cctv.png"
+        elif(loc.danger_type=="가로등없음"):
+            mkurl = "safety_map/static/img/mk_no_lamp.png"
+        elif(loc.danger_type=="주의시설"):
+            mkurl = "safety_map/static/img/mk_caution_place.png"
+        elif(loc.danger_type=="쓰레기적치"):
+            mkurl = "safety_map/static/img/mk_trash.png"
+        elif(loc.danger_type=="유해시설"):
+            mkurl = "safety_map/static/img/mk_harmful_place.png"
+        
+        icon = folium.features.CustomIcon(icon_image=mkurl,icon_size=(50,50))
+        
+        string_to_array_danger_loc = loc.danger_loc.split()
+        danger_x = float(string_to_array_danger_loc[0])
+        danger_y = float(string_to_array_danger_loc[1])
+        danger_a = [danger_x,danger_y]
+        
+        marker = folium.map.Marker(danger_a,icon = icon,popup=loc.danger_type)
+        marker.add_to(map)
+
+        
     dangers = map._repr_html_()
     return render(request, 'danger_map.html', {'danger_map':dangers})
 
 def register_danger(request): 
     g = geocoder.ip('me') 
     danger_loc = g.latlng
+    
+    print(danger_loc)
 
     if request.method == "POST":
         post_danger_type = request.POST['danger_type']
         post_danger_img = request.FILES.get('danger_img',False)
-        point_danger_loc={"type":"Point","coordinates":danger_loc}
+        # point_danger_loc=Point(danger_loc[0],danger_loc[1])
         authUser_instance = AuthUser.objects.get(id = request.user.id)
+        danger_string = str(danger_loc[0])+" "+str(danger_loc[1])
         
-        
+        '''
         model_test_instance = Danger(danger_type = post_danger_type, danger_img = post_danger_img,
                                      danger_loc=wkb.dumps(point_danger_loc),
                                      auth_user_id_fk = authUser_instance) 
+        '''
+        model_test_instance = Danger(danger_type = post_danger_type, danger_img = post_danger_img,
+                                     danger_loc= danger_string,
+                                     auth_user_id_fk = authUser_instance)
+         
         model_test_instance.save()
-
+        
         return render(request,'danger_map.html') # han : 위험물 등록이 성공하면 danger_map.html
         
     else:
