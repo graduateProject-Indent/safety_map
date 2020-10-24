@@ -12,6 +12,7 @@ html { font-size:62.5%; }
     top: 5rem;
     display: flex;
     z-index: 98;
+    margin: 0 auto;
 }
 
 .menu-open {
@@ -220,6 +221,9 @@ a.filter_menu:hover{
     #female, 
     #child{
         font-size: 2.5rem;
+    }
+    .search-input{
+        width: 60%;
     }
 }
 

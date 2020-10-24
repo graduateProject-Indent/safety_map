@@ -5,10 +5,11 @@ body{
     font-weight: 700;
     font-size: 2.0rem;
     color: #015462;
+    margin: 0;
 }
 
 .top_box{
-    border-bottom: 0.1rem solid #A5A5A5;
+    border-bottom: 0.2rem solid #A5A5A5;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 5.0rem 7.0rem;
@@ -144,4 +145,110 @@ input:checked + .slider:before {
     border-radius: 1.0rem;
     background-color: #ffffff;
     color: #4d4d4d;
+}
+
+.item_title_box{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(1, 6rem);
+    border-bottom: 0.2rem solid #E7E6E6;
+
+}
+
+.danger_item_box{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(1, 4.5rem);
+    border-bottom: 0.1rem solid #E7E6E6;
+    font-size: 1.8rem; 
+    font-weight: 400;
+    color: #028090;
+}
+
+.danger_item_box:hover{
+    background-color: #028090;
+    color: #ffffff;
+}
+
+
+.title_type,
+.title_loc,
+.title_date,
+.danger_type,
+.danger_loc,
+.danger_date{
+    align-self: center;
+    justify-self: center;
+}
+
+p{
+    margin: 0;
+}
+
+.protector_name_box,
+.protector_nomber_box{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(1, 5rem);
+    border-bottom: 0.1rem solid #E7E6E6;
+}
+
+.pro_nm_title,
+.pro_nom_title{
+    justify-self: end;
+    align-self: center;
+    font-size: 1.8rem; 
+    font-weight: 400;
+    color: #028090;
+}
+
+.pro_nm,
+.pro_nom{
+    padding-left: 2rem;
+    align-self: start;
+    align-self: center;
+    grid-column: 2/4;
+    font-size: 400;
+}
+
+.btn_box{
+    display: grid;
+    grid-template-columns: 1fr 6rem 7rem;
+    grid-template-rows: repeat(1, 1fr);
+    margin: 1rem 0 0 0;
+    text-align: center;
+    font-size: 1.8rem;
+}
+
+.btn_edit{
+    grid-column: 2/3;
+    width: 5rem;
+    border-radius: 2.6rem;
+    color: #02C39A;
+}
+.btn_edit:hover{
+    border:0.1rem solid #02C39A;
+    color: #ffffff;
+    background-color: #02c39a;
+}
+
+.btn_delete{
+    grid-column: 3/4;
+    width: 5rem;
+    border-radius: 2.6rem;
+    color: #FF4F4F;
+}
+.btn_delete:hover{
+    border:0.1rem solid #FF4F4F;
+    color: #ffffff;
+    background-color: #FF4F4F;
+}
+
+
+@media screen and (max-width: 768px) {
+    /* 모바일에 사용될 스트일 시트를 여기에 작성합니다. */
+    
+    div.alarm_item{
+        font-size: 2.5rem;
+    }
 }

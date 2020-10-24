@@ -13,7 +13,7 @@
     
 <script type="text/javascript">
 	var map;
-    var leaf_map;
+    var markers;
     var is_danger;
 	var marker_s, marker_e, marker_p1, marker_p2;
 	var startX,startY,endX,endY;
@@ -26,13 +26,16 @@
     var startPoint,endPoint;
     var draw;
     $(document).ready(function () {
-            //$('.menu_2').hide();
-            //$('div.map div div', this).removeAttr('style');
+            $('#map_div', this).css('height','100%');
+            $('.menu_2').hide();
+            $('div.map div div', this).css('height','100%');
+            $('div.map div div', this).css('paddingBottom','100%');
 
         });
     
 	function initTmap() {
 		// 1. 지도 띄우기
+        var h=$( window ).height();
 		map = new Tmapv2.Map("map_div", {
 			center : new Tmapv2.LatLng( 37.515024,126.872576),
 			width : "100%",
@@ -45,11 +48,12 @@
 		////////////////////////////////////////////
 		// 마커 초기화
 		
-		$("#btn_select").click(function() {
+		$(".start_pathfinder").click(function() {
 					// 2. API 사용요청
 					
 				    startPoint = $("#fullAddr1").val();
 					endPoint = $("#fullAddr2").val();
+                    is_danger=$("input:radio[name='pathfinder']:checked").val();
 					var pointArray=[startPoint,endPoint]
                     new Promise( (succ, fail)=>{
                         for(var i = 0; i < pointArray.length; i++){
@@ -64,9 +68,8 @@
                                     "fullAddr" : pointArray[i]
 						     },
                             success: (result) => {
-                                console.log(result);
                                 var resultInfo = result.coordinateInfo; // .coordinate[0];
-							console.log(resultInfo);
+							
 							
 							// 기존 마커 삭제
 							
@@ -106,25 +109,7 @@
 									
 								var markerPosition = new Tmapv2.LatLng(Number(lat),Number(lon));
 								setPoint.push(markerPosition);
-								console.log(setPoint[i]._lat);
-								// 마커 올리기
-								//출발
-								marker_s = new Tmapv2.Marker(
-										{
-											position : setPoint[0],
-											icon : "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
-											iconSize : new Tmapv2.Size(24, 38),
-											map : map
-										});
-
-								// 도착
-								marker_e = new Tmapv2.Marker(
-										{
-											position : setPoint[1],
-											icon : "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_e.png",
-											iconSize : new Tmapv2.Size(24, 38),
-											map : map
-										});
+			
 
 							} 
                             
@@ -164,7 +149,10 @@
                             },
                             dataType: "json",
                             success : (result) =>{ 
-                            leaf_map = L.map('map').setView([startY,startX], 15);
+                                var container = L.DomUtil.get('map');
+                                if(container != null){
+                                container._leaflet_id = null;}
+                            var leaf_map = L.map('map').setView([startY,startX], 15);
                             draw=result.result;
                                 
                             },
@@ -184,7 +172,6 @@
 						"startName" : "출발지",
 						"endName" : "도착지"},
                             success: (result) => {
-                                //console.log(result);
                             var resultData = result.features;
                             //기존 그려진 라인 & 마커가 있다면 초기화
                             if (resultdrawArr.length > 0) {
@@ -223,12 +210,12 @@
                                     
                                 } 
                             }//for문 [E]
-                            console.log("success");
+                           
                             }, fail: (error) => {
                                 //console.log(error);
                             },complete:function(){
-                                is_danger="험";
-                                if(is_danger!="위험"){
+                              
+                                if(is_danger=="최단"){
                             $.ajax({
                             method:'POST',
                             url:"{% url 'normalPath' %}",
@@ -238,14 +225,20 @@
                             'csrfmiddlewaretoken': '{{ csrf_token }}'
 					},
                             success: (result) => {
-                              console.log(result.pistes);
-                              
+                    
+                            var container = L.DomUtil.get('map');
+                                if(container != null){
+                                container._leaflet_id = null;}
+                               
+                            var leaf_map=L.map('map').setView([startY,startX], 15);
                             
                             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                                         maxZoom: 18
                                     }).addTo(leaf_map)
-                            var markers = L.geoJSON(result.pistes).addTo(leaf_map);
-                            
+                             markers = L.geoJSON(result.pistes).addTo(leaf_map);
+                             markers=L.marker([startY,startX]).addTo(leaf_map);
+                             markers=L.marker([endY,endX]).addTo(leaf_map);
+                           
                             }, fail: (error) => {
                                 console.log(error);
                             }
@@ -259,17 +252,24 @@
                             async : false,
                         data : { 'csrfmiddlewaretoken': '{{ csrf_token }}'},
                             success: (result) => {
+
+                            var container = L.DomUtil.get('map');
+                                if(container != null){
+                                container._leaflet_id = null;} 
+                            var leaf_map=L.map('map').setView([startY,startX], 15);
                             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                                         maxZoom: 18
                                     }).addTo(leaf_map); 
-                            var markers = L.geoJSON(draw,{
+                             markers = L.geoJSON(draw,{
                                 style: {
                                         color: "red", 
                                         weight: 5, 
                                         fillColor: "red", 
                                         fillOpacity: 0.2
                                     }}).addTo(leaf_map);
-                                var markers = L.geoJSON(result.pistes).addTo(leaf_map);
+                                 markers = L.geoJSON(result.pistes).addTo(leaf_map);
+                                 markers=L.marker([startY,startX]).addTo(leaf_map);
+                                 markers=L.marker([endY,endX]).addTo(leaf_map);
                             
                             }, fail: (error) => {
                                 //console.log(error);
@@ -312,7 +312,6 @@
     <div class="endpoint" type="text">
         <input value type="text" class="endpoint_input" placeholder="도착지 입력" id="fullAddr2"
 		name="fullAddr2" value="서울시 마포구 와우산로29가길 69">
-        <button id="btn_select" style="position: absolute; z-index: 99;">적용하기</button>
         
     </div>
 
@@ -323,19 +322,19 @@
         |
         <input type="radio" id="radio2" name="pathfinder" value="최단">
         <label for ="radio2">최단</label>
-    </div></div>
-
-<img class="myloc" src="{% static 'img/myloc_icon.png' %}">
-<div class="map_act_btn_wrap clear_box"></div>
-<p id="result"></p>
-<br />
-<div id="map_wrap" class="map_wrap3" style=" position: absolute; top: 11rem; height: 100%; width: 100%;">
-    <div id="map_div"  style="display:none;" ></div>
-    <div class="map" style=" position: relative; height: 100%;" id="map">
-        {{ map|safe }}
+        <!--<button id="btn_select">적용하기</button>-->
     </div>
 </div>
 
+<img class="myloc" src="{% static 'img/myloc_icon.png' %}">
+<div class="map_act_btn_wrap clear_box" style="display:none;"></div>
 
+<div id="map_wrap" class="map_wrap3" style="display:none;">
+    <div id="map_div"  style="display:none;" ></div>
+</div>
+
+<div class="map" id="map" >
+    {{map|safe}}
+ </div>
 </body>
 </html>

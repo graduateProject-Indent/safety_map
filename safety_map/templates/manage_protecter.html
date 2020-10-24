@@ -16,9 +16,20 @@
         <a href="{% url 'mypage'%}"><img class="goback" src="{% static 'img/icon_goback.svg' %}"></a>
 		<p class="box_title">보호자 설정</p>
     </div>
-    <div class="container">
 
+    <!--내가 등록한 보호자 예시-->
+    <div class="protector_name_box">
+        <p class="pro_nm_title">보호자 이름</p>
+        <p class="pro_nm">김뫄뫄</p>
+    </div>
+    <div class="protector_nomber_box">
+        <p class="pro_nom_title">보호자 번호</p>
+        <p class="pro_nom">010-2222-3333</p>
     </div>
     
+    <div class="btn_box">
+        <div class="btn_edit">수정</div>
+        <div class="btn_delete">삭제</div>
+    </div>
 </body>
 </html>

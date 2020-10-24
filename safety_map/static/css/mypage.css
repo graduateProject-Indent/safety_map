@@ -5,12 +5,13 @@ body{
     font-weight: 700;
     font-size: 2.0rem;
     color: #015462;
+    margin: 0px;
 }
 
 .top_box{
     border-bottom: 0.1rem solid #A5A5A5;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 5.0rem 7.0rem;
     padding-bottom: 1.0rem;
     gap: 2.0rem 0rem;
@@ -33,17 +34,18 @@ body{
 
 .log{
     grid-row: 1/2;
-    grid-column: 2/3;
+    grid-column: 2/4;
     justify-self: end;
     align-self: center;
-    margin-right: 3.0rem;
+    margin-right: 1.5rem;
+    border-radius: 1rem;
 }
 
 .user_msg{
     margin-left: 10.0rem;
     margin-bottom: 0;
     grid-row: 2/3;
-    grid-column: 1/3;
+    grid-column: 1/4;
     align-self: end;
 }
 
@@ -57,7 +59,9 @@ a:hover{
 }
 
 .log:hover{
-    color: #015462;
+    color: #ffffff;
+    border: 0.1rem solid #028090;
+    background-color: #028090;
 }
 
 div.menu_item{
@@ -68,4 +72,19 @@ div.menu_item{
 
 div.menu_item:hover{
     background-color: #028090;
+}
+
+@media screen and (max-width: 768px) {
+    /* 모바일에 사용될 스트일 시트를 여기에 작성합니다. */
+    body{
+        font-size: 2.5rem;
+    }
+
+    .log{
+        font-size: 1.8rem;
+    }
+
+    div.menu_item{
+        font-size: 2.5rem;
+    }
 }
