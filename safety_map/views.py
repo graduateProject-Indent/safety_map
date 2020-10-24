@@ -28,10 +28,13 @@ import pandas as pd # pip install pandas
 from django.db import models
 from django.http import HttpResponse
 from pprint import pprint
+from geomet import wkb
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 import branca.colormap as cmp
 import math
-import hexgrid
-import morton
+import hexgrid # han : pip install hexgrid-py
+import morton 
 import configparser
 from geomet import wkb
 import urllib
@@ -40,9 +43,11 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib import auth
 import base64
+
 import hashlib
 import hmac
 import requests
+
 config = configparser.ConfigParser()
 config.read('database.ini')
 g = geocoder.ip('me')
@@ -53,6 +58,7 @@ startX=""
 startY=""
 endX=""
 endY=""
+
 
 # Create your views here.
 def home(request):
@@ -218,37 +224,91 @@ def manage_alarm(request):
     return render(request, 'manage_alarm.html')
 
 def manage_danger_map(request):
-    return render(request, 'manage_danger_map.html')
+    user_danger_list  = Danger.objects.filter(auth_user_id_fk=request.user.id)
+
+    return render(request, 'manage_danger_map.html',{'user_danger_list':user_danger_list})
 
 def manage_protecter(request):
     return render(request, 'manage_protecter.html')
 
 
-def danger_map(request): # 한 : 위험물 지도를 보여줌(안심장소와 결국 비슷함)
+
+
+
+
+def danger_map(request):
     map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=12)
     dangers = Danger.objects
     dangers = map._repr_html_()
-    return render(request, 'danger_map.html', {'dangers':dangers})
 
-def register_danger(request): # 한 : [미완성] 위험물 등록 폼
-    g = geocoder.ip('me')
+    danger_object_all = Danger.objects.all()
+    
+    for loc in danger_object_all:
+        # han : danger 마커 이미지
+        if(loc.danger_type=="cctv없음"):
+            mkurl = "./safety_map/static/img/mk_no_cctv.png"
+        elif(loc.danger_type=="가로등없음"):
+            mkurl = "./safety_map/static/img/mk_no_lamp.png"
+        elif(loc.danger_type=="주의시설"):
+            mkurl = "./safety_map/static/img/mk_caution_place.png"
+        elif(loc.danger_type=="쓰레기적치"):
+            mkurl = "./safety_map/static/img/mk_trash.png"
+        elif(loc.danger_type=="유해시설"):
+            mkurl = "./safety_map/static/img/mk_harmful_place.png"
+        
+        # han : 마커이미지
+        icon = folium.features.CustomIcon(icon_image=mkurl,icon_size=(50,50))
+        
+        # han : 이미지 띄우기
+        danger_detail_img_dir = "../safety_map/media/"+str(loc.danger_img)
+        pic = base64.b64encode(open(danger_detail_img_dir,'rb').read()).decode()
+        image_tag = '<body><div style="text-align:center;"><img src="data:image/jpeg;base64,{}" width="120"><div>'.format(pic)
+        detail_tag = '<br><span style="color:#015462;font-weight:bold;">{}</span></body>'.format(str(loc.danger_type))
+
+        detail_html = image_tag+detail_tag
+        iframe = folium.IFrame(detail_html,width=150,height=150)
+        popup = folium.Popup(iframe,max_width='100%')
+        
+        string_to_array_danger_loc = loc.danger_loc.split()
+        danger_x = float(string_to_array_danger_loc[0])
+        danger_y = float(string_to_array_danger_loc[1])
+        danger_a = [danger_x,danger_y]
+        
+        marker = folium.map.Marker(danger_a,icon = icon, popup=popup)
+        marker.add_to(map)
+
+        
+    dangers = map._repr_html_()
+    return render(request, 'danger_map.html', {'danger_map':dangers})
+
+def register_danger(request): 
+    g = geocoder.ip('me') 
     danger_loc = g.latlng
 
     if request.method == "POST":
         post_danger_type = request.POST['danger_type']
-        #post_danger_img = request.POST['danger_img']
-        post_danger_img = request.POST.get('danger_img',False)
-        danger_loc_point = Point(danger_loc[0],danger_loc[1])
-        d={"type":"Point","coordinates":danger_loc}
-        model_test_instance = Danger(danger_type = post_danger_type, danger_img = post_danger_img,danger_loc=wkb.dumps(d))
+        post_danger_img = request.FILES.get('danger_img','danger_img/danger_img_default.png')
+        # point_danger_loc=Point(danger_loc[0],danger_loc[1])
+        authUser_instance = AuthUser.objects.get(id = request.user.id)
+        danger_string = str(danger_loc[0])+" "+str(danger_loc[1]) # han : DB에 "37.566 126.9784"이런 식으로 들어가야함        
+        '''
+        model_test_instance = Danger(danger_type = post_danger_type, danger_img = post_danger_img,
+                                     danger_loc=wkb.dumps(point_danger_loc),
+                                     auth_user_id_fk = authUser_instance) 
+        '''
+        model_test_instance = Danger(danger_type = post_danger_type, danger_img = post_danger_img,
+                                     danger_loc= danger_string,
+                                     auth_user_id_fk = authUser_instance)
+         
         model_test_instance.save()
         
-        
+        return danger_map(request)
         
     else:
-        pass
+        return render(request, 'register_danger.html', {'g':g.latlng})
+    
         
-    return render(request, 'register_danger.html', {'g':g.latlng})
+    #return render(request, 'register_danger.html', {'g':g.latlng})
     
 
 def detail_danger(request, danger_id):
@@ -325,6 +385,8 @@ def getGu(request):
         getGu=request.POST.get('gu')
     return HttpResponse(json.dumps({'result':'true'}),content_type="application/json")
         
+        
+
 def aStar(request):
     global startGu,endGu
     center=hexgrid.Point((float(startX)+float(endX))/2,(float(startY)+float(endY))/2)
@@ -361,6 +423,7 @@ def aStar(request):
     pistes = {"type":"FeatureCollection","features":[crime_location]}
     
     return HttpResponse(json.dumps({'pistes':pistes}),content_type="application/json")
+
 
 def logout(request):
     auth.logout(request)

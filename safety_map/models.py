@@ -7,7 +7,15 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
+from imagekit.models import ProcessedImageField
+from imagekit.processors import ResizeToFill
+# pip install pilkit & pip install django-imagekit
+import time
+
+
+
 class AuthGroup(models.Model):
+    objects = models.Manager()
     name = models.CharField(unique=True, max_length=150)
 
     class Meta:
@@ -16,6 +24,7 @@ class AuthGroup(models.Model):
 
 
 class AuthGroupPermissions(models.Model):
+    objects = models.Manager()
     group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
     permission = models.ForeignKey('AuthPermission', models.DO_NOTHING)
 
@@ -26,6 +35,7 @@ class AuthGroupPermissions(models.Model):
 
 
 class AuthPermission(models.Model):
+    objects = models.Manager()
     name = models.CharField(max_length=255)
     content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING)
     codename = models.CharField(max_length=100)
@@ -37,6 +47,7 @@ class AuthPermission(models.Model):
 
 
 class AuthUser(models.Model):
+    objects = models.Manager()
     password = models.CharField(max_length=128)
     last_login = models.DateTimeField(blank=True, null=True)
     is_superuser = models.IntegerField()
@@ -55,6 +66,7 @@ class AuthUser(models.Model):
 
 
 class AuthUserGroups(models.Model):
+    objects = models.Manager()
     user = models.ForeignKey(AuthUser, models.DO_NOTHING)
     group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
 
@@ -65,6 +77,7 @@ class AuthUserGroups(models.Model):
 
 
 class AuthUserUserPermissions(models.Model):
+    objects = models.Manager()
     user = models.ForeignKey(AuthUser, models.DO_NOTHING)
     permission = models.ForeignKey(AuthPermission, models.DO_NOTHING)
 
@@ -74,15 +87,30 @@ class AuthUserUserPermissions(models.Model):
         unique_together = (('user', 'permission'),)
 
 
+
+#han : 이미지 업로드명(경로)
+def post_image_path(instance,filename):
+    now = time.localtime()
+    image_now = "%04d/%02d/%02d/%02d%02d%02d" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
+    return f'danger_img/{instance.danger_type}/{image_now}+{instance.auth_user_id_fk}.jpg'
+
 class Danger(models.Model):
+    objects = models.Manager()
     danger_pk = models.AutoField(primary_key=True)
     danger_type = models.CharField(max_length=30)
-    #danger_img = models.FileField()# 파일필드
-    danger_img = models.FileField(blank=True,upload_to="danger/img")# 이미지필드
-    # 한 : 저장경로 : MEDIA_ROOT/danger/img/xxx.jpg 경로에 저장
-    # 한 : DB필드 : 'MEDIA_URL/dnager/img/xxx.jpg' 문자열 저장
-    danger_loc = models.TextField()  # This field type is a guess. 네!
-    #danger_loc = models.Point()
+    # han : 기존 코드
+    #danger_img = models.ImageField(null=True, blank=True, upload_to="danger_img/%Y/%m/%d/")
+    # han
+    danger_img = ProcessedImageField(
+                upload_to =post_image_path,
+                processors=[ResizeToFill(300,300)],
+                format='JPEG',
+                options={'quality':90},
+    )
+    # han : 저장경로 예) MEDIA_ROOT/danger_img/2020/10/09/xxx.jpg 경로에 저장
+    # han : DB필드 예) MEDIA_URL/dnager?img/2020/10/09/xxx.jpg' 문자열 저장
+    
+    danger_loc = models.TextField()  # This field type is a guess. 
 
     auth_user_id_fk = models.ForeignKey('AuthUser', models.DO_NOTHING, db_column='auth_user_id_fk', blank=True, null=True)
 
@@ -92,6 +120,7 @@ class Danger(models.Model):
 
 
 class DjangoAdminLog(models.Model):
+    objects = models.Manager()
     action_time = models.DateTimeField()
     object_id = models.TextField(blank=True, null=True)
     object_repr = models.CharField(max_length=200)
@@ -106,6 +135,7 @@ class DjangoAdminLog(models.Model):
 
 
 class DjangoContentType(models.Model):
+    objects = models.Manager()
     app_label = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
 
@@ -116,6 +146,7 @@ class DjangoContentType(models.Model):
 
 
 class DjangoMigrations(models.Model):
+    objects = models.Manager()
     app = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
     applied = models.DateTimeField()
@@ -126,6 +157,7 @@ class DjangoMigrations(models.Model):
 
 
 class DjangoSession(models.Model):
+    objects = models.Manager()
     session_key = models.CharField(primary_key=True, max_length=40)
     session_data = models.TextField()
     expire_date = models.DateTimeField()
@@ -136,6 +168,7 @@ class DjangoSession(models.Model):
 
 
 class DongLevel(models.Model):
+    objects = models.Manager()
     dong_level_pk = models.AutoField(primary_key=True)
     dong_level_tot = models.IntegerField(blank=True, null=True)
     dong_nm = models.CharField(max_length=30)
@@ -147,6 +180,7 @@ class DongLevel(models.Model):
 
 
 class Female(models.Model):
+    objects = models.Manager()
     female_pk = models.AutoField(primary_key=True)
     female_crime_type = models.CharField(max_length=30, blank=True, null=True)
     female_crime_loc = models.TextField()  # This field type is a guess.
@@ -157,6 +191,7 @@ class Female(models.Model):
 
 
 class Female2(models.Model):
+    objects = models.Manager()
     female2_pk = models.AutoField(primary_key=True)
     female2_crime_type = models.CharField(max_length=30)
     female2_crime_loc = models.TextField()  # This field type is a guess.
@@ -168,6 +203,7 @@ class Female2(models.Model):
 
 
 class Kid(models.Model):
+    objects = models.Manager()
     kid_pk = models.AutoField(primary_key=True)
     kid_accident_type = models.CharField(max_length=30)
     kid_accident_loc = models.TextField()  # This field type is a guess.
@@ -179,6 +215,7 @@ class Kid(models.Model):
 
 
 class Roadtohexgrid(models.Model):
+    objects = models.Manager()
     hexgrid_pk = models.AutoField(primary_key=True)
     hex_q = models.IntegerField()
     hex_r = models.IntegerField()
