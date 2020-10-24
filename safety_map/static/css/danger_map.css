@@ -1,24 +1,26 @@
+html { font-size:62.5%; }
+
 .gohome{
-    width: 40px;
+    width: 4.0rem;
     position: absolute;
-    top: 30px;
+    top: 3.0rem;
     left: 5%;
     z-index: 98;
 }
 
 .writing{
-    width: 40px;
+    width: 4.0rem;
     position: absolute;
-    bottom: 80px;
+    bottom: 8.0rem;
     right: 5%;
     z-index: 98;
 
 }
 
 .myloc{
-    width: 40px;
+    width: 4.0rem;
     position: absolute;
-    bottom: 30px;
+    bottom: 3.0rem;
     right: 5%;
     z-index: 98;
 

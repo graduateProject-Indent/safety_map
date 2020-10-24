@@ -1,42 +1,45 @@
+html { font-size:62.5%; }
+
 body{
     font-family: 'Noto Sans KR', sans-serif; 
     font-weight: 700;
-    font-size: 20px;
+    font-size: 2.0rem;
     color: #015462;
+    margin: 0;
 }
 
 .top_box{
-    border-bottom: 1px solid #A5A5A5;
+    border-bottom: 0.2rem solid #A5A5A5;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 50px 70px;
-    padding-bottom: 10px;
-    gap: 20px 0px;
+    grid-template-rows: 5.0rem 7.0rem;
+    padding-bottom: 1.0rem;
+    gap: 2.0rem 0rem;
 }
 
 .goback{
-    width: 50px;
+    width: 5.0rem;
     grid-row: 1/2;
     grid-column: 1/2;
 }
 
 .box_title{
-    margin-left: 20px;
+    margin-left: 2.0rem;
     grid-row: 2/3;
     grid-column: 1/3;
-    font-size: 30px;
-    margin: 0 0 0 20px;
+    font-size: 2.7rem;
+    margin: 0 0 0 2.0rem;
     align-self: end;
 }
 
 div.alarm_item{
-    padding: 7px 0 7px 20px;
-    margin: 20px 0 20px 0;
-    font-size: 18px;
+    padding: 0.7rem 0 0.7rem 2.0rem;
+    margin: 2.0rem 0 2.0rem 0;
+    font-size: 1.8rem;
 }
 
 #alarm_item01{
-    border-bottom: 1px solid #E7E6E6;
+    border-bottom: 0.1rem solid #E7E6E6;
 }
 
 /* The switch - the box around the slider */
@@ -44,8 +47,8 @@ div.alarm_item{
     text-align: center;
     position: relative;
     display: inline-block;
-    width: 40px;
-    height: 23px;
+    width: 4.0rem;
+    height: 2.3rem;
     vertical-align:middle;
 }
 
@@ -66,10 +69,10 @@ div.alarm_item{
 .slider:before {
     position: absolute;
     content: "";
-    height: 15px;
-    width: 15px;
-    left: 4px;
-    bottom: 4px;
+    height: 1.5rem;
+    width: 1.5rem;
+    left: 0.4rem;
+    bottom: 0.4rem;
     background-color: white;
     -webkit-transition: .4s;
     transition: .4s;
@@ -80,17 +83,17 @@ input:checked + .slider {
 }
 
 input:focus + .slider {
-    box-shadow: 0 0 1px #02C39A;
+    box-shadow: 0 0 0.1rem #02C39A;
 }
 
 input:checked + .slider:before {
-    -webkit-transform: translateX(17px);
-    -ms-transform: translateX(17px);
-    transform: translateX(17px);
+    -webkit-transform: translateX(1.7rem);
+    -ms-transform: translateX(1.7rem);
+    transform: translateX(1.7rem);
 }
 
 .slider.round {
-    border-radius: 34px;
+    border-radius: 3.4rem;
 }
 
 .slider.round:before {
@@ -100,21 +103,21 @@ input:checked + .slider:before {
 .switch1,
 .switch2{
     float:right;
-    margin-right: 20px;
+    margin-right: 2.0rem;
 }
 
 .container{
     display: grid;
-    grid-template-columns: repeat(2, 50px);
+    grid-template-columns: repeat(2, 5.0rem);
     grid-template-rows: repeat(2, 1fr);
 }
 
 .detail_box{
     display: grid;
-    grid-template-columns: 80% 50px;
-    grid-template-rows: 70px 100px 100px;
-    border-radius: 26px;
-    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.16);
+    grid-template-columns: 80% 5.0rem;
+    grid-template-rows: 7.0rem 10.0rem 10.0rem;
+    border-radius: 2.6rem;
+    box-shadow: 0 0.3rem 0.6rem 0 rgba(0,0,0,0.16);
     background-color: rgba(2,128,144,0.9);
     color: #ffffff;
     font-family: 'Noto Sans KR', sans-serif; 
@@ -139,7 +142,156 @@ input:checked + .slider:before {
 .d_loc{
     grid-row: 3/4;
     grid-column: 1/3;
-    border-radius: 10px;
+    border-radius: 1.0rem;
     background-color: #ffffff;
     color: #4d4d4d;
+}
+
+.item_title_box{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(1, 6rem);
+    border-bottom: 0.2rem solid #E7E6E6;
+
+}
+
+.danger_item_box{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 6rem);
+    border-bottom: 0.1rem solid #E7E6E6;
+    font-size: 1.8rem; 
+    font-weight: 400;
+    color: #028090;
+}
+
+.danger_item_box:hover{
+    background-color: #028090;
+    color: #ffffff;
+}
+
+.title_photo,
+.danger_photo{
+    align-self: center;
+    justify-self: center;
+}
+
+.title_type{
+    align-self: center;
+    justify-self: start;
+
+}
+
+.danger_photo{
+    grid-row: 1/3;
+    grid-column: 1/2;
+
+}
+.danger_type{
+    grid-row: 1/2;
+    grid-column: 2/3;
+    align-self: end;
+    justify-self: start;
+
+}
+.danger_date{
+    grid-row: 2/3;
+    grid-column: 2/4;
+    font-size: 1.5rem;
+    align-self: start;
+    justify-self: start;
+
+}
+.danger_delete_btn{
+    grid-row: 1/3;
+    grid-column: 3/4;
+    align-self: center;
+    justify-self: end;
+    margin-right: 2rem;
+    height: 3rem;
+    width: 5rem; 
+    border-radius: 2.6rem; 
+    color: #FF4F4F; 
+    background-color:#fff; 
+    cursor: pointer;
+    border: none;
+    font-weight: 600;
+
+}
+
+.danger_delete_btn:hover{
+    background-color: #f8585b;
+    color:#fff;
+}
+
+p{
+    margin: 0;
+}
+
+.protector_name_box,
+.protector_nomber_box{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(1, 5rem);
+    border-bottom: 0.1rem solid #E7E6E6;
+}
+
+.pro_nm_title,
+.pro_nom_title{
+    justify-self: end;
+    align-self: center;
+    font-size: 1.8rem; 
+    font-weight: 400;
+    color: #028090;
+}
+
+.pro_nm,
+.pro_nom{
+    padding-left: 2rem;
+    align-self: start;
+    align-self: center;
+    grid-column: 2/4;
+    font-size: 400;
+}
+
+.btn_box{
+    display: grid;
+    grid-template-columns: 1fr 6rem 7rem;
+    grid-template-rows: repeat(1, 1fr);
+    margin: 1rem 0 0 0;
+    text-align: center;
+    font-size: 1.8rem;
+}
+
+.btn_edit{
+    grid-column: 2/3;
+    width: 5rem;
+    border-radius: 2.6rem;
+    color: #02C39A;
+}
+.btn_edit:hover{
+    border:0.1rem solid #02C39A;
+    color: #ffffff;
+    background-color: #02c39a;
+}
+
+.btn_delete{
+    grid-column: 3/4;
+    width: 5rem;
+    border-radius: 2.6rem;
+    color: #FF4F4F;
+}
+.btn_delete:hover{
+    border:0.1rem solid #FF4F4F;
+    color: #ffffff;
+    background-color: #FF4F4F;
+}
+
+
+@media screen and (max-width: 768px) {
+    /* 모바일에 사용될 스트일 시트를 여기에 작성합니다. */
+    
+    div.alarm_item{
+        font-size: 2.5rem;
+    }
 }

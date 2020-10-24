@@ -1,26 +1,30 @@
 @font-face { font-family: 'yg-jalnan'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff'); font-weight: normal; font-style: normal; }
+html { 
+    font-size:62.5%; 
+}
 
 body{
     background-color: #028090;
     font-family: yg-jalnan;
-    text-align: center;
-    justify-items: center;
+    margin: 2rem;
 }
-
-h1 {
-    color: #FFFFFF;
-    text-align: center;
-    font-size: 50px;
-}
-
-.to_home{
-    display: flex;
-    justify-content: center;
+    
+.startbox{
+    position:absolute;
+    top:50%; left:50%;
+    transform: translate(-50%, -50%);
     align-items: center;
 }
 
+h2 {
+    color: #FFFFFF; 
+    text-align: center;  
+    font-size: 5.0rem;
+    margin: -2rem 0 2rem 0;
+}
+
 .startlogo{
-    width: 300px;
+    width: 25rem;
 }
 
 a{
@@ -28,19 +32,25 @@ a{
     color: #ffffff;  
 }
 
-h2{
+h3{
     text-align: center;
-    font-size: 40px;
+    font-size: 3.5rem;
+    margin: 0 0 2rem 0;
 }
 
 .start-btn{
     border: 0;
-    font-size: 1.5em;
+    font-size: 2rem;
     text-align: center;
     color: #028090;
-    border-radius: 10px;
+    border-radius: 1.0rem;
     background-color: #ffffff;
     font-family: yg-jalnan;
     line-height: 2;
-    width: 40%;
+    width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+    /* 모바일에 사용될 스트일 시트를 여기에 작성합니다. */
+
 }

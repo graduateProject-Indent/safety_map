@@ -21,11 +21,11 @@
         {% if request.user.is_authenticated %}
             <a class="log" href="{% url 'mylogout'%}"">로그아웃</a>
             </a>
-            <p class="user_msg">{{ user.username }} </p>
+            <p class="user_msg">{{ user.username }}님 </p>
         {% else %}
             <a class="log" href="{% provider_login_url 'kakao' method='oauth2' %}">
-            <img src="{% static 'img/logo_kakao.png' %}" style="width: 40px; vertical-align: middle;">&nbsp카카오 로그인</a>
-            <p class="user_msg">Unknown님, 로그인해주세요.</p>
+            <img src="{% static 'img/logo_kakao.png' %}" style="width: 4.0rem; vertical-align: middle;">&nbsp카카오 로그인</a>
+            <p class="user_msg">로그인해주세요.</p>
         {% endif %}
 
     </div>

@@ -119,7 +119,7 @@
         function ShowMenu() {
             $('.menu_bg').css({ 'display': 'block' });
             $('.menu').css({ 'left': '-100%' });
-            $('.menu').animate({ left: '0px' }, { duration: giMenuDuration });
+            $('.menu').animate({ left: '0rem' }, { duration: giMenuDuration });
         }
 
         // 전체 메뉴를 왼쪽으로 슬라이드하여서 닫는다.
@@ -165,8 +165,8 @@
                 <div class="menu_bg">
                     <div id="nav">
                         <ul class="menu">
-                            <div style="width: 55%; text-align: right; padding-top: 20px;" onclick="HideMenu()">
-                                <img src="{% static 'img/close_X.svg' %}" style="width: 30px;">
+                            <div style="width: 55%; text-align: right; padding-top: 2.0rem;" onclick="HideMenu()">
+                                <img src="{% static 'img/close_X.svg' %}" style="width: 3.0rem;">
                             </div>
 
                             <a class="filter_menu" href="{% url 'mypage' %}">

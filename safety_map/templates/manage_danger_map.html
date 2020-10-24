@@ -16,17 +16,26 @@
         <a href="{% url 'mypage'%}"><img class="goback" src="{% static 'img/icon_goback.svg' %}"></a>
 		<p class="box_title">내가 등록한 위험물 관리</p>
     </div>
+
+    <div class="item_title_box">
+        <p class="title_photo">등록 사진</p>
+        <p class="title_type">위험물 유형</p>
+    </div>
+
+    <!--내가 등록한 위험물 예시-->
     <table>
         {% for list in user_danger_list %}
-            <ul>
-                <li>
-                    <img src="{{list.danger_img.url}}" width="120">
-                    {{list.danger_type}}
-                    {{list.create_at}}
-                    <input type="button" value = "삭제(아직아무일도일어나지않음">
-                </li>
-            </ul>
+        <div class="danger_item_box">
+          
+                    <div class="danger_photo"><img  src="{{list.danger_img.url}}" style="width: 5rem;"></div>
+                    <p class="danger_type">{{list.danger_type}}</p>
+                    <p class="danger_date">{{list.create_at|make_list|slice:':4'|join:"" }}년 {{list.create_at|make_list|slice:'5:7'|join:"" }}월 {{list.create_at|make_list|slice:'8:10'|join:""}}일</p>
+                    <input class="danger_delete_btn" type="button" value = "삭제"  >
+                      
+        </div>
+
         {% endfor %}
     </table>
+    
 </body>
 </html>
