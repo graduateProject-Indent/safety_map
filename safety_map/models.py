@@ -111,7 +111,7 @@ class Danger(models.Model):
     # han : DB필드 예) MEDIA_URL/dnager?img/2020/10/09/xxx.jpg' 문자열 저장
     
     danger_loc = models.TextField()  # This field type is a guess. 
-
+    create_at = models.DateTimeField(auto_now_add=True)
     auth_user_id_fk = models.ForeignKey('AuthUser', models.DO_NOTHING, db_column='auth_user_id_fk', blank=True, null=True)
 
     class Meta:
