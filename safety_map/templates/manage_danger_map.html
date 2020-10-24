@@ -18,53 +18,24 @@
     </div>
 
     <div class="item_title_box">
-        <p class="title_photo">위험물 사진</p>
-
+        <p class="title_photo">등록 사진</p>
         <p class="title_type">위험물 유형</p>
-        <p class="title_loc">위치</p>
-        <p class="title_date">등록날짜</p>
     </div>
 
     <!--내가 등록한 위험물 예시-->
     <table>
         {% for list in user_danger_list %}
-            <ul>
-                <li>
-                    <img src="{{list.danger_img.url}}" width="120">
-                    {{list.danger_type}}
-                    <input type="button" value = "삭제(아직아무일도일어나지않음">
-                </li>
-            </ul>
+        <div class="danger_item_box">
+          
+                    <div class="danger_photo"><img  src="{{list.danger_img.url}}" style="width: 5rem;"></div>
+                    <p class="danger_type">{{list.danger_type}}</p>
+                    <p class="danger_date">{{list.create_at|make_list|slice:':4'|join:"" }}년 {{list.create_at|make_list|slice:'5:7'|join:"" }}월 {{list.create_at|make_list|slice:'8:10'|join:""}}일</p>
+                    <input class="danger_delete_btn" type="button" value = "삭제"  >
+                      
+        </div>
+
         {% endfor %}
     </table>
-
-    <div class="danger_item_box">
-        <p class="danger_type">쓰레기적치</p>
-        <p class="danger_loc">쌍문동OOO</p>
-        <p class="danger_date">20.05.28</p>
-    </div>
-    <div class="danger_item_box">
-        <p class="danger_type">유해시설</p>
-        <p class="danger_loc">창동OOO</p>
-        <p class="danger_date">20.05.30</p>
-    </div>
-    <div class="danger_item_box">
-        <p class="danger_type">CCTV없음</p>
-        <p class="danger_loc">우이동OOO</p>
-        <p class="danger_date">20.07.19</p>
-    </div>
-
-    <table>
-        {% for list in user_danger_list %}
-            <ul>
-                <li>
-                    <img src="{{list.danger_img.url}}" width="120">
-                    {{list.danger_type}}
-                    {{list.create_at}}
-                    <input type="button" value = "삭제(아직아무일도일어나지않음">
-                </li>
-            </ul>
-        {% endfor %}
-    </table>
+    
 </body>
 </html>
