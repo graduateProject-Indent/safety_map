@@ -42,6 +42,7 @@ from django.views.generic.base import TemplateView, View
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib import auth
+import base64
 config = configparser.ConfigParser()
 config.read('database.ini')
 g = geocoder.ip('me')
@@ -228,36 +229,45 @@ def manage_protecter(request):
 
 
 
-def danger_map(request): # 한 : [미완성]위험물 지도를 보여줌(안심장소와 비슷하게 마커 띄우기)
+def danger_map(request):
     map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=12)
     dangers = Danger.objects
     dangers = map._repr_html_()
 
-    
     danger_object_all = Danger.objects.all()
-    
     
     for loc in danger_object_all:
         # han : danger 마커 이미지
         if(loc.danger_type=="cctv없음"):
-            mkurl = "safety_map/static/img/mk_no_cctv.png"
+            mkurl = "./safety_map/static/img/mk_no_cctv.png"
         elif(loc.danger_type=="가로등없음"):
-            mkurl = "safety_map/static/img/mk_no_lamp.png"
+            mkurl = "./safety_map/static/img/mk_no_lamp.png"
         elif(loc.danger_type=="주의시설"):
-            mkurl = "safety_map/static/img/mk_caution_place.png"
+            mkurl = "./safety_map/static/img/mk_caution_place.png"
         elif(loc.danger_type=="쓰레기적치"):
-            mkurl = "safety_map/static/img/mk_trash.png"
+            mkurl = "./safety_map/static/img/mk_trash.png"
         elif(loc.danger_type=="유해시설"):
-            mkurl = "safety_map/static/img/mk_harmful_place.png"
+            mkurl = "./safety_map/static/img/mk_harmful_place.png"
         
+        # han : 마커이미지
         icon = folium.features.CustomIcon(icon_image=mkurl,icon_size=(50,50))
+        
+        # han : 이미지 띄우기
+        danger_detail_img_dir = "../safety_map/media/"+str(loc.danger_img)
+        pic = base64.b64encode(open(danger_detail_img_dir,'rb').read()).decode()
+        image_tag = '<body><div style="text-align:center;"><img src="data:image/jpeg;base64,{}" width="120"><div>'.format(pic)
+        detail_tag = '<br><span style="color:#015462;font-weight:bold;">{}</span></body>'.format(str(loc.danger_type))
+
+        detail_html = image_tag+detail_tag
+        iframe = folium.IFrame(detail_html,width=150,height=150)
+        popup = folium.Popup(iframe,max_width='100%')
         
         string_to_array_danger_loc = loc.danger_loc.split()
         danger_x = float(string_to_array_danger_loc[0])
         danger_y = float(string_to_array_danger_loc[1])
         danger_a = [danger_x,danger_y]
         
-        marker = folium.map.Marker(danger_a,icon = icon,popup=loc.danger_type)
+        marker = folium.map.Marker(danger_a,icon = icon, popup=popup)
         marker.add_to(map)
 
         
@@ -272,7 +282,7 @@ def register_danger(request):
 
     if request.method == "POST":
         post_danger_type = request.POST['danger_type']
-        post_danger_img = request.FILES.get('danger_img',False)
+        post_danger_img = request.FILES.get('danger_img','danger_img/danger_img_default.png')
         # point_danger_loc=Point(danger_loc[0],danger_loc[1])
         authUser_instance = AuthUser.objects.get(id = request.user.id)
         danger_string = str(danger_loc[0])+" "+str(danger_loc[1])
