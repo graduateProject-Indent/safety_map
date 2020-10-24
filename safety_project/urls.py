@@ -16,8 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 import safety_map.views
-
-# 한 : 이미지 업로드
+# han : 이미지 업로드
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -49,3 +48,7 @@ urlpatterns = [
     path('account/', include('allauth.urls')),
     path('accounts/logout/', safety_map.views.logout, name='logout'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# han added this line
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
