@@ -36,7 +36,7 @@
 		map = new Tmapv2.Map("map_div", {
 			center : new Tmapv2.LatLng( 37.515024,126.872576),
 			width : "100%",
-			height : "400px",
+			height : "40.0rem",
 			zoom : 15,
 			zoomControl : true,
 			scrollwheel : true
@@ -316,7 +316,7 @@
     <div class="endpoint" type="text">
         <input value type="text" class="endpoint_input" placeholder="도착지 입력" id="fullAddr2"
 		name="fullAddr2" value="서울시 마포구 와우산로29가길 69">
-        <button id="btn_select">적용하기</button>
+        <button id="btn_select" style="position: absolute; z-index: 99;">적용하기</button>
         
     </div>
 
@@ -333,9 +333,9 @@
 <div class="map_act_btn_wrap clear_box"></div>
 <p id="result"></p>
 <br />
-<div id="map_wrap" class="map_wrap3">
+<div id="map_wrap" class="map_wrap3" style=" position: absolute; top: 11rem; height: 100%; width: 100%;">
     <div id="map_div"  style="display:none;" ></div>
-    <div class="map" style=" position: relative; top: -30px; height: 100%;" id="map">
+    <div class="map" style=" position: relative; height: 100%;" id="map">
         {{ map|safe }}
     </div>
 </div>

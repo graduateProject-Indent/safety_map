@@ -1,5 +1,7 @@
 @font-face { font-family: 'yg-jalnan'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff'); font-weight: normal; font-style: normal; }
 
+html { font-size:62.5%; }
+
 .top-box{
     display: flex;
     justify-content: center;
@@ -7,15 +9,15 @@
 
 .menu-input-box{
     position: absolute;
-    top: 50px;
+    top: 5rem;
     display: flex;
     z-index: 98;
 }
 
 .menu-open {
-    width: 39px;
-    height: 39px;
-    margin: 6px 10px 0 0;
+    width: 3.9rem;
+    height: 3.9rem;
+    margin: 0.6rem 1.0rem 0 0;
     z-index: 99;
     display: flex;
     justify-content: center;
@@ -23,15 +25,15 @@
 }
 
 .menu-img {
-    width: 30px;
+    width: 3.0rem;
 }
 
 .search-input {
     width: 70vw;
-    height: 50px;
-    border-radius: 26px;
-    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.16);
-    top: 43px;
+    height: 5.0rem;
+    border-radius: 2.6rem;
+    box-shadow: 0 0.3rem 0.6rem 0 rgba(0,0,0,0.16);
+    top: 4.3rem;
     background-color: #ffffff;
     font-family: 'Noto Sans KR', sans-serif;    
     border: none;
@@ -42,12 +44,12 @@
 .search-input-in {
     width: 85%;
     height: 80%;
-    border-radius: 24px;
+    border-radius: 2.4rem;
     font-family: 'Noto Sans KR', sans-serif;    
-    font-size: 15px;
+    font-size: 2rem;
     font-weight: 400;
     border: none;
-    padding: 5px;
+    padding: 0.5rem;
 }
 
 .search-btn{
@@ -57,27 +59,27 @@
 }
 
 .search-icon{
-    width: 35px;
+    width: 3.5rem;
 }
 
 .set_up_icon {
-    width: 40px;
-    margin: 3px 0 0 10px;
+    width: 4.0rem;
+    margin: 0.3rem 0 0 1.0rem;
 }
 
 .path{
-    width: 40px;
+    width: 4.0rem;
     position: absolute;
-    bottom: 80px;
+    bottom: 8.0rem;
     right: 5%;
     z-index: 98;
 
 }
 
 .myloc{
-    width: 40px;
+    width: 4.0rem;
     position: absolute;
-    bottom: 30px;
+    bottom: 3.0rem;
     right: 5%;
     z-index: 98;
 }
@@ -85,29 +87,29 @@
 
 .menu_bg { 
     width: 100%; 
-    height: 2000px; 
+    height: 200.0rem; 
     position: fixed; 
-    top:0px; 
-    left:0px; 
+    top:0rem; 
+    left:0rem; 
     overflow: hidden; 
     display: none; 
 }
 .menu { 
     position:absolute; 
-    top:0px; 
-    left:0px; 
+    top:0rem; 
+    left:0rem; 
     width:100%; 
     height: 100%; 
     background-image: linear-gradient(to right, rgba(02,80,90,0.9) 60%, rgba(0,0,0,0.16) 60%);
     font-family: 'Noto Sans KR', sans-serif; 
     color: #ffffff;
     font-weight: 500;
-    font-size: 20px;
+    font-size: 2rem;
     margin-top: 0;
     z-index: 99;
 }
 .menu_item { 
-    padding: 15px; 
+    padding: 1.5rem; 
 }
 
 .menu_item:hover { 
@@ -116,38 +118,39 @@
 }
 .olMap{
     position:absolute;
-   top: 80px;
-   margin: auto;
+    top: 0.080rem;
+    margin: auto;
 }
 
 li{
     list-style-type: none;
     font-family: 'Noto Sans KR', sans-serif;    
+    font-size: 2rem;
 }
 
 ul{
-    padding-left: 0px;
+    padding-left: 0rem;
 }
 
 .item,
 .gu_item{
-    border: 2px solid #015462;
-    border-radius: 30px 30px;
+    border: 0.2rem solid #015462;
+    border-radius: 3.0rem 3.0rem;
     background-color: #EBEBEB;
     color: #015462;
-    font-size: 20px;
+    font-size: 2rem;
     font-weight: 500;
     font-family: 'Noto Sans KR', sans-serif;    
 }
 
 .gu_item{
-    margin-bottom: 5px;
+    margin-bottom: 0.5rem;
 }
 
 .gu_box{
     position: absolute;
     font-family: 'Noto Sans KR', sans-serif;    
-    margin: 75px 5% 10px 5%;
+    margin: 11rem 5% 1.0rem 5%;
     z-index: 90;
 }
 
@@ -159,7 +162,7 @@ ul{
 }
 
 #item{
-    margin-top: 10px;
+    margin-top: 1.0rem;
 }
 
 .map{
@@ -181,11 +184,46 @@ a.filter_menu:hover{
     background: none;
     color: #ffffff;
     font-family: 'Noto Sans KR', sans-serif;    
-    font-size: 20px;
-    padding: 0px;
+    font-size: 2rem;
+    padding: 0rem;
 }
 
 .menu_item:hover > #female,
 .menu_item:hover > #child{ 
     color: #015462; 
 }
+
+@media screen and (max-width: 768px) {
+    /* 모바일에 사용될 스트일 시트를 여기에 작성합니다. */
+    .search-input-in {   
+        font-size: 2.5rem;      
+    }
+
+    .menu { 
+        font-size: 2.5rem;
+    }
+
+    li{
+            
+        font-size: 2.5rem;
+    }
+    
+    ul{
+        font-size: 2.5rem;
+    }
+    
+    .item,
+    .gu_item{
+        font-size: 2.5rem;
+    }
+
+    #female, 
+    #child{
+        font-size: 2.5rem;
+    }
+}
+
+
+
+
+
