@@ -43,9 +43,11 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib import auth
 import base64
+
 import hashlib
 import hmac
 import requests
+
 config = configparser.ConfigParser()
 config.read('database.ini')
 g = geocoder.ip('me')
@@ -222,7 +224,9 @@ def manage_alarm(request):
     return render(request, 'manage_alarm.html')
 
 def manage_danger_map(request):
-    return render(request, 'manage_danger_map.html')
+    user_danger_list  = Danger.objects.filter(auth_user_id_fk=request.user.id)
+
+    return render(request, 'manage_danger_map.html',{'user_danger_list':user_danger_list})
 
 def manage_protecter(request):
     return render(request, 'manage_protecter.html')
