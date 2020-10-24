@@ -14,7 +14,18 @@
 <body>
 	<div class="top_box">
         <a href="{% url 'mypage'%}"><img class="goback" src="{% static 'img/icon_goback.svg' %}"></a>
-		<p class="box_title">위험물지도관리</p>
+		<p class="box_title">내가 등록한 위험물 관리</p>
     </div>
+    <table>
+        {% for list in user_danger_list %}
+            <ul>
+                <li>
+                    <img src="{{list.danger_img.url}}" width="120">
+                    {{list.danger_type}}
+                    <input type="button" value = "삭제(아직아무일도일어나지않음">
+                </li>
+            </ul>
+        {% endfor %}
+    </table>
 </body>
 </html>
