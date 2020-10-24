@@ -7,6 +7,11 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
+from imagekit.models import ProcessedImageField
+from imagekit.processors import ResizeToFill
+# pip install pilkit & pip install django-imagekit
+import time
+
 
 
 class AuthGroup(models.Model):
@@ -82,13 +87,29 @@ class AuthUserUserPermissions(models.Model):
         unique_together = (('user', 'permission'),)
 
 
+
+#han : 이미지 업로드명(경로)
+def post_image_path(instance,filename):
+    now = time.localtime()
+    image_now = "%04d/%02d/%02d/%02d%02d%02d" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
+    return f'danger_img/{instance.danger_type}/{image_now}+{instance.auth_user_id_fk}.jpg'
+
 class Danger(models.Model):
     objects = models.Manager()
     danger_pk = models.AutoField(primary_key=True)
     danger_type = models.CharField(max_length=30)
-    danger_img = models.ImageField(null=True, blank=True, upload_to="danger_img/%Y/%m/%d/request.user.id")
+    # han : 기존 코드
+    #danger_img = models.ImageField(null=True, blank=True, upload_to="danger_img/%Y/%m/%d/")
+    # han
+    danger_img = ProcessedImageField(
+                upload_to =post_image_path,
+                processors=[ResizeToFill(300,300)],
+                format='JPEG',
+                options={'quality':90},
+    )
     # han : 저장경로 예) MEDIA_ROOT/danger_img/2020/10/09/xxx.jpg 경로에 저장
     # han : DB필드 예) MEDIA_URL/dnager?img/2020/10/09/xxx.jpg' 문자열 저장
+    
     danger_loc = models.TextField()  # This field type is a guess. 
 
     auth_user_id_fk = models.ForeignKey('AuthUser', models.DO_NOTHING, db_column='auth_user_id_fk', blank=True, null=True)

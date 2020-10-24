@@ -54,6 +54,7 @@ startY=""
 endX=""
 endY=""
 
+
 # Create your views here.
 def home(request):
     return render(request, 'home.html')
@@ -277,16 +278,13 @@ def danger_map(request):
 def register_danger(request): 
     g = geocoder.ip('me') 
     danger_loc = g.latlng
-    
-    print(danger_loc)
 
     if request.method == "POST":
         post_danger_type = request.POST['danger_type']
         post_danger_img = request.FILES.get('danger_img','danger_img/danger_img_default.png')
         # point_danger_loc=Point(danger_loc[0],danger_loc[1])
         authUser_instance = AuthUser.objects.get(id = request.user.id)
-        danger_string = str(danger_loc[0])+" "+str(danger_loc[1])
-        
+        danger_string = str(danger_loc[0])+" "+str(danger_loc[1]) # han : DB에 "37.566 126.9784"이런 식으로 들어가야함        
         '''
         model_test_instance = Danger(danger_type = post_danger_type, danger_img = post_danger_img,
                                      danger_loc=wkb.dumps(point_danger_loc),
@@ -298,14 +296,13 @@ def register_danger(request):
          
         model_test_instance.save()
         
-        return render(request,'danger_map.html') # han : 위험물 등록이 성공하면 danger_map.html
+        return danger_map(request)
         
     else:
         return render(request, 'register_danger.html', {'g':g.latlng})
     
-        #pass
         
-    return render(request, 'register_danger.html', {'g':g.latlng})
+    #return render(request, 'register_danger.html', {'g':g.latlng})
     
 
 def detail_danger(request, danger_id):
