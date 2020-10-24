@@ -43,6 +43,9 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib import auth
 import base64
+import hashlib
+import hmac
+import requests
 config = configparser.ConfigParser()
 config.read('database.ini')
 g = geocoder.ip('me')
@@ -63,7 +66,6 @@ def startpage(request):
     return render(request, 'startpage.html')
 
 def showMaps(request):
-    g = geocoder.ip('me')
     map = folium.Map(location=g.latlng,zoom_start=15)
     maps=map._repr_html_() 
     return render(request, 'home.html',{'map':maps})
@@ -422,3 +424,66 @@ def aStar(request):
 def logout(request):
     auth.logout(request)
     return render(request, 'startpage.html') 
+
+def sendSms(string):
+    url = "https://sens.apigw.ntruss.com/sms/v2/services/" + config['NAVER']['SERVICE_ID'] + "/messages"
+    uri = "/sms/v2/services/" + config['NAVER']['SERVICE_ID'] + "/messages"
+    timestamp = str(int(time.time() * 1000))
+    access_key =config['NAVER']['ACCESS_KEY']
+    string_to_sign = "POST " + uri + "\n" + timestamp + "\n" + access_key
+    signature = make_signature(string_to_sign)
+    
+    user=AuthUser.objects.filter(username=string).get()
+    name = string
+    phone=user.protecter_num
+    
+    message = name+"님이 위험지역에 계십니다.".format(name,"2020-00-00")
+    headers = {
+        'Content-Type': "application/json; charset=UTF-8",
+        'x-ncp-apigw-timestamp': timestamp,
+        'x-ncp-iam-access-key': access_key,
+        'x-ncp-apigw-signature-v2': signature
+    }
+
+    body = {
+        "type": "SMS",
+        "contentType": "COMM",
+        "from": config['NAVER']['PHONE_NUMBER'],
+        "content": message,
+        "messages": [{"to": phone}]
+    }
+
+    body = json.dumps(body)
+
+    response = requests.post(url, headers=headers, data=body)
+    response.raise_for_status()
+
+    return True
+
+def checkDanger(request):
+    flag=0
+    msg=""
+    if request.method=="POST":
+        coord_x=request.POST.get("pos_x")
+        coord_y=request.POST.get("pos_y")
+        danger_area=Female2.objects.filter(female2_crime_type="전체_전체").all()
+        for danger_point in danger_area:  
+            gis= Geometry(danger_point.female2_crime_loc.hex()[8:])
+            p=shape(gis.geojson)
+            if p.contains(Point(float(coord_y),float(coord_x))):
+                flag=1
+                if(request.user.is_authenticated):
+                    #username=request.user.username
+                    #sendSms(username)
+                    break
+                else:
+                    msg="보호자에게 알림을 보내려면 로그인을 해주세요."
+                
+    return  HttpResponse(json.dumps({'flag':flag,'msg':msg}),content_type="application/json")
+
+def make_signature(string):
+    secret_key = bytes(config['NAVER']['SECRET_KEY'], 'UTF-8')
+    string = bytes(string, 'UTF-8')
+    string_hmac = hmac.new(secret_key, string, digestmod=hashlib.sha256).digest()
+    string_base64 = base64.b64encode(string_hmac).decode('UTF-8')
+    return string_base64
