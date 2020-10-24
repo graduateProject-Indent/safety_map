@@ -18,12 +18,26 @@
     </div>
 
     <div class="item_title_box">
+        <p class="title_photo">위험물 사진</p>
+
         <p class="title_type">위험물 유형</p>
         <p class="title_loc">위치</p>
         <p class="title_date">등록날짜</p>
     </div>
 
     <!--내가 등록한 위험물 예시-->
+    <table>
+        {% for list in user_danger_list %}
+            <ul>
+                <li>
+                    <img src="{{list.danger_img.url}}" width="120">
+                    {{list.danger_type}}
+                    <input type="button" value = "삭제(아직아무일도일어나지않음">
+                </li>
+            </ul>
+        {% endfor %}
+    </table>
+
     <div class="danger_item_box">
         <p class="danger_type">쓰레기적치</p>
         <p class="danger_loc">쌍문동OOO</p>
