@@ -16,13 +16,51 @@
     <!--메뉴드롭다운-->
     <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
     <script type="text/javascript">
-
+    var coord_x;
+    var coord_y;
+    var flag=0;
         $(document).ready(function () {
             $("#nav ul.sub").hide();
             $("#nav ul.menu li").click(function () { $("ul", this).slideToggle("fast"); });
+            var watchId = navigator.geolocation.watchPosition(function(position) {
+                            coord_x=position.coords.latitude
+                            coord_y=position.coords.longitude
+                            console.log(coord_x,coord_y);
+                            if (flag==0){
+                                checkDanger(coord_x,coord_y);
+                            
+                                }
+                            else{
+                                    pass;
+                                
+                            }
+                            });
+                            
+            //navigator.geolocation.clearWatch(watchId)
 
 
         });
+        function checkDanger(coord_x,coord_y){  
+            $.ajax({
+                            method:'POST',
+                            url:"{% url 'checkDanger' %}",
+                            data:{
+                                "pos_x":String(coord_x),
+                                "pos_y":String(coord_y),
+                                'csrfmiddlewaretoken': '{{ csrf_token }}'
+                            },
+                            dataType: "json",
+                            success : (result) =>{ 
+                                console.log("ok");
+                                flag=result.flag;
+                                console.log(flag);
+                                if(result.msg!=""){
+                                    alert(result.msg);
+                                }
+                                
+                                
+                            },
+                        });}
         $(function(){
             $("button").click(function(event) { 
                 if($(this).attr('value')=='아동'){
