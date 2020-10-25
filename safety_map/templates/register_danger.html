@@ -14,7 +14,7 @@
 	navigator.geolocation.getCurrentPosition(function(pos) {
     var latitude = pos.coords.latitude;
     var longitude = pos.coords.longitude;
-     document.getElementById('danger_loc').innerHTML=String(latitude)+","+String(longitude);
+     document.getElementById('danger_loc').value=String(latitude)+","+String(longitude);
 });
 
 
@@ -52,7 +52,7 @@
 			<p>
 				<label for = "danger_loc">
 					<span>현재 내 위치:</span>
-					<text id='danger_loc'></text>
+					<input type="text" id='danger_loc' name="danger_loc" disabled/>
 				</label>
 			</p>
 			<hr>

@@ -232,10 +232,6 @@ def manage_protecter(request):
     return render(request, 'manage_protecter.html')
 
 
-
-
-
-
 def danger_map(request):
     map = folium.Map(location=[37.55582994870823, 126.9726320033982],zoom_start=12)
     dangers = Danger.objects
@@ -260,7 +256,7 @@ def danger_map(request):
         icon = folium.features.CustomIcon(icon_image=mkurl,icon_size=(50,50))
         
         # han : 이미지 띄우기
-        danger_detail_img_dir = "../safety_map/media/"+str(loc.danger_img)
+        danger_detail_img_dir = "media/"+str(loc.danger_img)
         pic = base64.b64encode(open(danger_detail_img_dir,'rb').read()).decode()
         image_tag = '<body><div style="text-align:center;"><img src="data:image/jpeg;base64,{}" width="120"><div>'.format(pic)
         detail_tag = '<br><span style="color:#015462;font-weight:bold;">{}</span></body>'.format(str(loc.danger_type))
@@ -284,15 +280,11 @@ def danger_map(request):
 def register_danger(request): 
     if request.method == "POST":
         post_danger_type = request.POST['danger_type']
+        post_danger_loc=request.POST['danger_loc']
         post_danger_img = request.FILES.get('danger_img','danger_img/danger_img_default.png')
-        # point_danger_loc=Point(danger_loc[0],danger_loc[1])
+        point_danger_loc=post_danger_loc.split(",")
         authUser_instance = AuthUser.objects.get(id = request.user.id)
-        danger_string = str(danger_loc[0])+" "+str(danger_loc[1]) # han : DB에 "37.566 126.9784"이런 식으로 들어가야함        
-        '''
-        model_test_instance = Danger(danger_type = post_danger_type, danger_img = post_danger_img,
-                                     danger_loc=wkb.dumps(point_danger_loc),
-                                     auth_user_id_fk = authUser_instance) 
-        '''
+        danger_string = str(point_danger_loc[0])+" "+str(point_danger_loc[1]) # han : DB에 "37.566 126.9784"이런 식으로 들어가야함        
         model_test_instance = Danger(danger_type = post_danger_type, danger_img = post_danger_img,
                                      danger_loc= danger_string,
                                      auth_user_id_fk = authUser_instance)
