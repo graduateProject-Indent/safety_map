@@ -309,7 +309,7 @@ def pathSetting(request):
     map = folium.Map(location=g.latlng,zoom_start=15)
     maps=map._repr_html_() 
     api_key=config['DATABASE']['APPKEY']
-    return render(request,'pathFinder.html',{'map':maps,'api_key':api_key})
+    return render(request,'pathfinder.html',{'map':maps,'api_key':api_key})
 
 def pathFinder(request): #위험지역 받는 함수
     global startX,startY,endX,endY,startGu,endGu
