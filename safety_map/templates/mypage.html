@@ -19,7 +19,7 @@
         
         {% load socialaccount %}
         {% if request.user.is_authenticated %}
-            <a class="log" href="{% url 'mylogout'%}"">로그아웃</a>
+            <a class="log" href="{% url 'logout'%}"">로그아웃</a>
             </a>
             <p class="user_msg">{{ user.username }}님 </p>
         {% else %}
