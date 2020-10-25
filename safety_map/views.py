@@ -282,9 +282,6 @@ def danger_map(request):
     return render(request, 'danger_map.html', {'danger_map':dangers})
 
 def register_danger(request): 
-    g = geocoder.ip('me') 
-    danger_loc = g.latlng
-
     if request.method == "POST":
         post_danger_type = request.POST['danger_type']
         post_danger_img = request.FILES.get('danger_img','danger_img/danger_img_default.png')
@@ -305,7 +302,7 @@ def register_danger(request):
         return danger_map(request)
         
     else:
-        return render(request, 'register_danger.html', {'g':g.latlng})
+        return render(request, 'register_danger.html')
     
         
     #return render(request, 'register_danger.html', {'g':g.latlng})

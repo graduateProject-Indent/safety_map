@@ -10,7 +10,16 @@
 	<link rel="stylesheet" href="{% static 'css/manage_danger_map.css' %}">
 
 </head>
+<script>
+	navigator.geolocation.getCurrentPosition(function(pos) {
+    var latitude = pos.coords.latitude;
+    var longitude = pos.coords.longitude;
+     document.getElementById('danger_loc').innerHTML=String(latitude)+","+String(longitude);
+});
 
+
+
+</script>
 <body>
 
 
@@ -43,7 +52,7 @@
 			<p>
 				<label for = "danger_loc">
 					<span>현재 내 위치:</span>
-					<text>{{g}}</text>
+					<text id='danger_loc'></text>
 				</label>
 			</p>
 			<hr>
