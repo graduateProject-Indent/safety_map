@@ -26,16 +26,16 @@
     var startPoint,endPoint;
     var draw;
     $(document).ready(function () {
+        var h=$( window ).height();
             $('#map_div', this).css('height','100%');
             $('.menu_2').hide();
-            $('div.map div div', this).css('height','100%');
+            $('div.map div div', this).css('height',h);
             $('div.map div div', this).css('paddingBottom','100%');
 
         });
     
 	function initTmap() {
 		// 1. 지도 띄우기
-        var h=$( window ).height();
 		map = new Tmapv2.Map("map_div", {
 			center : new Tmapv2.LatLng( 37.515024,126.872576),
 			width : "100%",
