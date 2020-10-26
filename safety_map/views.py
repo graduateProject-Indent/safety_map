@@ -430,7 +430,7 @@ def sendSms(string):
     user=AuthUser.objects.filter(username=string).get()
     name = string
     phone=user.protecter_num
-    
+    phone="0"+str(phone)
     message = name+"님이 위험지역에 계십니다.".format(name,"2020-00-00")
     headers = {
         'Content-Type': "application/json; charset=UTF-8",
