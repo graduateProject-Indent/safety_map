@@ -2,6 +2,11 @@
 
 html { font-size:62.5%; }
 
+body{
+    width: 100%;
+    margin: 0 auto;
+}
+
 .top-box{
     display: flex;
     justify-content: center;

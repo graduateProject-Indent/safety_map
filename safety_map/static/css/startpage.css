@@ -7,6 +7,8 @@ body{
     background-color: #028090;
     font-family: yg-jalnan;
     margin: 2rem;
+    width: 100%;
+    margin: 0 auto;
 }
     
 .startbox{
