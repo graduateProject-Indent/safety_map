@@ -30,12 +30,13 @@
                     <div class="danger_photo"><img  src="{{list.danger_img.url}}" style="width: 5rem;"></div>
                     <p class="danger_type">{{list.danger_type}}</p>
                     <p class="danger_date">{{list.create_at|make_list|slice:':4'|join:"" }}년 {{list.create_at|make_list|slice:'5:7'|join:"" }}월 {{list.create_at|make_list|slice:'8:10'|join:""}}일</p>
-                    <input class="danger_delete_btn" type="button" value = "삭제"  >
+                    <input class="danger_delete_btn" type="submit" value = "삭제"  >
                       
         </div>
 
         {% endfor %}
     </table>
+    
     
 </body>
 </html>
