@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="{% static 'css/manage_danger_map.css' %}">
 
 </head>
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script>
 var apiGeolocationSuccess = function(position) {
 	var latitude = position.coords.latitude;
@@ -19,7 +20,7 @@ var apiGeolocationSuccess = function(position) {
 };
 
 var tryAPIGeolocation = function() {
-    $.post( "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDCa1LUe1vOczX1hO_iGYgyo8p_jYuGOPU", function(success) {
+    jQuery.post( "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDCa1LUe1vOczX1hO_iGYgyo8p_jYuGOPU", function(success) {
         apiGeolocationSuccess({coords: {latitude: success.location.lat, longitude: success.location.lng}});
     })
     .fail(function(err) {
