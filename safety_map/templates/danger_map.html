@@ -21,7 +21,6 @@
 <body>
     <a href="/home"><img class="gohome" src="{% static 'img/gohome_icon.png' %}"></a>
 
-    위험물지도
     {% for danger in dangers.all%}
     <div class="container">
         <a href="{% url 'detail_danger' danger.id %}">
