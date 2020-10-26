@@ -278,6 +278,7 @@ def danger_map(request):
     return render(request, 'danger_map.html', {'danger_map':dangers})
 
 def register_danger(request): 
+    google_key=config['GOOGLE']['GOOGLE_KEY']
     if request.method == "POST":
         post_danger_type = request.POST['danger_type']
         post_danger_loc=request.POST['danger_loc']
@@ -294,7 +295,7 @@ def register_danger(request):
         return danger_map(request)
         
     else:
-        return render(request, 'register_danger.html')
+        return render(request, 'register_danger.html',{'google':google_key})
     
         
     #return render(request, 'register_danger.html', {'g':g.latlng})
