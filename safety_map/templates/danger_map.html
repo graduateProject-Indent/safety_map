@@ -17,6 +17,11 @@
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://maps.google.com/maps/api/js?v=3&sensor=false"></script>
     <script src="http://www.openlayers.org/api/2.13.1/OpenLayers.js"></script>
+    <script>$(document).ready(function () {
+        $('.menu_2').hide();
+        $('div.map div div', this).removeAttr('style');
+
+    });</script>
 </head>
 <body>
     <a href="/home"><img class="gohome" src="{% static 'img/gohome_icon.png' %}"></a>
